@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  description: MyString
+  list: one
+  position: 1
+  category: MyString
+  completed_on: 2025-02-08 17:01:19
+  snoozed_until: 2025-02-08 17:01:19
+
+two:
+  description: MyString
+  list: two
+  position: 1
+  category: MyString
+  completed_on: 2025-02-08 17:01:19
+  snoozed_until: 2025-02-08 17:01:19

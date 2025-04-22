@@ -1,0 +1,22 @@
+<li data-id="<%= task.id %>">
+  <%= turbo_frame_tag dom_id(task) do %>
+    <div  <%= "class=completed" if task.completed? %> data-controller="task" data-task-url-value="<%= task_path(task) %>">
+      <span class="position"><%= task.position %>.</span>
+      <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, data: { action: "task#toggle" } %>
+      <%= link_to task.description, edit_task_path(task), class: "task #{'completed' if task.completed?}" %>
+      <div class="actions">
+        <%= button_to "delete", task_path(task), method: :delete, class: "task_button" %>
+        <%= form_with model: task, class: "category_select", data: {controller: "category-toggle"} do |f| %>
+          <%= f.select :category,
+            task.list.categories.pluck(:name),
+            { selected: task.category },
+            class: "category-select-button",
+            include_blank: false,
+            data: {
+              action: "change->category-toggle#submit"
+            } %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</li>
