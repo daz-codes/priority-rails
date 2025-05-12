@@ -21,16 +21,16 @@
     <%= form.submit "ADD" %>
 <% end %>
 <% if @tasks.any? %>
-  <ul id="tasks" data-controller="sortable" data-sortable-url-value="<%= sort_tasks_path %>">
-  <%= render @tasks %>
-  </ul>
+    <%= render "tasks/task_list", tasks: @tasks %>
 <% else %>
   <p id="tasks" class="text-center"> No tasks yet!</p>
 <% end %>
-<p class="blue-text italic text-s text-center">Completed <%= @list.tasks.completed.count %> out of <%= @list.tasks.count %> tasks!</p>
+<p class="blue-text italic text-s text-center">Completed <%= @list.tasks.completed.count %> out of <%= @list.tasks.unsnoozed.count %> tasks!</p>
 
 <div id="list_actions">
-  <%= link_to "Edit List", edit_list_path(@list) %> |
-  <%= link_to "Delete List", @list, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" }, class: "delete-button" %> |
-  <%= link_to "All Lists", lists_path %>
+    <%= link_to "Tasks", list_path(@list) %> |
+    <%= link_to "Snoozed Tasks", snoozed_list_path(@list) %> |
+    <%= link_to "Edit List", edit_list_path(@list) %> |
+    <%= link_to "Delete List", @list, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" }, class: "delete-button" %> |
+    <%= link_to "All Lists", lists_path %>
 </div>

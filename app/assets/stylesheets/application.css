@@ -2,68 +2,69 @@
     --red: #f5002f;
     --blue: #0085ca;
     --green: #b0fc38;
-    --yellow: #FFDC00;
+    --yellow: #ffdc00;
 }
 
-header, main{
+header,
+main {
     margin: 0;
     padding: 0;
 }
 
-header h1{
+header h1 {
     font-size: 96px;
     margin-bottom: -30px;
     margin-top: 0;
     font-family: "Bebas Neue", serif;
     margin: 0;
-  }
+}
 
-  h1.list_name {
+h1.list_name {
     margin: 0;
-  }
+}
 
-  .flash {
+.flash {
     color: var(--text);
     border: var(--border-width-l) var(--green) solid;
     text-align: center;
     padding: var(--padding-s);
     margin: var(--margin-s);
-  }
+}
 
-  #lists{
+#lists {
     list-style: none;
     font-size: 2rem;
-  }
+}
 
-  #lists a {
+#lists a {
     text-decoration: none;
-  }
+}
 
-  #new_list_button {
+#new_list_button {
     display: block;
     margin: 0 auto;
     text-align: center;
     text-transform: uppercase;
-  }
+}
 
-  #tasks {
+#tasks {
     min-height: 40vh;
     padding: 0;
     list-style: none;
-  }
+}
 
-  .task{
+.task {
     font-size: 18px;
     vertical-align: middle;
     margin-left: 4px;
     line-height: 2.6;
-  }
+}
 
-  .completed.task {
+.completed.task {
     text-decoration: line-through;
-  }
+}
 
-  #tasks li input[type="checkbox"]{
+#tasks li input[type="checkbox"] {
     width: 40px;
     height: 40px;
     vertical-align: middle;
@@ -71,48 +72,50 @@ header h1{
     appearance: none;
     -webkit-appearance: none;
     outline: none;
-    background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23949494%22%20stroke-width%3D%223%22/%3E%3C/svg%3E');
+    background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23949494%22%20stroke-width%3D%223%22/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: center left;
     flex-shrink: 0;
     margin-right: 8px;
-  }
-  
-  #tasks li input[type="checkbox"]:checked {
-      background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2359A193%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20fill%3D%22%233EA390%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22%2F%3E%3C%2Fsvg%3E');
-      background-repeat: no-repeat;
-      background-position: center left;
-  }
-  #tasks li, #tasks li turbo-frame {
-    padding: 0;
-    margin: 0
-    }
+}
 
-  #tasks li turbo-frame div[data-controller="task"]{
+#tasks li input[type="checkbox"]:checked {
+    background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2359A193%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20fill%3D%22%233EA390%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: center left;
+}
+#tasks li,
+#tasks li turbo-frame {
+    padding: 0;
+    margin: 0;
+}
+
+#tasks li turbo-frame div[data-controller="task"] {
     display: flex;
     align-items: center;
     width: 100%;
     border-bottom: 1px solid #dedede;
     cursor: move;
-  }
+}
 
-  #tasks div.completed {
-    opacity: 0.5
-  }
-  
-  #tasks li input[type="checkbox"] {
+#tasks div.completed {
+    opacity: 0.5;
+}
+
+#tasks li input[type="checkbox"] {
     width: 40px;
     height: 40px;
     flex-shrink: 0;
     margin-right: 8px;
-  }
+}
 
-  /* #tasks li:last-child{
+/* #tasks li:last-child{
     border-bottom: none;
   } */
-  
-  .task, .task:visited {
-    flex-grow: 1;  /* Takes up remaining space */
+
+.task,
+.task:visited {
+    flex-grow: 1; /* Takes up remaining space */
     overflow: hidden;
     text-decoration: none;
     color: var(--text);
@@ -120,17 +123,17 @@ header h1{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  
-  #tasks .actions {
-    width: 120px;
+}
+
+#tasks .actions {
+    width: 160px;
     flex-shrink: 0;
     display: flex;
     justify-content: space-between;
     gap: 4px;
-  }
-  
-  .task_button {
+}
+
+.task_button {
     background-color: #007bff;
     color: white;
     border: none;
@@ -139,9 +142,9 @@ header h1{
     border-radius: 4px;
     text-decoration: none;
     text-align: center;
-  }
+}
 
-  #tasks li .actions form.category_select select{
+#tasks li .actions form.category_select select {
     font-size: 9px;
     padding: 6px 4px;
     border-radius: var(--radius-s);
@@ -149,27 +152,27 @@ header h1{
     text-transform: uppercase;
     text-align: center;
     margin: 0;
-  }
-  
-  .task_button:hover {
-    background-color: #0056b3;
-  }
+}
 
-  #tasks li turbo-frame {
+.task_button:hover {
+    background-color: #0056b3;
+}
+
+#tasks li turbo-frame {
     display: flex; /* Prevent Turbo Frame from affecting flex layout */
     align-items: middle;
-  }
+}
 
-  .sortable-ghost{
+.sortable-ghost {
     background: rgba(216, 242, 249, 1);
     background-image: linear-gradient(var(--accent-bg), var(--bg));
-  }
+}
 
-  .sortable-drag{
+.sortable-drag {
     opacity: 0.6;
-  }
+}
 
-  #tasks .actions .task_button {
+#tasks .actions .task_button {
     font-size: 9px;
     background: transparent;
     border: var(--border-width-s) var(--grey) dotted;
@@ -177,52 +180,53 @@ header h1{
     display: inline;
     color: var(--grey);
     text-transform: uppercase;
-  }
+}
 
-  #tasks li .actions {
+#tasks li .actions {
     opacity: 0;
     transition: opacity 0.3s ease; /* Add a transition for smooth fading */
-  }
-  
-  #tasks li:hover .actions {
-    opacity: 1;
-  }
+}
 
-  .exclamation,.position{
+#tasks li:hover .actions {
+    opacity: 1;
+}
+
+.exclamation,
+.position {
     font-size: 2em;
     font-family: var(--heading-font);
     font-weight: bold;
     vertical-align: middle;
-  }
+}
 
-  #tasks li:first-child .exclamation{
+#tasks li:first-child .exclamation {
     color: var(--blue) !important;
-  }
-  
-  #tasks li:nth-child(2) .exclamation{
+}
+
+#tasks li:nth-child(2) .exclamation {
     color: var(--green) !important;
-  }
-  
-  #tasks li:nth-child(3) .exclamation{
+}
+
+#tasks li:nth-child(3) .exclamation {
     color: var(--red) !important;
-  }
-  
-  #new_task_form {
+}
+
+#new_task_form {
     display: flex;
     width: 80%; /* Ensures the form takes up full width */
     margin: 0 auto;
-  }
-  
-  #task_description {
+}
+
+#task_description {
     flex: 1; /* Takes up all remaining space */
     padding: var(--padding-s);
     border: var(--border-width-s) solid #ccc;
     border-right: none; /* Removes the right border so it merges with the button */
     border-radius: var(--radius-l) 0 0 var(--radius-l); /* Rounds only the left side */
     outline: none;
-  }
-  
-  #new_task_form input[type="submit"] {
+}
+
+#new_task_form input[type="submit"] {
     width: 80px;
     padding: var(--padding-s);
     border: var(--border-width-s) solid var(--blue);
@@ -232,38 +236,39 @@ header h1{
     color: white;
     cursor: pointer;
     transition: background 0.3s ease;
-  }
-  
-  #new_task_form input[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  #list_actions {
-   text-align: center;
-  }
+}
 
-  #edit_task_form {
+#new_task_form input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+#list_actions {
+    text-align: center;
+}
+
+#edit_task_form {
     display: flex;
     align-items: center;
     width: 100%;
-  }
-  
-  #edit_task_form input[type="text"] {
+}
+
+#edit_task_form input[type="text"] {
     width: calc(100% - 128px); /* 100% minus left (40px) + right (80px) gaps */
     margin-left: 8px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
-  
-  #edit_task_form .actions {
+}
+
+#edit_task_form .actions {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-left: 8px;
-  }
+}
 
-  #tasks .actions .button, #tasks .actions input[type="submit"] {
+#tasks .actions .button,
+#tasks .actions input[type="submit"] {
     font-size: 9px;
     background: transparent;
     border: var(--border-width-s) var(--grey) solid;
@@ -271,9 +276,4 @@ header h1{
     display: inline;
     color: var(--grey);
     text-transform: uppercase;
-  }
-
-  
-
-
-  
+}

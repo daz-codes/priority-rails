@@ -5,10 +5,17 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
   resources :lists do
+    member do
+      get :snoozed
+    end
     resources :tasks, only: [ :create ]
   end
   patch "tasks/sort", to: "tasks#sort", as: :sort_tasks
-  resources :tasks, only: [ :destroy, :edit, :update ]
+  resources :tasks, only: [ :destroy, :edit, :update ] do
+    member do
+      patch :snooze
+    end
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

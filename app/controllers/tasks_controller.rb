@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [ :edit, :update, :destroy ]
+  before_action :set_task, only: [ :edit, :update, :destroy, :snooze ]
   DEFAULT_CATEGORY = Category.first&.name || "Work"
 
   def edit
@@ -20,15 +20,13 @@ class TasksController < ApplicationController
   end
 
   def update
+     @tasks = @task.snoozed? ? @task.list.tasks.snoozed : @task.list.tasks.unsnoozed
     if params[:task][:completed] == true
       params[:task][:completed_on] = DateTime.current
     elsif params[:task][:completed] == false
       params[:task][:completed_on] = nil
     end
-    logger.debug "Current user: #{Current.user.inspect}"
-    logger.debug "Task params: #{params[:task].inspect}"
-
-        respond_to do |format|
+    respond_to do |format|
       if @task.update(task_params)
         format.turbo_stream { render turbo_stream: turbo_stream.replace(@task) }
         format.html { redirect_to @task.list }
@@ -48,19 +46,40 @@ class TasksController < ApplicationController
         task.update(position: index + 1)  # Use update instead of update_all to trigger callbacks
       end
     end
-    
+
     head :ok  # Respond with a success status
   end
 
-  def destroy
-    list = @task.list
-    @task.destroy!
-    reorder_tasks(list)
-  
+  def snooze
+    @tasks = @task.snoozed? ? @task.list.tasks.snoozed : @task.list.tasks.unsnoozed
+    @task.update(snoozed_until: @task.snoozed? ? nil : 1.day.from_now)
+
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@task) }
-      format.html { redirect_to @task.list, status: :see_other }
-      format.json { head :no_content }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "tasks",
+          partial: "tasks/task_list",
+          locals: { tasks: @tasks }
+        )
+      end
+      format.html { redirect_to tasks_path, notice: "Task Snoozed" }
+    end
+  end
+
+
+  def destroy
+    @tasks = @task.snoozed? ? @task.list.tasks.snoozed : @task.list.tasks.unsnoozed
+    @task.destroy!
+
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.replace(
+          "tasks",
+          partial: "tasks/task_list",
+          locals: { tasks: @tasks }
+        )
+      end
+      format.html { redirect_to tasks_path, notice: "Task Snoozed" }
     end
   end
 
@@ -71,11 +90,5 @@ class TasksController < ApplicationController
 
     def task_params
       params.expect(task: [ :description, :list_id, :position, :category, :completed_on, :snoozed_until ])
-    end
-
-    def reorder_tasks(list)
-      list.tasks.ordered.each_with_index do |task, index|
-        task.update(position: index + 1)
-      end
     end
 end

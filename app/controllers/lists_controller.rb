@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy ]
+  before_action :set_list, only: %i[ show edit update destroy snoozed ]
 
   # GET /lists or /lists.json
   def index
@@ -9,7 +9,13 @@ class ListsController < ApplicationController
   # GET /lists/1 or /lists/1.json
   def show
     @task = Task.new
-    @tasks = @list.tasks.ordered
+    @tasks = @list.tasks.unsnoozed
+  end
+
+  def snoozed
+    @task = Task.new
+    @tasks = @list.tasks.snoozed
+    render :show
   end
 
   # GET /lists/new

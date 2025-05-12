@@ -72,9 +72,6 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
-    acts_as_list (1.2.4)
-      activerecord (>= 6.1)
-      activesupport (>= 6.1)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
@@ -123,6 +120,7 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.8.0)
+    ipaddr (1.2.7)
     irb (1.15.1)
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
@@ -190,6 +188,9 @@ GEM
     parser (3.3.7.0)
       ast (~> 2.4.1)
       racc
+    positioning (0.4.6)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -251,6 +252,8 @@ GEM
     reline (0.6.0)
       io-console (~> 0.5)
     rexml (3.4.0)
+    rss (0.3.1)
+      rexml
     rubocop (1.71.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -362,18 +365,24 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  acts_as_list
   bcrypt (~> 3.1.7)
   bootsnap
   brakeman
   capybara
+  date
   debug
   importmap-rails
+  ipaddr
   jbuilder
   kamal
+  net-imap
+  net-pop
+  net-smtp (~> 0.5.0)
+  positioning
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.1)
+  rss
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable
