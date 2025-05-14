@@ -1,23 +1,24 @@
-import { Controller } from "@hotwired/stimulus"
-import Sortable from "sortablejs"
+import { Controller } from "@hotwired/stimulus";
+import Sortable from "sortablejs";
 
 export default class extends Controller {
   connect() {
     this.sortable = Sortable.create(this.element, {
-      onEnd: this.end.bind(this)
-    })
+      onEnd: this.dragEnd.bind(this),
+    });
   }
 
-  end(event) {
-    const ids = Array.from(this.element.children).map(el => el.dataset.id)
-
+  dragEnd(event) {
+    const ids = Array.from(this.element.children).map((el) => el.dataset.id);
+    alert(event.newIndex);
     fetch("/tasks/sort", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']")
+          .content,
       },
-      body: JSON.stringify({ task_ids: ids })
-    })
+      body: JSON.stringify({ task_ids: ids }),
+    });
   }
 }

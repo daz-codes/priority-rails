@@ -39,15 +39,14 @@ class TasksController < ApplicationController
   end
 
   def sort
-    # Start a transaction to ensure consistency
     Task.transaction do
       params[:task_ids].each_with_index do |id, index|
-        task = Task.find(id)  # Finding the task to ensure it's a valid task
-        task.update(position: index + 1)  # Use update instead of update_all to trigger callbacks
+        task = Task.find(id)
+        task.update(position: index + 1)
       end
     end
 
-    head :ok  # Respond with a success status
+    head :ok
   end
 
   def snooze
