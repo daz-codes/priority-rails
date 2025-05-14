@@ -302,6 +302,25 @@ button[disabled] {
     color: var(--text-light);
 }
 
+button.unbutton {
+    border: none;
+    background: none;
+    display: inline;
+    font-weight: normal;
+    color: var(--primary);
+    text-decoration: underline;
+}
+
+button.unbutton:enabled:hover,
+.button.unbutton:not([aria-disabled="true"]):hover {
+    border: none;
+    background: none;
+    display: inline;
+    font-weight: normal;
+    color: var(--primary);
+    text-decoration: none;
+}
+
 input[type="range"] {
     padding: 0;
 }
