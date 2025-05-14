@@ -378,7 +378,7 @@ DEPENDENCIES
   kamal
   net-imap
   net-pop
-  net-smtp (~> 0.5.0)
+  net-smtp (~> 0.5.1)
   positioning
   propshaft
   puma (>= 5.0)
