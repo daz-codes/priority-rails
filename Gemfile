@@ -38,7 +38,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 gem "positioning"
-gem "net-smtp", "~> 0.5.0"
+gem "net-smtp", "~> 0.5.1"
 gem "net-imap"
 gem "net-pop"
 gem "rss"
