@@ -10,7 +10,6 @@ export default class extends Controller {
 
   dragEnd(event) {
     const ids = Array.from(this.element.children).map((el) => el.dataset.id);
-    alert(event.newIndex);
     fetch("/tasks/sort", {
       method: "PATCH",
       headers: {

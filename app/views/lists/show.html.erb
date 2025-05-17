@@ -1,16 +1,14 @@
 <% if flash.any? %>
   <div class="flash"><%= notice %></div>
 <% end %>
-<% content_for :title, "PR!OR!TY! #{@list.name }"%>
+<% content_for :title, @list.name %>
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_from @list %>
 
 <h1 class="list_name"><%= @list.name %></h1>
 <div id="list_actions">
     <%= link_to "Tasks", list_path(@list) %> |
-    <%= link_to "Snoozed", snoozed_list_path(@list) %> |
-    <%= link_to "Edit List", edit_list_path(@list) %> |
-    <%= link_to "Delete List", @list, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" }, class: "delete-button" %>
+    <%= link_to "Snoozed", snoozed_list_path(@list) %>
 </div>
 <%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
   <% if @task.errors.any? %>
@@ -27,7 +25,11 @@
     <%= form.submit "ADD" %>
 <% end %>
 <% if @tasks.any? %>
-    <%= render "tasks/task_list", tasks: @tasks %>
+    <ul id="tasks" data-controller="sortable tasks" data-sortable-url-value="<%= sort_tasks_path %>">
+      <% @tasks.each_with_index do |task, index| %>
+        <%= render task %>
+      <% end %>
+    </ul>
 <% else %>
   <p id="tasks" class="text-center"> No tasks yet!</p>
 <% end %>

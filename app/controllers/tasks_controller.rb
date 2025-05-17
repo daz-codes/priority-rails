@@ -20,7 +20,6 @@ class TasksController < ApplicationController
   end
 
   def update
-     @tasks = @task.snoozed? ? @task.list.tasks.snoozed : @task.list.tasks.unsnoozed
     if params[:task][:completed] == true
       params[:task][:completed_on] = DateTime.current
     elsif params[:task][:completed] == false
@@ -28,12 +27,10 @@ class TasksController < ApplicationController
     end
     respond_to do |format|
       if @task.update(task_params)
-        format.turbo_stream { render turbo_stream: turbo_stream.replace(@task) }
+        # format.turbo_stream { render turbo_stream: turbo_stream.replace(@task) }
         format.html { redirect_to @task.list }
-        format.json { render :show, status: :ok, location: @task }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -42,43 +39,26 @@ class TasksController < ApplicationController
     Task.transaction do
       params[:task_ids].each_with_index do |id, index|
         task = Task.find(id)
-        task.update(position: index + 1)
+        task.update(position: index + 1)  # Use update instead of update_all to trigger callbacks
       end
     end
-
     head :ok
   end
 
   def snooze
-    @tasks = @task.snoozed? ? @task.list.tasks.snoozed : @task.list.tasks.unsnoozed
-    @task.update(snoozed_until: @task.snoozed? ? nil : 1.day.from_now)
-
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "tasks",
-          partial: "tasks/task_list",
-          locals: { tasks: @tasks }
-        )
+    if @task.update!(snoozed_until: @task.snoozed? ? nil : 1.day.from_now)
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.remove(@task) }
+        format.html { redirect_to @task.list }
       end
-      format.html { redirect_to tasks_path, notice: "Task Snoozed" }
     end
   end
 
-
   def destroy
-    @tasks = @task.snoozed? ? @task.list.tasks.snoozed : @task.list.tasks.unsnoozed
-    @task.destroy!
-
-    respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: turbo_stream.replace(
-          "tasks",
-          partial: "tasks/task_list",
-          locals: { tasks: @tasks }
-        )
+    if @task.destroy!
+      respond_to do |format|
+        format.html { redirect_to @task.list }
       end
-      format.html { redirect_to tasks_path, notice: "Task Snoozed" }
     end
   end
 

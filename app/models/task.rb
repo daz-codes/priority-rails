@@ -7,7 +7,7 @@ class Task < ApplicationRecord
 
   # position
   positioned on: :list
-  after_update_commit :broadcast_position_change
+  broadcasts_to :list
 
   # scopes
   scope :ordered, -> { order(position: :asc) }
@@ -22,7 +22,4 @@ class Task < ApplicationRecord
   def completed? = completed_on.present?
   def snoozed? = snoozed_until.present? && snoozed_until > Time.current
 
-  private
-
-  def broadcast_position_change = broadcast_replace_later_to list
 end

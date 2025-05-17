@@ -28,7 +28,7 @@
         <h1 class="logo">PR<span class="blue-text">!</span>OR<span class="green-text">!</span>TY<span class="red-text">!</span></h1>
         <div class="user_info">
         <% if authenticated? %>
-                <p>Signed in as <%= Current.user.name %></p>
+                <p><%= Current.user.name %></p>
                 <%= link_to "Your Lists", lists_path %>
                 <%= button_to "Sign Out", session_path, method: :delete, class: "unbutton" %>
         <% else %>

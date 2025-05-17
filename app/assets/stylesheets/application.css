@@ -42,7 +42,6 @@ header .user_info form {
     display: inline-block;
     margin-right: 0.5rem;
 }
-
 .flash {
     color: var(--text);
     border: var(--border-width-l) var(--green) solid;
