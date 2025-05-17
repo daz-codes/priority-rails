@@ -27,7 +27,6 @@ class TasksController < ApplicationController
     end
     respond_to do |format|
       if @task.update(task_params)
-        # format.turbo_stream { render turbo_stream: turbo_stream.replace(@task) }
         format.html { redirect_to @task.list }
       else
         format.html { render :edit, status: :unprocessable_entity }
