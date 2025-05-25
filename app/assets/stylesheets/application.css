@@ -128,10 +128,6 @@ header .user_info form {
     margin-right: 8px;
 }
 
-/* #tasks li:last-child{
-    border-bottom: none;
-  } */
-
 .task,
 .task:visited {
     flex-grow: 1; /* Takes up remaining space */
@@ -297,6 +293,19 @@ header .user_info form {
     text-transform: uppercase;
 }
 
-.active {
+.filter_tab.active {
     background: var(--green);
+}
+
+.filter_tab {
+    background: #ddd;
+    font-size: 0.8rem;
+    padding: 4px 6px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin: 0 1px;
+}
+
+.filter_tab:hover {
+    opacity: 0.8;
 }
