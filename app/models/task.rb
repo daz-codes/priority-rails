@@ -12,11 +12,20 @@ class Task < ApplicationRecord
   # scopes
   scope :ordered, -> { order(position: :asc) }
   scope :completed, -> { where.not(completed_on: nil).ordered }
+  scope :completed_today, -> { where(completed_on: Date.current.all_day).ordered }
+  scope :completed_before_today, -> { where('completed_on < ?', Date.current.beginning_of_day).ordered }
   scope :incomplete, -> { where(completed_on: nil).ordered }
   scope :snoozed, -> { where("snoozed_until > ?", Time.current).ordered }
   scope :unsnoozed, -> { where("snoozed_until IS NULL OR snoozed_until <= ?", Time.current).ordered }
-  scope :active, -> { where(snoozed_until: nil).ordered }
   scope :priority, -> { active.incomplete.ordered.limit(3) }
+  scope :active, -> {
+    unsnoozed
+      .where(completed_on: nil)
+      .or(
+        unsnoozed.where(completed_on: Date.current.all_day)
+      )
+      .ordered
+  }
 
   # methods
   def completed? = completed_on.present?
