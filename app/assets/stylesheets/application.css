@@ -303,9 +303,13 @@ header .user_info form {
     padding: 4px 6px;
     border-radius: 4px;
     text-decoration: none;
-    margin: 0 1px;
+    margin: 0 1px 1rem 0;
 }
 
 .filter_tab:hover {
     opacity: 0.8;
+}
+
+#list_actions {
+    margin-bottom: 0.6em;
 }
