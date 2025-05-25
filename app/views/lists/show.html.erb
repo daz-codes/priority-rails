@@ -2,14 +2,7 @@
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_from @list %>
 
-<h1 class="list_name"><%= @list.name %></h1>
-<div id="list_actions">
-    <%= link_to "PR!OR!TRY!",list_path(@list, list: "priority"),class: class_names("filter_tab", active: @filter == "priority") %>
-    <%= link_to "Active", list_path(@list), class: class_names("filter_tab", active: @filter == nil) %>
-    <%= link_to "Completed", list_path(@list, list: "completed"), class: class_names("filter_tab", active: @filter == "completed") %>
-    <%= link_to "Today", list_path(@list, list: "today"), class: class_names("filter_tab", active: @filter == "today") %>
-    <%= link_to "Snoozed", list_path(@list, list: "snoozed"), class: class_names("filter_tab", active: @filter == "snoozed") %>
-</div>
+<h1 class="list_name"><%= link_to @list.name, list_path(@list, list: @priority ? nil : "priority"),class: class_names(priority: @filter == "priority")  %></h1>
 <% unless @priority %>
     <%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
     <% if @task.errors.any? %>
@@ -32,4 +25,7 @@
     </ul>
 <% else %>
   <p id="tasks" class="text-center"> No tasks yet!</p>
+<% end %>
+<% unless @priority %>
+    <%= render "tabs" %>
 <% end %>

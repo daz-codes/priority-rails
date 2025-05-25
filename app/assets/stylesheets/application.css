@@ -313,3 +313,18 @@ header .user_info form {
 #list_actions {
     margin-bottom: 0.6em;
 }
+
+.list_name a,
+.list_name a:visited {
+    text-decoration: none;
+    color: var(--text);
+}
+
+.list_name a:hover {
+    color: var(--blue);
+}
+
+.list_name a.priority,
+.list_name a.priority:visited {
+    color: var(--green);
+}
