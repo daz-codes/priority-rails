@@ -296,3 +296,7 @@ header .user_info form {
     color: var(--grey);
     text-transform: uppercase;
 }
+
+.active {
+    background: var(--green);
+}

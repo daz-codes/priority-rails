@@ -7,17 +7,19 @@ class ListsController < ApplicationController
 
   def show
     @task = Task.new
-    @tasks, @title = case params[:list]
+    @filter = params[:list]
+    @priority = @filter == "priority"
+    @tasks = case @filter
               when "priority"
-                [ @list.tasks.priority, "PR!OR!TY!" ]
+                @list.tasks.priority
               when "completed"
-                [ @list.tasks.completed, "Completed Tasks" ]
+                @list.tasks.completed
               when "today"
-                [ @list.tasks.completed_today, "Completed Today" ]
+                @list.tasks.completed_today
               when "snoozed"
-                [ @list.tasks.snoozed, "Snoozed Tasks" ]
+                @list.tasks.snoozed
               else
-                [ @list.tasks.active, nil ]
+                @list.tasks.active
               end
   end
 

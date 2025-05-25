@@ -1,34 +1,30 @@
-<% if flash.any? %>
-  <div class="flash"><%= notice %></div>
-<% end %>
 <% content_for :title, @list.name %>
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_from @list %>
 
 <h1 class="list_name"><%= @list.name %></h1>
-<% if @title %>
-    <h2 class="list_type"><%= @title %></h2>
-<% end %>
 <div id="list_actions">
-    <%= link_to "PR!OR!TRY!", list_path(@list, list: "priority") %> |
-    <%= link_to "Active", list_path(@list) %> |
-    <%= link_to "Completed", list_path(@list, list: "completed") %> |
-    <%= link_to "Today", list_path(@list, list: "today") %> |
-    <%= link_to "Snoozed", list_path(@list, list: "snoozed") %>
+    <%= link_to "PR!OR!TRY!",list_path(@list, list: "priority"),class: class_names(active: @filter == "priority") %> |
+    <%= link_to "Active", list_path(@list), class: class_names(active: @filter == nil) %> |
+    <%= link_to "Completed", list_path(@list, list: "completed"), class: class_names(active: @filter == "completed") %> |
+    <%= link_to "Today", list_path(@list, list: "today"), class: class_names(active: @filter == "today") %> |
+    <%= link_to "Snoozed", list_path(@list, list: "snoozed"), class: class_names(active: @filter == "snoozed") %>
 </div>
-<%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
-  <% if @task.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-      <ul>
-        <% @task.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-    <%= form.text_field :description %>
-    <%= form.submit "ADD" %>
+<% unless @priority %>
+    <%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
+    <% if @task.errors.any? %>
+        <div style="color: red">
+        <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+        <ul>
+            <% @task.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+            <% end %>
+        </ul>
+        </div>
+    <% end %>
+        <%= form.text_field :description %>
+        <%= form.submit "ADD" %>
+    <% end %>
 <% end %>
 <% if @tasks.any? %>
     <ul id="tasks" data-controller="sortable tasks" data-sortable-url-value="<%= sort_tasks_path %>">

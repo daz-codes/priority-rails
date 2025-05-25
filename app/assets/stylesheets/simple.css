@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Holtwood+One+SC&family=Pacifico&family=Monoton&family=Jost&display=swap");
 /* Global variables. */
 :root {
-    background: var(--accent-bg);
     --font-family: var(--sans-font);
     --serif-font:
         Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida,
