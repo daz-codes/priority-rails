@@ -6,9 +6,15 @@
 <%= turbo_stream_from @list %>
 
 <h1 class="list_name"><%= @list.name %></h1>
+<% if @title %>
+    <h2 class="list_type"><%= @title %></h2>
+<% end %>
 <div id="list_actions">
-    <%= link_to "Tasks", list_path(@list) %> |
-    <%= link_to "Snoozed", snoozed_list_path(@list) %>
+    <%= link_to "PR!OR!TRY!", list_path(@list, list: "priority") %> |
+    <%= link_to "Active", list_path(@list) %> |
+    <%= link_to "Completed", list_path(@list, list: "completed") %> |
+    <%= link_to "Today", list_path(@list, list: "today") %> |
+    <%= link_to "Snoozed", list_path(@list, list: "snoozed") %>
 </div>
 <%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
   <% if @task.errors.any? %>
