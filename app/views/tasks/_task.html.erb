@@ -4,23 +4,8 @@
     <span class="position" ></span>
       <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, data: { action: "task#toggle" } %>
       <%= link_to task.description, edit_task_path(task), class: "task #{'completed' if task.completed?}" %>
-      <div class="info">
-          <%= "Snoozed for #{time_ago_in_words(task.snoozed_until)}" if task.snoozed? %>
-      </div>
-      <div class="actions">
-        <%= button_to task.snoozed? ? "unsnooze" : "snooze", snooze_task_path(task), method: :patch, class: "task_button" %>
-        <%= button_to "delete", task_path(task), method: :delete, class: "task_button" %>
-        <%= form_with model: task, class: "category_select", data: {controller: "category-toggle"} do |f| %>
-          <%= f.select :category,
-            task.list.categories.pluck(:name),
-            { selected: task.category },
-            class: "category-select-button",
-            include_blank: false,
-            data: {
-              action: "change->category-toggle#submit"
-            } %>
-        <% end %>
-      </div>
+      <%= render "tasks/actions", task: task %>
     </div>
+    <%= render "tasks/info", task: task %>
   <% end %>
 </li>

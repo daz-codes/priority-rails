@@ -1,0 +1,5 @@
+<h1 class="list_name">
+    <%= link_to @list.name,
+        list_path(@list, list: @priority ? nil : "priority"),
+        class: class_names(priority: @filter == "priority")  %>
+</h1>

@@ -1,0 +1,4 @@
+<div class="info italic">
+    <%= "Snoozed for #{time_ago_in_words(task.snoozed_until)}" if task.snoozed? %>
+    <%= "Completed #{time_ago_in_words(task.completed_on)} ago" if task.completed? %>
+</div>

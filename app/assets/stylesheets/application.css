@@ -109,11 +109,14 @@ header .user_info form {
     margin: 0;
 }
 
+#tasks li {
+    border-bottom: 1px solid #dedede;
+}
+
 #tasks li turbo-frame div[data-controller="task"] {
     display: flex;
     align-items: center;
     width: 100%;
-    border-bottom: 1px solid #dedede;
     cursor: move;
 }
 
@@ -130,7 +133,7 @@ header .user_info form {
 
 .task,
 .task:visited {
-    flex-grow: 1; /* Takes up remaining space */
+    flex-grow: 1;
     overflow: hidden;
     text-decoration: none;
     color: var(--text);
@@ -141,10 +144,10 @@ header .user_info form {
 }
 
 #tasks .actions {
-    width: 160px;
+    width: 80px;
     flex-shrink: 0;
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     gap: 4px;
 }
 
@@ -174,8 +177,6 @@ header .user_info form {
 }
 
 #tasks li turbo-frame {
-    display: flex; /* Prevent Turbo Frame from affecting flex layout */
-    align-items: middle;
 }
 
 .sortable-ghost {
@@ -190,11 +191,15 @@ header .user_info form {
 #tasks .actions .task_button {
     font-size: 9px;
     background: transparent;
-    border: var(--border-width-s) var(--grey) dotted;
+    border: var(--border-width-s) var(--grey) solid;
     padding: var(--padding-xs);
     display: inline;
     color: var(--grey);
     text-transform: uppercase;
+}
+
+#tasks .actions .task_button:hover {
+    background: #f1f1f1;
 }
 
 #tasks li .actions {
@@ -298,7 +303,7 @@ header .user_info form {
 }
 
 .filter_tab {
-    background: #ddd;
+    background: #f1f1f1;
     font-size: 0.8rem;
     padding: 4px 6px;
     border-radius: 4px;
@@ -327,4 +332,11 @@ header .user_info form {
 .list_name a.priority,
 .list_name a.priority:visited {
     color: var(--green);
+}
+
+#tasks .info {
+    font-size: 0.8rem;
+    color: var(--grey);
+    padding: 0 0 4px 56px;
+    margin-top: -12px;
 }

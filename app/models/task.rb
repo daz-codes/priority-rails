@@ -11,7 +11,7 @@ class Task < ApplicationRecord
 
   # scopes
   scope :ordered, -> { order(position: :asc) }
-  scope :completed, -> { where.not(completed_on: nil).ordered }
+  scope :completed, -> { where.not(completed_on: nil).order(completed_on: :desc) }
   scope :completed_today, -> { where(completed_on: Date.current.all_day).ordered }
   scope :completed_before_today, -> { where('completed_on < ?', Date.current.beginning_of_day).ordered }
   scope :incomplete, -> { where(completed_on: nil).ordered }

@@ -1,0 +1,10 @@
+<%= form_with model: task, class: "category_select", data: {controller: "category-toggle"} do |f| %>
+    <%= f.select :category,
+    task.list.categories.pluck(:name),
+    { selected: task.category },
+    class: "category-select-button",
+    include_blank: false,
+    data: {
+        action: "change->category-toggle#submit"
+    } %>
+<% end %>

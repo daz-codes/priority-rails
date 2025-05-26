@@ -2,22 +2,10 @@
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_from @list %>
 
-<h1 class="list_name"><%= link_to @list.name, list_path(@list, list: @priority ? nil : "priority"),class: class_names(priority: @filter == "priority")  %></h1>
+<%= render "title" %>
 <% unless @priority %>
-    <%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
-    <% if @task.errors.any? %>
-        <div style="color: red">
-        <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-        <ul>
-            <% @task.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-            <% end %>
-        </ul>
-        </div>
-    <% end %>
-        <%= form.text_field :description %>
-        <%= form.submit "ADD" %>
-    <% end %>
+    <%= render "tabs" %>
+    <%= render "task_form" %>
 <% end %>
 <% if @tasks.any? %>
     <ul id="tasks" data-controller="sortable tasks" data-sortable-url-value="<%= sort_tasks_path %>">
@@ -25,7 +13,4 @@
     </ul>
 <% else %>
   <p id="tasks" class="text-center"> No tasks yet!</p>
-<% end %>
-<% unless @priority %>
-    <%= render "tabs" %>
 <% end %>

@@ -1,0 +1,4 @@
+<div class="actions">
+<%= render "tasks/snooze_button", task: task unless task.completed? %>
+<%= render "tasks/delete_button", task: task %>
+</div>
