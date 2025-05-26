@@ -8,9 +8,9 @@
     <%= render "task_form" %>
 <% end %>
 <% if @tasks.any? %>
-    <ul id="tasks" data-controller="sortable tasks" data-sortable-url-value="<%= sort_tasks_path %>">
+    <%= tag.ul id: "tasks", data: (@filter ? {} : { controller: "sortable tasks", sortable_url_value: sort_tasks_path }) do %>
         <%= render @tasks %>
-    </ul>
+    <% end %>
 <% else %>
   <p id="tasks" class="text-center"> No tasks yet!</p>
 <% end %>

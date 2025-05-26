@@ -5,27 +5,33 @@
     --yellow: #ffdc00;
 }
 
-header,
-main {
-    margin: 0;
-    padding: 0;
+body {
+    background-color: var(--accent-bg);
+    background-image: linear-gradient(
+        to bottom,
+        var(--accent-bg),
+        var(--bg) 40px
+    );
 }
 
-header {
+main {
+    margin: 0;
+    padding: 1rem 0 0 0;
+}
+
+#banner {
     margin: 0;
     padding: 0.2rem 2rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 3rem;
 }
 
-header h1 {
+#banner h1 {
     font-size: 42px;
     font-family: "Bebas Neue", serif;
     margin: 0;
-}
-
-header .user_info {
 }
 
 h1.list_name {
@@ -33,12 +39,12 @@ h1.list_name {
     font-size: 5rem;
 }
 
-header .user_info p {
+#banner .user_info p {
     margin: 0;
 }
 
-header .user_info a,
-header .user_info form {
+#banner .user_info a,
+#banner .user_info form {
     display: inline-block;
     margin-right: 0.5rem;
 }
