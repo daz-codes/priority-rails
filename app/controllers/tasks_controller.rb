@@ -2,20 +2,15 @@ class TasksController < ApplicationController
   before_action :set_task, only: [ :edit, :update, :destroy, :snooze ]
   DEFAULT_CATEGORY = Category.first&.name || "Work"
 
-  def edit
-  end
-
   def create
     @list = Current.user.lists.find(params[:list_id])
     @task = @list.tasks.build(task_params)
     @task.category = DEFAULT_CATEGORY
 
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @list }
-      else
-        format.html { render @list, status: :unprocessable_entity }
-      end
+    if @task.save
+      redirect_to @list
+    else
+      render @list, status: :unprocessable_entity
     end
   end
 
@@ -25,12 +20,10 @@ class TasksController < ApplicationController
     elsif params[:task][:completed] == false
       params[:task][:completed_on] = nil
     end
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to @task.list }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      redirect_to @task.list
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -55,9 +48,7 @@ class TasksController < ApplicationController
 
   def destroy
     if @task.destroy!
-      respond_to do |format|
-        format.html { redirect_to @task.list }
-      end
+      redirect_to @task.list
     end
   end
 

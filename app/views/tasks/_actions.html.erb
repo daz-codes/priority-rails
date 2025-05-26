@@ -1,4 +1,4 @@
 <div class="actions">
-<%= render "tasks/snooze_button", task: task unless task.completed? %>
+<%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task unless task.completed? %>
 <%= render "tasks/delete_button", task: task %>
 </div>

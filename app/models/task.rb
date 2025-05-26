@@ -8,6 +8,7 @@ class Task < ApplicationRecord
   # position
   positioned on: :list
   broadcasts_to :list
+  after_update_commit :remove_if_snoozed
 
   # scopes
   scope :ordered, -> { order(position: :asc) }
@@ -15,7 +16,7 @@ class Task < ApplicationRecord
   scope :completed_today, -> { where(completed_on: Date.current.all_day).ordered }
   scope :completed_before_today, -> { where('completed_on < ?', Date.current.beginning_of_day).ordered }
   scope :incomplete, -> { where(completed_on: nil).ordered }
-  scope :snoozed, -> { where("snoozed_until > ?", Time.current).ordered }
+  scope :snoozed, -> { where("snoozed_until > ?", Time.current).order(snoozed_until: :asc) }
   scope :unsnoozed, -> { where("snoozed_until IS NULL OR snoozed_until <= ?", Time.current).ordered }
   scope :priority, -> { active.incomplete.ordered.limit(3) }
   scope :active, -> {
@@ -30,5 +31,13 @@ class Task < ApplicationRecord
   # methods
   def completed? = completed_on.present?
   def snoozed? = snoozed_until.present? && snoozed_until > Time.current
+
+  private
+
+  def remove_if_snoozed
+    if saved_change_to_snoozed_until? && snoozed_until.future?
+      broadcast_remove_to list
+    end
+  end
 
 end

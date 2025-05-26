@@ -116,7 +116,7 @@ h1.list_name {
 }
 
 #tasks li {
-    border-bottom: 1px solid #dedede;
+    border-bottom: 1px dotted #ededed;
 }
 
 #tasks li turbo-frame div[data-controller="task"] {
@@ -168,7 +168,7 @@ h1.list_name {
     text-align: center;
 }
 
-#tasks li .actions form.category_select select {
+#tasks li .actions select {
     font-size: 9px;
     padding: 6px 4px;
     border-radius: var(--radius-s);

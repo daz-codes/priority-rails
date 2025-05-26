@@ -1,0 +1,14 @@
+<%= form_with model: task, data: { controller: "snoozer" } do |f| %>
+  <%= f.select :snoozed_until,
+    [
+      ["Day", 1.day.from_now],
+      ["Week", 1.week.from_now],
+      ["Month", 1.month.from_now],
+      ["Year", 1.year.from_now],
+      ["Forever", 200.years.from_now]
+    ],
+    { include_blank: "Snooze" },
+    class: "snooze-select-button",
+    data: { action: "change->snoozer#submit" }
+  %>
+<% end %>
