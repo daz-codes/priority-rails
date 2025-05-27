@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [ :edit, :update, :destroy, :snooze ]
+  before_action :set_task, only: [ :edit, :update, :destroy ]
   DEFAULT_CATEGORY = Category.first&.name || "Work"
 
   def create
@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     @task.category = DEFAULT_CATEGORY
 
     if @task.save
-      redirect_to @list
+        redirect_to @list
     else
       render @list, status: :unprocessable_entity
     end
@@ -35,15 +35,6 @@ class TasksController < ApplicationController
       end
     end
     head :ok
-  end
-
-  def snooze
-    if @task.update!(snoozed_until: @task.snoozed? ? nil : 1.day.from_now)
-      respond_to do |format|
-        format.turbo_stream { render turbo_stream: turbo_stream.remove(@task) }
-        format.html { redirect_to @task.list }
-      end
-    end
   end
 
   def destroy

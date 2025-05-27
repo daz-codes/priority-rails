@@ -30,12 +30,12 @@ class Task < ApplicationRecord
 
   # methods
   def completed? = completed_on.present?
-  def snoozed? = snoozed_until.present? && snoozed_until > Time.current
+  def snoozed? = snoozed_until.present? && snoozed_until.future?
 
   private
 
   def remove_if_snoozed
-    if saved_change_to_snoozed_until? && snoozed_until.future?
+    if saved_change_to_snoozed_until?
       broadcast_remove_to list
     end
   end

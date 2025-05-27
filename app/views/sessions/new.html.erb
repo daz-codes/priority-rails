@@ -1,13 +1,24 @@
-<%= tag.div(flash[:alert], style: "color:red") if flash[:alert] %>
-<%= tag.div(flash[:notice], style: "color:green") if flash[:notice] %>
+<%= logo :large %>
 
+<p class="text-center display-l">
+    Time to focus on what's important...
+<p>
+
+<p>
+    The simple task manager that let's you focus on your priorities!
+<p>
+    <ul>
+        <li>Order your tasks by priority</li>
+        <li>Snooze any tasks you don't want to think about right now</li>
+        <li>Focus on your top 3 tasks in PR!OR!TY! mode</li>
+    </ul>
+<p>Log in below or  <strong><%= link_to "Sign Up", new_registration_path %></strong> if you don't have an account</p>
 <%= form_with url: session_path do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-  <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-  <%= form.submit "Sign in" %>
+    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
+    <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
+    <%= form.submit "Sign in" %>
 <% end %>
 
-<div>
+<p>
 <%= link_to "Forgot password?", new_password_path %>
-<p>Don't have an account? <%= link_to "Sign Up", new_registration_path %>
-</div>
+</p>

@@ -30,18 +30,16 @@
     </main>
     <% unless @priority %>
         <footer>
-            <div id="banner">
-                <h1 class="logo">PR<span class="blue-text">!</span>OR<span class="green-text">!</span>TY<span class="red-text">!</span></h1>
-                <div class="user_info">
-                <% if authenticated? %>
-                        <p><%= Current.user.name %></p>
-                        <%= link_to "Your Lists", lists_path %>
-                        <%= button_to "Sign Out", session_path, method: :delete, class: "unbutton" %>
-                <% else %>
-                    <%= link_to "Log In", login_path %>
-                <% end %>
+            <% if authenticated? %>
+                <div id="banner">
+                    <%= logo %>
+                    <div class="user_info">
+                            <p><%= Current.user.name %></p>
+                            <%= link_to "Your Lists", lists_path %>
+                            <%= button_to "Sign Out", session_path, method: :delete, class: "unbutton" %>
+                    </div>
                 </div>
-            </div>
+            <% end %>
         <p class="text-center">Another beautifully unconventional app made with 💜</p>
         </footer>
     <% end %>

@@ -1,5 +1,6 @@
 <%= button_to "<i class='fa-solid fa-clock-rotate-left'></i>".html_safe,
-    snooze_task_path(task),
-    title:"Unsnooze task",
+    task_path(task),
     method: :patch,
+    params: { task: { snoozed_until: nil } },
+    title: "Unsnooze task",
     class: "task_button" %>

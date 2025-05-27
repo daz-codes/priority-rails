@@ -28,10 +28,23 @@ main {
     gap: 3rem;
 }
 
-#banner h1 {
+.logo a,
+.logo a:hover,
+.logo a:visited {
+    text-decoration: none;
+    color: var(--text);
+}
+
+.logo.small {
+    font-size: 18px;
+}
+
+.logo.medium {
     font-size: 42px;
-    font-family: "Bebas Neue", serif;
-    margin: 0;
+}
+
+.logo.big {
+    font-size: 128px;
 }
 
 h1.list_name {
@@ -150,7 +163,7 @@ h1.list_name {
 }
 
 #tasks .actions {
-    width: 80px;
+    width: 100px;
     flex-shrink: 0;
     display: flex;
     justify-content: right;
@@ -239,16 +252,16 @@ h1.list_name {
 
 #new_task_form {
     display: flex;
-    width: 80%; /* Ensures the form takes up full width */
+    width: 80%;
     margin: 0 auto;
 }
 
 #task_description {
-    flex: 1; /* Takes up all remaining space */
+    flex: 1;
     padding: var(--padding-s);
     border: var(--border-width-s) solid #ccc;
-    border-right: none; /* Removes the right border so it merges with the button */
-    border-radius: var(--radius-l) 0 0 var(--radius-l); /* Rounds only the left side */
+    border-right: none;
+    border-radius: var(--radius-l) 0 0 var(--radius-l);
     outline: none;
 }
 
@@ -256,8 +269,8 @@ h1.list_name {
     width: 80px;
     padding: var(--padding-s);
     border: var(--border-width-s) solid var(--blue);
-    border-left: none; /* Removes the left border so it merges with the input */
-    border-radius: 0 var(--radius-l) var(--radius-l) 0; /* Rounds only the right side */
+    border-left: none;
+    border-radius: 0 var(--radius-l) var(--radius-l) 0;
     background-color: var(--blue);
     color: white;
     cursor: pointer;
@@ -279,7 +292,6 @@ h1.list_name {
 }
 
 #edit_task_form input[type="text"] {
-    width: calc(100% - 128px); /* 100% minus left (40px) + right (80px) gaps */
     margin-left: 8px;
     padding: 10px;
     border: 1px solid #ccc;
