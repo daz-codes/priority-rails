@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy snoozed ]
+  before_action :set_list, only: %i[ show edit update destroy ]
 
   def index
     @lists = Current.user.lists
@@ -21,12 +21,6 @@ class ListsController < ApplicationController
               else
                 @list.tasks.active
               end
-  end
-
-  def snoozed
-    @task = Task.new
-    @tasks = @list.tasks.snoozed
-    render :show
   end
 
   def new

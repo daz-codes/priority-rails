@@ -197,11 +197,19 @@ h1.list_name {
     text-transform: uppercase;
     text-align: center;
     text-indent: -100em;
-    margin: 0 0 1px 0;
+    margin: 0;
+    width: 32px;
+    height: 32px;
+}
+
+#tasks li .actions select:hover {
+    background: #f1f1f1;
 }
 
 .snooze-select-wrapper {
     position: relative;
+    width: 32px;
+    height: 32px;
 }
 
 .snooze-select-wrapper::before {
@@ -217,10 +225,6 @@ h1.list_name {
 
 .fa-solid {
     font-size: 16px;
-}
-
-.task_button:hover {
-    background-color: #0056b3;
 }
 
 #tasks li turbo-frame {
