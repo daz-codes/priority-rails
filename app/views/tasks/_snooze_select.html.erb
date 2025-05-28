@@ -1,3 +1,4 @@
+<div class="snooze-select-wrapper">
 <%= form_with model: task, data: { controller: "snoozer" } do |f| %>
   <%= f.select :snoozed_until,
     [
@@ -7,8 +8,9 @@
       ["Year", 1.year.from_now],
       ["Forever", 200.years.from_now]
     ],
-    { include_blank: "Snooze" },
+    title: "Snooze task",
     class: "snooze-select-button",
     data: { action: "change->snoozer#submit" }
   %>
 <% end %>
+</div>

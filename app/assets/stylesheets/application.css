@@ -1,8 +1,11 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
+
 :root {
     --red: #f5002f;
     --blue: #0085ca;
     --green: #b0fc38;
     --yellow: #ffdc00;
+    --fa-font-solid: normal 400 9px/1 "Font Awesome 6 Free";
 }
 
 body {
@@ -163,10 +166,11 @@ h1.list_name {
 }
 
 #tasks .actions {
-    width: 100px;
+    width: 70px;
     flex-shrink: 0;
     display: flex;
-    justify-content: right;
+    justify-content: flex-end;
+    align-items: center;
     gap: 4px;
 }
 
@@ -179,16 +183,40 @@ h1.list_name {
     border-radius: 4px;
     text-decoration: none;
     text-align: center;
+    height: 32px;
+    width: 32px;
+    margin: 0;
 }
 
 #tasks li .actions select {
+    appearance: none;
     font-size: 9px;
-    padding: 6px 4px;
+    padding: 10px 4px;
     border-radius: var(--radius-s);
     background-image: none;
     text-transform: uppercase;
     text-align: center;
-    margin: 0;
+    text-indent: -100em;
+    margin: 0 0 1px 0;
+}
+
+.snooze-select-wrapper {
+    position: relative;
+}
+
+.snooze-select-wrapper::before {
+    font: var(--fa-font-solid);
+    color: var(--grey);
+    content: "\f017";
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.fa-solid {
+    font-size: 16px;
 }
 
 .task_button:hover {
@@ -299,10 +327,15 @@ h1.list_name {
 }
 
 #edit_task_form .actions {
+    width: 70px;
     display: flex;
     align-items: center;
     gap: 8px;
     margin-left: 8px;
+}
+
+#edit_task_form .actions .task_button {
+    margin-bottom: 6px;
 }
 
 #tasks .actions .button,

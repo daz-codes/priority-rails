@@ -12,8 +12,10 @@
     <% end %>
     <%= form.text_field :description %>
     <div class="actions">
-      <%= form.submit "Update" %>
-      <%= link_to "Cancel", @task.list, class: "button" %>
+        <%= button_tag(type: "submit", class: "task_button") do %>
+          <i class="fa-solid fa-check"></i>
+        <% end %>
+        <%= link_to "<i class='fa-solid fa-xmark'></i>".html_safe, @task.list, class: "task_button" %>
   </div>
   <% end %>
 <% end %>
