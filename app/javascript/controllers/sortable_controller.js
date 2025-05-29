@@ -5,9 +5,9 @@ export default class extends Controller {
   connect() {
     this.sortable = Sortable.create(this.element, {
       onEnd: this.dragEnd.bind(this),
-      delay: 200,
+      delay: 100,
       delayOnTouchOnly: true,
-      touchStartThreshold: 5,
+      touchStartThreshold: 2,
     });
   }
 

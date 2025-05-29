@@ -154,6 +154,9 @@ h1.list_name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    -webkit-touch-callout: none; /* disables callout, like preview */
+    -webkit-user-select: none; /* prevents text selection on hold */
+    user-select: none;
 }
 
 #tasks .actions {
