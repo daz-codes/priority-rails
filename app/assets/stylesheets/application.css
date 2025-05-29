@@ -8,15 +8,6 @@
     --fa-font-solid: normal 400 9px/1 "Font Awesome 6 Free";
 }
 
-body {
-    background-color: var(--accent-bg);
-    background-image: linear-gradient(
-        to bottom,
-        var(--accent-bg),
-        var(--bg) 40px
-    );
-}
-
 main {
     margin: 0;
     padding: 1rem 0 0 0;

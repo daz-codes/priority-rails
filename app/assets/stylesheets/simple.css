@@ -143,7 +143,6 @@ html {
 /* Make the body a nice central block */
 body {
     color: var(--text);
-    background-color: var(--bg);
     font-size: 1.15rem;
     line-height: 1.5;
     display: grid;
@@ -156,9 +155,6 @@ body > * {
 
 /* Make the header bg full width, but the content inline with body */
 body > header {
-    background-color: var(--accent-bg);
-    background-image: linear-gradient(var(--accent-bg), var(--bg));
-    text-align: center;
     grid-column: 1 / -1;
 }
 
@@ -172,7 +168,6 @@ body > header p {
 }
 
 body > footer {
-    background-image: linear-gradient(var(--bg), var(--accent-bg));
     margin-top: var(--margin-l);
     padding: var(--padding-xs) var(--padding-s) var(--padding-m)
         var(--padding-s);

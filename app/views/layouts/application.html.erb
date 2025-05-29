@@ -25,22 +25,18 @@
   </head>
 
   <body>
+      <header>
+          <%= link_to "Your Lists", lists_path, class: "your_lists" %>
+      </header>
     <main>
     <%= yield %>
     </main>
     <% unless @priority %>
         <footer>
             <% if authenticated? %>
-                <div id="banner">
-                    <%= logo %>
-                    <div class="user_info">
-                            <p><%= Current.user.name %></p>
-                            <%= link_to "Your Lists", lists_path %>
-                            <%= button_to "Sign Out", session_path, method: :delete, class: "unbutton" %>
-                    </div>
-                </div>
+                <p><%= Current.user.name %> <%= button_to "Sign Out", session_path, method: :delete, class: "unbutton" %></p>                      </div>
             <% end %>
-        <p class="text-center">Another beautifully unconventional app made with 💜</p>
+            <p class="text-center">Another beautifully unconventional app made with 💜 by <%= link_to "https://daz.codes", "DAZ" %></p>
         </footer>
     <% end %>
   </body>
