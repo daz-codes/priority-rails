@@ -395,3 +395,29 @@ h1.list_name {
     padding: 0 0 4px 56px;
     margin-top: -12px;
 }
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+#tasks .dropdown-menu {
+    position: absolute;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+}
+
+#tasks .dropdown-menu li {
+    padding: 0.2rem 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+#tasks .dropdown-menu li:hover {
+    background-color: var(--accent-bg);
+}
