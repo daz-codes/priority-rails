@@ -4,7 +4,6 @@ class List < ApplicationRecord
   has_many :list_categories, dependent: :destroy
   has_many :categories, through: :list_categories
   validates :name, presence: true
-  broadcasts_refreshes
   after_create :assign_default_categories
 
   private

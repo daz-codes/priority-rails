@@ -9,6 +9,7 @@ class Task < ApplicationRecord
   positioned on: :list
 
   # broadcasts
+  broadcasts_to :list
   after_update_commit :remove_if_snoozed
 
   # scopes

@@ -14,8 +14,6 @@ class ListsController < ApplicationController
                 @list.tasks.priority
               when "completed"
                 @list.tasks.completed
-              when "today"
-                @list.tasks.completed_today
               when "snoozed"
                 @list.tasks.snoozed
               else

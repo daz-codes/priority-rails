@@ -123,7 +123,6 @@ h1.list_name {
 }
 
 #tasks li {
-    border-bottom: 1px dotted #ededed;
 }
 
 #tasks li turbo-frame div[data-controller="task"] {
@@ -131,6 +130,7 @@ h1.list_name {
     align-items: center;
     width: 100%;
     cursor: move;
+    border-bottom: 1px dotted #ededed;
 }
 
 #tasks div.completed {
@@ -348,7 +348,8 @@ h1.list_name {
 }
 
 .filter_tab.active {
-    background: var(--green);
+    background: var(--blue);
+    color: white;
 }
 
 .filter_tab {
