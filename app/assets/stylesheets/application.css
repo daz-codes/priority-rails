@@ -30,7 +30,7 @@ main {
 }
 
 .logo.small {
-    font-size: 18px;
+    font-size: 29px;
 }
 
 .logo.medium {
@@ -43,7 +43,7 @@ main {
 
 h1.list_name {
     margin: 0;
-    font-size: 5rem;
+    font-size: 3.6rem;
 }
 
 #banner .user_info p {
@@ -157,6 +157,9 @@ h1.list_name {
     -webkit-touch-callout: none; /* disables callout, like preview */
     -webkit-user-select: none; /* prevents text selection on hold */
     user-select: none;
+}
+
+div[data-controller="task"]:hover {
 }
 
 #tasks .actions {
@@ -348,8 +351,8 @@ h1.list_name {
 }
 
 .filter_tab.active {
-    background: var(--blue);
-    color: white;
+    background: var(--green);
+    color: var(--text);
 }
 
 .filter_tab {
@@ -415,4 +418,24 @@ h1.list_name {
 
 #tasks .dropdown-menu li:hover {
     background-color: var(--accent-bg);
+}
+
+.user-info {
+    display: flex;
+    justify-content: center;
+    gap: 29px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+header .logo {
+    padding: 10px;
+    margin: 0;
 }
