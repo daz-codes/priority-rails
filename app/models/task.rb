@@ -9,8 +9,9 @@ class Task < ApplicationRecord
   positioned on: :list
 
   # broadcasts
-  broadcasts_to :list
-  after_update_commit :remove_if_snoozed
+  broadcasts_to :list, inserts_by: :append, target: "tasks"
+  after_destroy_commit -> { broadcast_remove_to list }
+  after_update_commit :refresh_list
 
   # scopes
   scope :ordered, -> { order(position: :asc) }
@@ -33,9 +34,10 @@ class Task < ApplicationRecord
 
   private
 
-  def remove_if_snoozed
-    if saved_change_to_snoozed_until?
-      broadcast_remove_to list
+  def refresh_list
+    broadcast_remove_to list  if saved_change_to_snoozed_until?
+    if saved_change_to_completed_on?
+      list.broadcast_replace_to list, target: dom_id(list), partial: "lists/list", locals: { tasks: list.tasks }
     end
   end
 end
