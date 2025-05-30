@@ -3,12 +3,12 @@
 <%= turbo_stream_from @list %>
 
 <%= render "title" %>
-<% unless @priority %>
-    <%= render "tabs" %>
-    <%= render "task_form" %>
-<% end %>
+<%= render "tabs" %>
+<%= render "task_form" unless @priority %>
 <% if @tasks.any? %>
-    <%= tag.ul id: "tasks", data: (@filter ? {} : { controller: "sortable tasks", sortable_url_value: sort_tasks_path }) do %>
+    <%= tag.ul id: "tasks",
+        class: class_names(priority: @filter == "priority"),
+        data: (@filter ? {} : { controller: "sortable tasks", sortable_url_value: sort_tasks_path }) do %>
         <%= render @tasks %>
     <% end %>
 <% else %>

@@ -80,8 +80,7 @@ h1.list_name {
 }
 
 #tasks {
-    min-height: 40vh;
-    padding: 0;
+    padding: 8px;
     list-style: none;
 }
 
@@ -385,6 +384,10 @@ div[data-controller="task"]:hover {
 .list_name a.priority,
 .list_name a.priority:visited {
     color: var(--green);
+}
+
+#tasks.priority {
+    border: solid var(--red) 5px;
 }
 
 #tasks .info {
