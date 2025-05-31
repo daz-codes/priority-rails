@@ -3,8 +3,10 @@
       <i class="fa-solid fa-bars"></i>
   </button>
   <ul data-list-picker-target="lists" class="dropdown-menu" hidden>
+      <li>Select a list ... </li>
     <% Current.user.lists.each do |list| %>
-        <li data-action="click->list-picker#select" data-list-picker-value="<%= list.id %>"><%= list.name %></li>
+        <li class="list" data-action="click->list-picker#select" data-list-picker-value="<%= list.id %>"><%= list.name %></li>
     <% end %>
+    <li data-action="click->list-picker#create">Create New List</li>
   </ul>
 </div>

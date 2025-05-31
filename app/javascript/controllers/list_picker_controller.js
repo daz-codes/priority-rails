@@ -33,4 +33,8 @@ export default class extends Controller {
       window.location.href = `/lists/${listId}`;
     }
   }
+
+  create() {
+    window.location.href = "/lists/new";
+  }
 }

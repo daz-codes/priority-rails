@@ -352,6 +352,7 @@ div[data-controller="task"]:hover {
 .filter_tab.active {
     background: var(--green);
     color: var(--text);
+    opacity: 1;
 }
 
 .filter_tab {
@@ -361,6 +362,7 @@ div[data-controller="task"]:hover {
     border-radius: 4px;
     text-decoration: none;
     margin: 0 1px 1rem 0;
+    opacity: 0.4;
 }
 
 .filter_tab:hover {
@@ -479,8 +481,6 @@ header .dropdown-menu {
     padding: 0;
     margin: 0;
     z-index: 10;
-    text-transform: uppercase;
-    font-family: var(--heading-font);
     width: 100%;
 }
 
@@ -497,8 +497,13 @@ header .dropdown-menu {
 header .dropdown-menu li {
     padding: 0.2rem 1rem;
     border-bottom: 1px solid #f1f1f1;
+    font-size: 16px;
+}
+
+header .dropdown-menu li.list {
+    font-family: var(--heading-font);
     font-size: 24px;
-    border: none;
+    text-transform: uppercase;
     cursor: pointer;
 }
 
