@@ -463,9 +463,10 @@ header button.list-picker:hover {
     background: #f1f1f1;
 }
 
-.custom-select {
+header .custom-select {
     position: relative;
     display: inline-block;
+    width: 30em;
 }
 
 header .dropdown-menu {
@@ -477,12 +478,25 @@ header .dropdown-menu {
     list-style: none;
     padding: 0;
     margin: 0;
-    width: 300px;
     z-index: 10;
+    text-transform: uppercase;
+    font-family: var(--heading-font);
+    width: 100%;
+}
+
+@media screen and (max-width: 600px) {
+    header .custom-select {
+        width: 100%;
+    }
+    header .dropdown-menu {
+        top: 0;
+        left: 0;
+    }
 }
 
 header .dropdown-menu li {
     padding: 0.2rem 1rem;
+    border-bottom: 1px solid #f1f1f1;
     font-size: 24px;
     border: none;
     cursor: pointer;
