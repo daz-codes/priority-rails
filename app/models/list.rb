@@ -6,10 +6,10 @@ class List < ApplicationRecord
   validates :name, presence: true
   after_create :assign_default_categories
 
-  after_create_commit  -> { broadcast_refresh_later_to(model_name.plural) }
-  after_update_commit  -> { broadcast_refresh_later }
+  broadcasts_refreshes
 
   private
+
   def assign_default_categories
     default_categories = Category.where(name: ["Home", "Work", "Hobbies"])
     self.categories << default_categories
