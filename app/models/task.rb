@@ -35,9 +35,6 @@ class Task < ApplicationRecord
   private
 
   def refresh_list
-    broadcast_remove_to list  if saved_change_to_snoozed_until?
-    if saved_change_to_completed_on?
-      list.broadcast_replace_to list, target: dom_id(list), partial: "lists/list", locals: { tasks: list.tasks }
-    end
+    broadcast_remove_to list if saved_change_to_snoozed_until?
   end
 end
