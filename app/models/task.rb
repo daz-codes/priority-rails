@@ -9,7 +9,6 @@ class Task < ApplicationRecord
   positioned on: :list
 
   # broadcasts
-  broadcasts_to :list, inserts_by: :append, target: "tasks"
   after_destroy_commit -> { broadcast_remove_to list }
   after_update_commit :refresh_list
 
