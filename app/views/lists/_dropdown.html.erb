@@ -1,0 +1,10 @@
+<div data-controller="list-picker" class="custom-select">
+  <button title="Choose a List" class="list-picker" data-action="click->list-picker#toggle">
+      <i class="fa-solid fa-bars"></i>
+  </button>
+  <ul data-list-picker-target="lists" class="dropdown-menu" hidden>
+    <% Current.user.lists.each do |list| %>
+        <li data-action="click->list-picker#select" data-list-picker-value="<%= list.id %>"><%= list.name %></li>
+    <% end %>
+  </ul>
+</div>

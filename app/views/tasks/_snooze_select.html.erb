@@ -3,10 +3,10 @@
       <i class="fa-solid fa-clock"></i>
   </button>
   <ul data-snoozer-target="menu" class="dropdown-menu" hidden>
-    <li data-action="click->snoozer#select" data-value="<%= 1.day.from_now.iso8601 %>">Day</li>
-    <li data-action="click->snoozer#select" data-value="<%= 1.week.from_now.iso8601 %>">Week</li>
-    <li data-action="click->snoozer#select" data-value="<%= 1.month.from_now.iso8601 %>">Month</li>
-    <li data-action="click->snoozer#select" data-value="<%= 1.year.from_now.iso8601 %>">Year</li>
-    <li data-action="click->snoozer#select" data-value="<%= 200.years.from_now.iso8601 %>">Forever</li>
+    <li data-action="click->snoozer#select" data-snoozer-value="<%= 1.day.from_now.iso8601 %>">Day</li>
+    <li data-action="click->snoozer#select" data-snoozer-value="<%= 1.week.from_now.iso8601 %>">Week</li>
+    <li data-action="click->snoozer#select" data-snoozer-value="<%= 1.month.from_now.iso8601 %>">Month</li>
+    <li data-action="click->snoozer#select" data-snoozer-value="<%= 1.year.from_now.iso8601 %>">Year</li>
+    <li data-action="click->snoozer#select" data-snoozer-value="<%= 200.years.from_now.iso8601 %>">Forever</li>
   </ul>
 </div>

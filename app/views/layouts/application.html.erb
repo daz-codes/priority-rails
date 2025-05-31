@@ -27,11 +27,7 @@
   <body>
       <% if Current.user&.lists&.any? %>
         <header>
-            <%= form_with url: lists_path, method: :get, local: true do %>
-              <%= select_tag :id,
-                    options_from_collection_for_select(Current.user.lists, :id, :name, @list&.id),
-                    onchange: "this.form.action = '/lists/' + this.value; this.form.submit();" %>
-            <% end %>
+            <%= render "lists/dropdown" %>
             <%= logo :small %>
         </header>
       <% end %>

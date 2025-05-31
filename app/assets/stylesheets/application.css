@@ -442,3 +442,51 @@ header .logo {
     padding: 10px;
     margin: 0;
 }
+
+@media screen and (max-width: 600px) {
+    header .logo {
+        display: none;
+    }
+}
+
+header button.list-picker {
+    font-size: 24px;
+    background: transparent;
+    border: var(--border-width-s) var(--grey) solid;
+    padding: 4px 8px;
+    color: var(--grey);
+    border-radius: 4px;
+    margin: 10px;
+}
+
+header button.list-picker:hover {
+    background: #f1f1f1;
+}
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+}
+
+header .dropdown-menu {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    background: white;
+    border: 1px solid #f1f1f1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+}
+
+header .dropdown-menu li {
+    padding: 0.2rem 1rem;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+header .dropdown-menu li:hover {
+    background-color: var(--accent-bg);
+}
