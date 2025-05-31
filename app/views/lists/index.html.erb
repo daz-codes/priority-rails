@@ -1,10 +1,6 @@
-
 <% content_for :title, "Lists" %>
 <h1>Your Lists</h1>
 
-<ul id="lists">    
+<ul id="lists">
   <%= render @lists %>
 </ul>
-<%= link_to "Create New List", new_list_path, class: "button", id: "new_list_button" %>
-
-
