@@ -5,7 +5,13 @@
 <%= render "title" %>
 <%= render "tabs" %>
 <%= render "task_form" unless @priority %>
-<%= turbo_stream_from @list %>
-<%= turbo_frame_tag dom_id(@list) do %>
-  <%= render partial: "lists/list", locals: { tasks: @tasks } %>
+
+<% if @tasks.any? %>
+    <%= tag.ul id: "tasks",
+        class: class_names(priority: @filter == "priority"),
+        data: (@filter ? {} : { controller: "sortable tasks", sortable_url_value: sort_tasks_path }) do %>
+        <%= render @tasks %>
+    <% end %>
+<% else %>
+  <p id="tasks" class="text-center"> No tasks yet!</p>
 <% end %>
