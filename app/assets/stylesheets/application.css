@@ -510,3 +510,16 @@ header .dropdown-menu li.list {
 header .dropdown-menu li:hover {
     background-color: var(--accent-bg);
 }
+
+@keyframes highlight {
+    0% {
+        background: var(--yellow);
+    }
+    100% {
+        background: none;
+    }
+}
+
+.highlight {
+    animation: highlight 1s;
+}

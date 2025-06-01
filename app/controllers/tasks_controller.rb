@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     @task.category = DEFAULT_CATEGORY
 
     if @task.save
-        redirect_to @list
+      redirect_to list_path(@list, highlight: @task.id)
     else
       render @list, status: :unprocessable_entity
     end

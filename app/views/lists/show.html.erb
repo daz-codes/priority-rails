@@ -1,6 +1,7 @@
 <% content_for :title, @list.name %>
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_from @list %>
+<% highlight_id = params[:highlight].to_i if params[:highlight] %>
 
 <%= render "title" %>
 <%= render "tabs" %>
@@ -10,7 +11,7 @@
     <%= tag.ul id: "tasks",
         class: class_names(priority: @filter == "priority"),
         data: (@filter ? {} : { controller: "sortable tasks", sortable_url_value: sort_tasks_path }) do %>
-        <%= render @tasks %>
+        <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: highlight_id } %>
     <% end %>
 <% else %>
   <p id="tasks" class="text-center"> No tasks yet!</p>

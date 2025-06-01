@@ -2,7 +2,12 @@ class ListsController < ApplicationController
   before_action :set_list, only: %i[ show edit update destroy ]
 
   def index
-    @lists = Current.user.lists
+    lists = Current.user.lists
+    if lists.any?
+      redirect_to lists.first
+    else
+      redirect_to new_list_path
+    end
   end
 
   def show
