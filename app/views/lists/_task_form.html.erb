@@ -9,6 +9,6 @@
     </ul>
     </div>
 <% end %>
-    <%= form.text_field :description %>
+    <%= form.text_field :description, data: { controller: "auto-focus" } %>
     <%= form.submit "ADD" %>
 <% end %>

@@ -30,11 +30,11 @@ export default class extends Controller {
     this.listsTarget.hidden = true;
 
     if (listId) {
-      window.location.href = `/lists/${listId}`;
+      Turbo.visit(`/lists/${listId}`);
     }
   }
 
   create() {
-    window.location.href = "/lists/new";
+    Turbo.visit("/lists/new");
   }
 }

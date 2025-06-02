@@ -18,11 +18,8 @@ export default class extends Controller {
       if (!response.ok) {
         throw new Error("Request failed");
       }
-
-      // Handle the response if needed, e.g. updating the UI
     } catch (error) {
       console.error("Error during patch request:", error);
-      // Optionally, notify the user or take action on error
     }
   }
 }

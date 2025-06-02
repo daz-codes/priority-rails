@@ -122,6 +122,7 @@ h1.list_name {
 }
 
 #tasks li {
+    border-bottom: 1px dotted #ededed;
 }
 
 #tasks li turbo-frame div[data-controller="task"] {
@@ -129,7 +130,6 @@ h1.list_name {
     align-items: center;
     width: 100%;
     cursor: move;
-    border-bottom: 1px dotted #ededed;
 }
 
 #tasks div.completed {
@@ -455,7 +455,7 @@ header button.list-picker {
     font-size: 24px;
     background: transparent;
     border: var(--border-width-s) var(--grey) solid;
-    padding: 4px 8px;
+    padding: 0 8px 4px;
     color: var(--grey);
     border-radius: 4px;
     margin: 10px;
