@@ -7,3 +7,5 @@ pin "@hotwired/stimulus-loading", to: "stimulus-loading.js"
 pin "@rails/request.js", to: "https://ga.jspm.io/npm:@rails/request.js@0.0.8/src/index.js"
 pin_all_from "app/javascript/controllers", under: "controllers"
 pin "sortablejs" # @1.15.6
+pin "trix"
+pin "@rails/actiontext", to: "actiontext.esm.js"

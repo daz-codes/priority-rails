@@ -6,5 +6,6 @@
       <%= render "tasks/actions", task: task unless @priority%>
     </div>
     <%= render "tasks/info", task: task if @filter %>
+    <%= render "tasks/note", task: task %>
   <% end %>
 </li>

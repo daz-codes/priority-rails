@@ -37,6 +37,10 @@ class TasksController < ApplicationController
     head :ok
   end
 
+  def edit_note
+    render partial: "tasks/note_form", locals: { task: @task }
+  end
+
   def destroy
     if @task.destroy!
       redirect_to @task.list
@@ -49,6 +53,6 @@ class TasksController < ApplicationController
     end
 
     def task_params
-      params.expect(task: [ :description, :list_id, :position, :category, :completed_on, :snoozed_until ])
+      params.expect(task: [ :description, :list_id, :position, :category, :completed_on, :snoozed_until, :note ])
     end
 end

@@ -1,0 +1,5 @@
+<%= button_tag "<i class='fa-solid fa-pen-to-square'></i>".html_safe,
+    title: "toggle notes",
+    class: "task_button",
+    type: :button,
+    data: { controller: "note", action: "note#toggle" } %>
