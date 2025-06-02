@@ -10,7 +10,7 @@
 <% if @tasks.any? %>
     <%= tag.ul id: "tasks",
         class: class_names(priority: @filter == "priority"),
-        data: (@filter ? {} : { controller: "sortable tasks", sortable_url_value: sort_tasks_path }) do %>
+        data: (@filter ? {} : { controller: "sortable tasks highlight-remover", sortable_url_value: sort_tasks_path }) do %>
         <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: highlight_id } %>
     <% end %>
 <% else %>
