@@ -67,7 +67,7 @@
 
     --grid-columns: 3;
 
-    --container-width: min(40rem, 96%);
+    --container-width: min(42rem, 96%);
 
     --margin-unit: 0.5rem;
     --margin-xs: var(--margin-unit);

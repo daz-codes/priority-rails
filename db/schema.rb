@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_163926) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_04_152533) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -68,10 +68,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_163926) do
 
   create_table "lists", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_lists_on_user_id"
+  end
+
+  create_table "lists_users", id: false, force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "list_id", null: false
+    t.index ["list_id", "user_id"], name: "index_lists_users_on_list_id_and_user_id"
+    t.index ["user_id", "list_id"], name: "index_lists_users_on_user_id_and_list_id", unique: true
+  end
+
+  create_table "pending_invitations", force: :cascade do |t|
+    t.string "email"
+    t.integer "list_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id"], name: "index_pending_invitations_on_list_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -109,7 +122,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_163926) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "list_categories", "categories"
   add_foreign_key "list_categories", "lists"
-  add_foreign_key "lists", "users"
+  add_foreign_key "pending_invitations", "lists"
   add_foreign_key "sessions", "users"
   add_foreign_key "tasks", "categories"
   add_foreign_key "tasks", "lists"

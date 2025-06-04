@@ -1,5 +1,3 @@
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css");
-
 :root {
     --red: #f5002f;
     --blue: #0085ca;
@@ -95,7 +93,7 @@ h1.list_name {
     text-decoration: line-through;
 }
 
-#tasks li input[type="checkbox"] {
+#tasks li.task_container input[type="checkbox"] {
     width: 40px;
     height: 40px;
     vertical-align: middle;
@@ -110,22 +108,26 @@ h1.list_name {
     margin-right: 8px;
 }
 
-#tasks li input[type="checkbox"]:checked {
+#tasks li.task_container input[type="checkbox"]:checked {
     background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2359A193%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20fill%3D%22%233EA390%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22%2F%3E%3C%2Fsvg%3E");
     background-repeat: no-repeat;
     background-position: center left;
 }
-#tasks li,
-#tasks li turbo-frame {
+#tasks li.task_container,
+#tasks li.task_container turbo-frame {
     padding: 0;
     margin: 0;
 }
 
-#tasks li {
+#tasks li.task_container {
     border-bottom: 1px dotted #ededed;
 }
 
-#tasks li turbo-frame div[data-controller="task"] {
+#tasks li.task_container:hover {
+    background: #f1f1f1;
+}
+
+#tasks li.task_container turbo-frame div[data-controller="task"] {
     display: flex;
     align-items: center;
     width: 100%;
@@ -145,6 +147,7 @@ h1.list_name {
 
 .task,
 .task:visited {
+    font-size: 1rem;
     flex-grow: 1;
     overflow: hidden;
     text-decoration: none;
@@ -513,7 +516,7 @@ header .dropdown-menu li:hover {
 
 @keyframes highlight {
     0% {
-        background: var(--yellow);
+        background: var(--green);
     }
     100% {
         background: none;
@@ -522,4 +525,13 @@ header .dropdown-menu li:hover {
 
 .highlight {
     animation: highlight 1s;
+}
+
+.note_actions {
+    font-size: 0.8rem;
+}
+
+.note_content .trix-content {
+    padding: 1rem;
+    border: 5px solid #f1f1f1;
 }

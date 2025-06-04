@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [ :edit, :update, :destroy ]
+  before_action :set_task, only: [ :edit, :update, :destroy, :edit_note ]
   DEFAULT_CATEGORY = Category.first&.name || "Work"
 
   def create

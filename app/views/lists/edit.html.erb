@@ -3,3 +3,9 @@
 <h1>Editing List</h1>
 
 <%= render "form", list: @list %>
+
+<%= form_with url: add_user_list_path(@list), method: :post, local: true do |form| %>
+  <%= form.label :email_address, "Add user by email" %>
+  <%= form.email_field :email_address, required: true %>
+  <%= form.submit "Add User" %>
+<% end %>

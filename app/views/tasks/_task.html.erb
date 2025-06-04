@@ -1,4 +1,4 @@
-<li data-id="<%= task.id %>" class="<%= 'highlight' if highlight == task.id %>">
+<li data-id="<%= task.id %>" class="task_container<%= ' highlight' if highlight == task.id %>">
   <%= turbo_frame_tag dom_id(task) do %>
     <div  <%= "class=completed" if task.completed? %> data-controller="task" data-task-url-value="<%= task_path(task) %>">
       <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, data: { action: "task#toggle" } %>

@@ -3,6 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   connect() {
     this.removeAfterAnimation();
+    this.removeQueryString();
   }
 
   removeAfterAnimation() {
@@ -16,5 +17,15 @@ export default class extends Controller {
         { once: true },
       );
     });
+  }
+
+  removeQueryString() {
+    if (window.location.search) {
+      const url =
+        window.location.origin +
+        window.location.pathname +
+        window.location.hash;
+      history.replaceState(null, "", url);
+    }
   }
 }

@@ -1,13 +1,8 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy ]
+  before_action :set_list, only: %i[ show edit update destroy add_user ]
 
   def index
-    lists = Current.user.lists
-    if lists.any?
-      redirect_to lists.first
-    else
-      redirect_to new_list_path
-    end
+    @lists = Current.user.lists
   end
 
   def show
@@ -44,6 +39,20 @@ class ListsController < ApplicationController
       redirect_to @list, notice: "List was successfully updated."
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def add_user
+    email = params[:email_address].strip.downcase
+    user = User.find_by(email_address: email)
+
+    if user
+      @list.users << user unless @list.users.include?(user)
+      redirect_to @list, notice: "#{email} has been added to the list."
+    else
+      PendingInvitation.create!(email: email, list: @list)
+      InviteMailer.with(email: email, list: @list).invite.deliver_later
+      redirect_to @list, notice: "Invitation sent to #{email}."
     end
   end
 

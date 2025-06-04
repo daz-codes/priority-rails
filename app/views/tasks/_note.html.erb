@@ -1,12 +1,12 @@
 <%= turbo_frame_tag "note_#{task.id}", hidden: true do %>
-  <% unless task&.note&.body&.to_plain_text&.strip&.present? %>
+  <% unless task&.note&.present? %>
     <%= render "tasks/note_form", task: task %>
   <% else %>
-    <div class="note-content">
-    <%= task.note %>
-    <%= link_to "edit",
-                edit_note_task_path(task),
-                data: { turbo_frame: "note_#{task.id}" } %>
+    <div class="note_content">
+        <%= task.note %>
+        <div class="note_actions">
+            <%= link_to "EDIT",edit_note_task_path(task) %>
+        </div>
     </div>
   <% end %>
 <% end %>

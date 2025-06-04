@@ -7,11 +7,14 @@ Rails.application.routes.draw do
   resources :lists do
     member do
       get :snoozed
+      post :add_user
     end
     resources :tasks, only: [ :create ]
   end
-  patch "tasks/sort", to: "tasks#sort", as: :sort_tasks
   resources :tasks, only: [ :destroy, :edit, :update ] do
+    collection do
+      patch :sort
+    end
     member do
       patch :snooze
       get :edit_note
