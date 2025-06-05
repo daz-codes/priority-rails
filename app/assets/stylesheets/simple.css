@@ -95,7 +95,7 @@
 }
 
 /* Dark theme */
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
         color-scheme: dark;
         --bg: var(--black);
@@ -111,11 +111,11 @@
         --disabled: var(--black);
     }
     /* Add a bit of transparency so light media isn't so glaring in dark mode */
-    img,
+/* img,
     video {
         opacity: 0.8;
-    }
-}
+    } */
+/* } */
 
 /* Reset box-sizing */
 *,

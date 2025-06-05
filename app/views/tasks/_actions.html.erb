@@ -2,4 +2,5 @@
 <%= render "tasks/note_button", task: task %>
 <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task unless task.completed? %>
 <%= render "tasks/delete_button", task: task %>
+<%= render "tasks/category_button", task: task %>
 </div>
