@@ -392,7 +392,8 @@ div[data-controller="task"]:hover {
 }
 
 #tasks.priority {
-    border: solid var(--red) 5px;
+    border: solid var(--blue) 5px;
+    border-radius: 8px;
 }
 
 #tasks .info {
