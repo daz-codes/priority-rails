@@ -124,7 +124,6 @@ h1.list_name {
 }
 
 #tasks li.task_container:hover {
-    background: #f1f1f1;
 }
 
 #tasks li.task_container turbo-frame div[data-controller="task"] {

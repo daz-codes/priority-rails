@@ -1,6 +1,7 @@
 <%= turbo_frame_tag "note_#{task&.id || @task&.id}" do %>
-    <%= form_with model: task || @task, url: task_path(task || @task) do |form| %>
-        <%= form.rich_text_area :note, label: false, data: { turbo: false } %>
-        <%= form.submit "Save Note" %>
+    <%= form_with model: task || @task, url: task_path(task || @task), method: :patch do |form| %>
+        <%= form.text_area :note, rows: 5, class: "note-field", placeholder: "Write a note..." %>
+            <%= form.submit "Save Note" %>
+            <%= link_to "cancel", @task.list %>
     <% end %>
 <% end %>

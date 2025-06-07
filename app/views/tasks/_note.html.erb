@@ -3,7 +3,7 @@
     <%= render "tasks/note_form", task: task %>
   <% else %>
     <div class="note_content">
-        <%= task.note %>
+        <%= simple_format(task.note) %>
         <div class="note_actions">
             <%= link_to "EDIT",edit_note_task_path(task) %>
         </div>
