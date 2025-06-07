@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "note_#{task&.id || @task&.id}" do %>
-    <%= form_with model: task || @task, url: task_path(task || @task), data: { controller: "trix-sync" } do |form| %>
+    <%= form_with model: task || @task, url: task_path(task || @task), data: { turbo: false } do |form| %>
         <%= form.rich_text_area :note, label: false %>
         <%= form.submit "Save Note" %>
     <% end %>

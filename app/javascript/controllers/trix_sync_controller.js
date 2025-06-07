@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   connect() {
+    console.log("trix", this.element);
     this.element.addEventListener("submit", () => {
       const editor = this.element.querySelector("trix-editor");
       if (editor) {
