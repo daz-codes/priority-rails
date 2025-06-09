@@ -21,7 +21,7 @@
     --slab-font: "Holtwood One SC", serif;
 
     /* Default (light) theme */
-    --bg: #fff;
+    --bg: var(--gradient);
     --accent-bg: #ccedf5;
     --text: var(--carbon);
     --text-light: var(--darkGrey);

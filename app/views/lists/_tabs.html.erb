@@ -1,6 +1,6 @@
     <div id="list_actions">
         <%= link_to "PR!OR!TY!", list_path(@list, list: "priority"), class: class_names("filter_tab", active: @filter == "priority") %>
-        <%= link_to "All Tasks", list_path(@list), class: class_names("filter_tab", active: @filter == nil) %>
+        <%= link_to "Inbox", list_path(@list), class: class_names("filter_tab", active: @filter == nil) %>
         <%= link_to "Snoozed", list_path(@list, list: "snoozed"), class: class_names("filter_tab", active: @filter == "snoozed") %>
         <%= link_to "Completed", list_path(@list, list: "completed"), class: class_names("filter_tab", active: @filter == "completed") %>
     </div>
