@@ -77,7 +77,8 @@ h1.list_name {
     text-transform: uppercase;
 }
 
-#tasks {
+#tasks,
+#tasks ul.tasks {
     padding: 8px;
     list-style: none;
 }

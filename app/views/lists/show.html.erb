@@ -7,12 +7,27 @@
 <%= render "tabs" %>
 <%= render "task_form" unless @priority %>
 
-<% if @tasks.any? %>
+<% if @filter == "completed" %>
+<div id="tasks">
+    <h1>Today</h1>
+    <ul class="tasks">
+        <%= render @tasks.completed_today %>
+    </ul>
+    <h1>Yesterday</h1>
+    <ul class="tasks">
+        <%= render @tasks.completed_yesterday %>
+    </ul>
+    <h1>This Week</h1>
+    <ul class="tasks">
+        <%= render @tasks.completed_this_week %>
+    </ul>
+</div>
+<% elsif @tasks.any? %>
     <%= tag.ul id: "tasks",
         class: class_names(priority: @filter == "priority"),
         data: (@filter ? {} : { controller: "sortable tasks highlight-remover", sortable_url_value: sort_tasks_path }) do %>
         <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: highlight_id } %>
     <% end %>
 <% else %>
-  <p id="tasks" class="text-center"> No tasks yet!</p>
+  <p id="tasks" class="text-center">No tasks yet!</p>
 <% end %>
