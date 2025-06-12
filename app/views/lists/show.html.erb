@@ -9,17 +9,21 @@
 
 <% if @filter == "completed" %>
 <div id="tasks">
-    <h1>Today</h1>
+    <h3 class="completed_heading">Today</h1>
     <ul class="tasks">
         <%= render @tasks.completed_today %>
     </ul>
-    <h1>Yesterday</h1>
+    <h3 class="completed_heading">Yesterday</h1>
     <ul class="tasks">
         <%= render @tasks.completed_yesterday %>
     </ul>
-    <h1>This Week</h1>
+    <h3 class="completed_heading">This Week</h3>
     <ul class="tasks">
         <%= render @tasks.completed_this_week %>
+    </ul>
+    <h3 class="completed_heading">Longer ago ...</h3>
+    <ul class="tasks">
+        <%= render @tasks.completed_more_than_a_week_ago %>
     </ul>
 </div>
 <% elsif @tasks.any? %>
