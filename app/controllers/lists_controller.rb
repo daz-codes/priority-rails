@@ -28,6 +28,7 @@ class ListsController < ApplicationController
   def create
     @list = Current.user.lists.new(list_params)
     if @list.save
+      Current.user.lists << @list
       redirect_to @list, notice: "List was successfully created."
     else
       render :new, status: :unprocessable_entity
