@@ -1,0 +1,8 @@
+<h3 class="completed_heading"><%= title %></h1>
+<% if tasks.any? %>
+    <ul class="tasks">
+        <%= render tasks %>
+    </ul>
+<% else %>
+    <p class="italic">No tasks completed!</p>
+<% end %>

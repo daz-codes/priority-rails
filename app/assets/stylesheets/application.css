@@ -63,11 +63,28 @@ h1.list_name {
 
 #lists {
     list-style: none;
-    font-size: 2rem;
 }
 
-#lists a {
-    text-decoration: none;
+#lists h3 {
+    display: inline;
+    font-family: var(--font-family);
+    margin: 0;
+    a {
+        text-decoration: none;
+    }
+}
+
+#lists li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: #f1f1f1 dotted 1px;
+    padding: 0.5rem 0;
+}
+
+#lists li div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 #new_list_button {
@@ -79,8 +96,13 @@ h1.list_name {
 
 #tasks,
 #tasks ul.tasks {
-    padding: 8px;
+    padding: 4px;
     list-style: none;
+}
+
+#tasks p {
+    color: var(--grey);
+    padding: 0 1em;
 }
 
 .task {
@@ -538,8 +560,18 @@ header .dropdown-menu li:hover {
 }
 
 #tasks h3.completed_heading {
-    font-size: 2.4em;
+    color: var(--blue);
+    font-size: 1.6em;
     font-family: var(--fancy-font);
     text-align: left;
-    text-indent: 3rem;
+    text-indent: 1rem;
+    margin: 0;
+    text-decoration: underline 1px wavy;
+}
+
+.badge {
+    background: var(--red);
+    border-radius: 4px;
+    color: white;
+    padding: 2px 0.5rem;
 }
