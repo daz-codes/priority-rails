@@ -494,6 +494,10 @@ header .logo {
     header .logo {
         display: none;
     }
+
+    main .list_info {
+        display: none;
+    }
 }
 
 header button.list-picker {
