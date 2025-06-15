@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(@task) do %>
+<%= turbo_frame_tag "task_frame_#{@task.id}" do %>
   <%= form_with(model: @task, id: :edit_task_form) do |form| %>
     <% if @task.errors.any? %>
       <div style="color: red">

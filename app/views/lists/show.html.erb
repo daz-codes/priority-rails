@@ -3,6 +3,15 @@
 <%= turbo_stream_from @list %>
 <% highlight_id = params[:highlight].to_i if params[:highlight] %>
 
+<section class="list_info">
+    <h2>Your Lists</h2>
+    <%= link_to "Create New List", new_list_path, class: "button" %>
+<ul id="lists">
+  <%= render @lists %>
+</ul>
+</section>
+
+<section class="list">
 <%= render "title" %>
 <%= render "tabs" %>
 <%= render "task_form" unless @priority %>
@@ -18,8 +27,9 @@
     <%= tag.ul id: "tasks",
         class: class_names(priority: @filter == "priority"),
         data: (@filter ? {} : { controller: "sortable tasks highlight-remover", sortable_url_value: sort_tasks_path }) do %>
-        <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: highlight_id } %>
+        <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: flash[:highlight] } %>
     <% end %>
 <% else %>
   <p id="tasks" class="text-center">No tasks yet!</p>
 <% end %>
+</section>

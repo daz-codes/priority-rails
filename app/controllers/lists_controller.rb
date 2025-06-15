@@ -1,9 +1,6 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show edit update destroy add_user ]
-
-  def index
-    @lists = Current.user.lists
-  end
+  before_action :set_lists, only: %i[ index show ]
 
   def show
     @task = Task.new
@@ -66,6 +63,10 @@ class ListsController < ApplicationController
     def set_list
       @list = Current.user.lists.find(params.expect(:id))
       redirect_to root_path unless @list
+    end
+
+    def set_lists
+      @lists = Current.user.lists
     end
 
     def list_params

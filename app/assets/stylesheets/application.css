@@ -1,14 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito&family=Bebas+Neue&display=swap");
+
 :root {
     --red: #f5002f;
     --blue: #0085ca;
     --green: #b0fc38;
     --yellow: #ffdc00;
     --fa-font-solid: normal 400 9px/1 "Font Awesome 6 Free";
+    --heading-font: "Nunito", serif;
+    --brand-font: "Bebas Neue";
 }
 
 main {
     margin: 0;
     padding: 1rem 0 0 0;
+}
+
+main .list {
+    grid-column: 2;
+}
+
+main .list_info {
+    grid-column: 1;
+    padding: 3rem 4rem 1rem 2rem;
+    margin-top: -3rem;
 }
 
 #banner {
@@ -25,6 +39,7 @@ main {
 .logo a:visited {
     text-decoration: none;
     color: var(--text);
+    font-family: var(--brand-font);
 }
 
 .logo.small {
@@ -41,7 +56,7 @@ main {
 
 h1.list_name {
     margin: 0;
-    font-size: 3.6rem;
+    font-size: 2.4rem;
 }
 
 #banner .user_info p {
@@ -68,9 +83,11 @@ h1.list_name {
 #lists h3 {
     display: inline;
     font-family: var(--font-family);
+    font-size: 1.2rem;
     margin: 0;
     a {
         text-decoration: none;
+        color: var(--text);
     }
 }
 
@@ -79,12 +96,6 @@ h1.list_name {
     justify-content: space-between;
     border-bottom: #f1f1f1 dotted 1px;
     padding: 0.5rem 0;
-}
-
-#lists li div {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
 }
 
 #new_list_button {
@@ -306,6 +317,7 @@ div[data-controller="task"]:hover {
 #new_task_form {
     display: flex;
     width: 80%;
+    min-width: 400px;
     margin: 0 auto;
 }
 
@@ -376,22 +388,29 @@ div[data-controller="task"]:hover {
 
 .filter_tab.active {
     background: var(--green);
+    border-color: var(--green);
     color: var(--text);
     opacity: 1;
 }
 
 .filter_tab {
-    background: #f1f1f1;
+    border: 1px solid #f1f1f1;
     font-size: 0.8rem;
     padding: 4px 6px;
     border-radius: 4px;
     text-decoration: none;
     margin: 0 1px 1rem 0;
-    opacity: 0.4;
+    opacity: 0.6;
 }
 
 .filter_tab:hover {
     opacity: 0.8;
+    background: #f1f1f1;
+    border-color: var(--green);
+}
+
+.filter_tab.active:hover {
+    background: var(--green);
 }
 
 #list_actions {
@@ -534,7 +553,7 @@ header .dropdown-menu li.list {
 }
 
 header .dropdown-menu li:hover {
-    background-color: var(--accent-bg);
+    background-colistsor: var(--accent-bg);
 }
 
 @keyframes highlight {
@@ -560,13 +579,16 @@ header .dropdown-menu li:hover {
 }
 
 #tasks h3.completed_heading {
-    color: var(--blue);
-    font-size: 1.6em;
-    font-family: var(--fancy-font);
+    font-size: 1.4em;
+    font-family: var(--heading-font);
     text-align: left;
     text-indent: 1rem;
     margin: 0;
-    text-decoration: underline 1px wavy;
+}
+
+#tasks p {
+    margin: var(--margin-s) 0;
+    font-size: 0.9rem;
 }
 
 .badge {
@@ -574,4 +596,10 @@ header .dropdown-menu li:hover {
     border-radius: 4px;
     color: white;
     padding: 2px 0.5rem;
+    min-width: 2.4rem;
+    text-align: center;
+}
+
+::placeholder {
+    color: #ccc;
 }

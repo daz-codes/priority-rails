@@ -24,12 +24,10 @@
   </head>
 
   <body>
-      <% if Current.user&.lists&.any? %>
         <header>
             <%= render "lists/dropdown" %>
             <%= logo :small %>
         </header>
-      <% end %>
     <main>
     <%= yield %>
     </main>
@@ -38,7 +36,6 @@
             <% if authenticated? %>
             <div class="user-info">
                 <% if @list&.id %>
-                    <%= link_to "All Lists", lists_path %>
                     <%= link_to "Edit", edit_list_path(@list) %>
                     <%= link_to "Delete", @list, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete this list?" }, class: "delete-button" %>
                 <% end %>
