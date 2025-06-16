@@ -30,7 +30,9 @@ main .list_info {
     }
 
     .button {
-        color: white;
+        color: var(--text);
+        background: var(--green);
+        border-color: var(--green);
         font-size: 0.9rem;
         padding: 8px;
         display: inline-block;
@@ -50,6 +52,11 @@ main .list_info {
     gap: 3rem;
 }
 
+.logo {
+    margin: 10px 0;
+    text-align: left;
+}
+
 .logo a,
 .logo a:hover,
 .logo a:visited {
@@ -63,7 +70,7 @@ main .list_info {
 }
 
 .logo.medium {
-    font-size: 42px;
+    font-size: 56px;
 }
 
 .logo.big {
@@ -71,11 +78,9 @@ main .list_info {
 }
 
 h1.list_name {
-    margin: 0 0 0.6rem;
-    padding: 0 0 0.6rem;
+    margin: 0 0 1rem;
     font-size: 3rem;
     font-family: var(--list-name-font);
-    border-bottom: #f1f1f1 solid 1px;
 }
 
 #banner .user_info p {
@@ -119,9 +124,10 @@ h1.list_name {
     align-items: center;
     border-bottom: #f1f1f1 dotted 1px;
     padding: 0;
-    :hover {
-        background: var(--accent-bg);
-    }
+}
+
+#lists li:hover {
+    background: var(--accent-bg);
 }
 
 #new_list_button {
