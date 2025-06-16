@@ -4,8 +4,8 @@
 <% highlight_id = params[:highlight].to_i if params[:highlight] %>
 
 <section class="list_info">
-    <h2>Your Lists</h2>
-    <%= link_to "Create New List", new_list_path, class: "button" %>
+    <%= logo %>
+    <%= link_to "New List", new_list_path, class: "button" %>
 <ul id="lists">
   <%= render @lists %>
 </ul>
