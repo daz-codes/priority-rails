@@ -24,9 +24,12 @@
   </head>
 
   <body>
-    <header>
-        <%= render "lists/dropdown" %>
-    </header>
+      <% if authenticated? %>
+        <header>
+            <%= render "lists/dropdown" %>
+        </header>
+    <% end %>
+
     <main>
     <%= yield %>
     </main>
