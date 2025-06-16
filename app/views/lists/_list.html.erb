@@ -1,4 +1,4 @@
 <li id="<%= dom_id list %>">
+    <span class="task_count badge" title="<%= list.tasks.active.count %> tasks remaining"><%= list.tasks.active.count %></span>
     <%= link_to list.name, list %>
-    <span class="task_count badge"><%= list.tasks.active.count %></span>
 </li>

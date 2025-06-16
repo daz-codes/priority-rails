@@ -3,13 +3,15 @@
 <%= turbo_stream_from @list %>
 <% highlight_id = params[:highlight].to_i if params[:highlight] %>
 
-<section class="list_info">
-    <%= logo %>
-    <%= link_to "New List", new_list_path, class: "button" %>
-<ul id="lists">
-  <%= render @lists %>
-</ul>
-</section>
+<% unless @priority %>
+    <section class="list_info">
+        <%= logo %>
+        <%= link_to "New List", new_list_path, class: "button" %>
+    <ul id="lists">
+    <%= render @lists %>
+    </ul>
+    </section>
+<% end %>
 
 <section class="list">
 <%= render "title" %>

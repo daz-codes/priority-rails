@@ -112,10 +112,14 @@ h1.list_name {
 
 #lists li {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
+    gap: 1rem;
     align-items: center;
     border-bottom: #f1f1f1 dotted 1px;
     padding: 0;
+    :hover {
+        background: var(--accent-bg);
+    }
 }
 
 #new_list_button {
@@ -293,7 +297,7 @@ div[data-controller="task"]:hover {
 
 #tasks .actions .task_button {
     font-size: 9px;
-    background: transparent;
+    background: white;
     border: var(--border-width-s) var(--grey) solid;
     padding: var(--padding-xs);
     display: inline;
@@ -619,14 +623,20 @@ header .dropdown-menu li:hover {
 }
 
 .badge {
-    background: var(--red);
-    border-radius: 4px;
+    background: var(--blue);
+    border-radius: 50%;
     color: white;
     padding: 2px 0.5rem;
     min-width: 2rem;
     text-align: center;
     font-size: 0.8rem;
     margin: 12px 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
 }
 
 ::placeholder {
