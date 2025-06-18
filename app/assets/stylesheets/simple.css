@@ -26,7 +26,7 @@
     --border: var(--gray);
     --primary: var(--blue);
     --secondary: var(--slate);
-    --primary-hover: var(--teal);
+    --primary-hover: var(--green);
     --accent-text: var(--bg);
     --code: var(--red);
     --preformatted: var(--graphite);
@@ -270,11 +270,12 @@ button,
   input[type="button"] {
     border: var(--border-width-s) solid var(--primary);
     background-color: var(--primary);
-    color: var(--accent-text);
+    color: white;
     padding: var(--padding-s);
     text-decoration: none;
     line-height: normal;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 .button[aria-disabled="true"],
@@ -325,6 +326,7 @@ button:enabled:hover,
 input[type="submit"]:enabled:hover,
 input[type="reset"]:enabled:hover,
 input[type="button"]:enabled:hover {
+    color: var(--accent-text);
     background-color: var(--primary-hover);
     border-color: var(--primary-hover);
     cursor: pointer;

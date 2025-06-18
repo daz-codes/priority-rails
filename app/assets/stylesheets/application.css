@@ -5,10 +5,16 @@
     --blue: #0085ca;
     --green: #b0fc38;
     --yellow: #ffdc00;
+    --very-light-grey: #f1f1f1;
     --fa-font-solid: normal 400 9px/1 "Font Awesome 6 Free";
     --heading-font: "Jost", serif;
     --brand-font: "Bebas Neue";
     --list-name-font: "Jost";
+    --accent-bg: #ccedf5;
+    --text: var(--carbon);
+    --text-light: var(--darkGrey);
+    --border: var(--gray);
+    --primary-hover: var(--blue);
 }
 
 main {
@@ -16,7 +22,9 @@ main {
     padding: 1rem 0 0 0;
 }
 
-main .list {
+main .list,
+main .home,
+main .dashboard {
     grid-column: 2;
 }
 
@@ -30,16 +38,13 @@ main .list_info {
     }
 
     .button {
-        color: var(--text);
-        background: var(--green);
-        border-color: var(--green);
+        color: white;
+        background: var(--blue);
+        border-color: var(--blue);
         font-size: 0.9rem;
         padding: 8px;
         display: inline-block;
-        margin: 0 auto;
-        :hover {
-            background: var(--green);
-        }
+        margin-left: 2rem;
     }
 }
 
@@ -122,12 +127,13 @@ h1.list_name {
     justify-content: left;
     gap: 1rem;
     align-items: center;
-    border-bottom: #f1f1f1 dotted 1px;
-    padding: 0;
+    padding: 0 1rem;
+    margin-bottom: 0.3rem;
+    border-radius: 8px;
 }
 
 #lists li:hover {
-    background: var(--accent-bg);
+    background: var(--very-light-grey);
 }
 
 #new_list_button {
@@ -638,7 +644,7 @@ header .dropdown-menu li:hover {
     min-width: 2rem;
     text-align: center;
     font-size: 0.8rem;
-    margin: 12px 0;
+    margin: 0;
     width: 2rem;
     height: 2rem;
     display: flex;
@@ -649,4 +655,17 @@ header .dropdown-menu li:hover {
 
 ::placeholder {
     color: #ccc;
+}
+
+.note .buttons {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9em;
+    align-items: center;
+    justify-items: right;
+}
+
+.note .buttons .button {
+    width: 7rem;
+    padding: 6px;
 }
