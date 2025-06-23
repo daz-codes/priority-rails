@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [ :edit, :update, :destroy, :edit_note ]
+  before_action :set_task, except: [ :edit, :update, :destroy, :edit_note, :show_note ]
   DEFAULT_CATEGORY = Category.first&.name || "Work"
 
   def create
@@ -39,6 +39,10 @@ class TasksController < ApplicationController
 
   def edit_note
     render partial: "tasks/note_form", locals: { task: @task }
+  end
+
+  def show_note
+    render partial: "tasks/note", locals: { task: @task }
   end
 
   def destroy

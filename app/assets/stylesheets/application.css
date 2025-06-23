@@ -668,4 +668,5 @@ header .dropdown-menu li:hover {
 .note .buttons .button {
     width: 7rem;
     padding: 6px;
+    text-align: center;
 }

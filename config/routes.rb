@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     member do
       patch :snooze
       get :edit_note
+      get :show_note
     end
   end
 

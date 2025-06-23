@@ -3,7 +3,7 @@
         <%= form.text_area :note, rows: 5, class: "note-field", placeholder: "Write a note..." %>
         <div class="buttons">
             <%= form.submit "Save Note", class: "button" %>
-            <%= link_to "CANCEL", @task.list %>
+            <%= link_to "CANCEL", show_note_task_path(task), class: "button" %>
         </div>
     <% end %>
 <% end %>
