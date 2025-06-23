@@ -298,6 +298,7 @@ button.unbutton {
     text-decoration: underline;
     margin: 0;
     padding: 0;
+    text-transform: none;
 }
 
 button.unbutton:enabled:hover,
