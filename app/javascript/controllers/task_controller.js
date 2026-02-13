@@ -6,29 +6,13 @@ export default class extends Controller {
 
   async toggle(event) {
     const checked = event.target.checked;
-    const container = this.element;
-    const link = container.querySelector("a");
 
-    container.classList.toggle("opacity-50", checked);
-    if (link) link.classList.toggle("line-through", checked);
-
-    try {
-      const response = await patch(this.urlValue, {
-        body: JSON.stringify({ task: { completed: checked } }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "text/vnd.turbo-stream.html",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Request failed");
-      }
-    } catch (error) {
-      console.error("Error during patch request:", error);
-      container.classList.toggle("opacity-50", !checked);
-      if (link) link.classList.toggle("line-through", !checked);
-      event.target.checked = !checked;
-    }
+    await patch(this.urlValue, {
+      body: JSON.stringify({ task: { completed: checked } }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "text/vnd.turbo-stream.html",
+      },
+    });
   }
 }
