@@ -170,8 +170,7 @@ GEM
       benchmark
       logger
     mini_mime (1.1.5)
-    minitest (6.0.1)
-      prism (~> 1.5)
+    minitest (5.27.0)
     msgpack (1.7.5)
     net-imap (0.5.5)
       date
@@ -215,7 +214,6 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    prism (1.9.0)
     propshaft (1.1.0)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -421,6 +419,7 @@ DEPENDENCIES
   jbuilder
   kamal
   lexxy
+  minitest (~> 5.0)
   net-imap
   net-pop
   net-smtp (~> 0.5.1)

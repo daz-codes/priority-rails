@@ -37,6 +37,10 @@ class Task < ApplicationRecord
   def completed? = completed_on.present?
   def snoozed? = snoozed_until&.future?
 
+  def completed=(value)
+    self.completed_on = ActiveModel::Type::Boolean.new.cast(value) ? DateTime.current : nil
+  end
+
   private
 
   def refresh_list

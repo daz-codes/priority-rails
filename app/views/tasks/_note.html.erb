@@ -1,12 +1,13 @@
-<%= turbo_frame_tag "note_#{task.id}", hidden: true do %>
-  <% unless task.note.present? %>
-    <%= render "tasks/note_form", task: task %>
-  <% else %>
-    <div class="p-4 border border-gray-200 rounded-lg bg-gray-50 max-w-full overflow-hidden">
+<%= turbo_frame_tag "note_#{task.id}", hidden: true, data: { controller: "note-editor" } do %>
+  <% if task.note.present? %>
+    <div class="p-4 border border-gray-200 rounded-lg bg-gray-50 max-w-full overflow-hidden" data-note-editor-target="display">
         <%= task.note %>
         <div class="pt-2">
-            <%= link_to "Edit", edit_note_task_path(task), class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-gray-300 text-sm font-semibold text-gray-600 hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100 no-underline" %>
+            <%= button_tag "Edit", type: :button, data: { action: "note-editor#edit" }, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-gray-300 text-sm font-semibold text-gray-600 hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
         </div>
     </div>
   <% end %>
+  <div data-note-editor-target="form" class="<%= 'hidden' if task.note.present? %>">
+    <%= render "tasks/note_form", task: task %>
+  </div>
 <% end %>

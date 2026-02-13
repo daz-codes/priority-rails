@@ -26,9 +26,15 @@ class ListsController < ApplicationController
     @list = Current.user.lists.new(list_params)
     if @list.save
       Current.user.lists << @list
-      redirect_to @list, notice: "List was successfully created."
+      respond_to do |format|
+        format.html { redirect_to @list, notice: "List was successfully created." }
+        format.json { render json: { url: list_url(@list) }, status: :created }
+      end
     else
-      render :new, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: { errors: @list.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 

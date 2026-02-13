@@ -17,7 +17,7 @@
 <%= form_with url: session_path, class: "space-y-3" do |form| %>
     <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "w-full p-2 border border-gray-300 rounded" %><br>
     <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "w-full p-2 border border-gray-300 rounded" %><br>
-    <%= form.submit "Sign in", class: "bg-brand-blue text-white border-brand-blue px-4 py-2 rounded cursor-pointer hover:bg-blue-700" %>
+    <%= form.submit "Sign in", class: "bg-sky-400 text-white border-sky-400 px-4 py-2 rounded-full cursor-pointer hover:bg-sky-500 transition-all duration-100 font-semibold" %>
 <% end %>
 
 <p>

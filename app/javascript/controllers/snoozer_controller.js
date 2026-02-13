@@ -5,11 +5,24 @@ export default class extends Controller {
 
   connect() {
     this.clickOutsideHandler = this.handleClickOutside.bind(this);
+    this.mouseLeaveHandler = this.hideMenu.bind(this);
     document.addEventListener("click", this.clickOutsideHandler);
+
+    this.taskRow = this.element.closest("li");
+    if (this.taskRow) {
+      this.taskRow.addEventListener("mouseleave", this.mouseLeaveHandler);
+    }
   }
 
   disconnect() {
     document.removeEventListener("click", this.clickOutsideHandler);
+    if (this.taskRow) {
+      this.taskRow.removeEventListener("mouseleave", this.mouseLeaveHandler);
+    }
+  }
+
+  hideMenu() {
+    this.menuTarget.hidden = true;
   }
 
   handleClickOutside(event) {
@@ -19,7 +32,16 @@ export default class extends Controller {
   }
 
   toggle() {
-    this.menuTarget.hidden = !this.menuTarget.hidden;
+    const isHidden = this.menuTarget.hidden;
+    this.menuTarget.hidden = !isHidden;
+
+    if (isHidden) {
+      const rect = this.element.getBoundingClientRect();
+      this.menuTarget.style.position = "fixed";
+      this.menuTarget.style.top = `${rect.bottom}px`;
+      this.menuTarget.style.right = `${window.innerWidth - rect.right}px`;
+      this.menuTarget.style.left = "auto";
+    }
   }
 
   select(event) {

@@ -1,11 +1,10 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [ :edit, :update, :destroy, :edit_note ]
-  DEFAULT_CATEGORY = Category.first&.name || "Work"
+  before_action :set_task, only: [ :edit, :update, :destroy ]
 
   def create
     @list = Current.user.lists.find(params[:list_id])
     @task = @list.tasks.build(task_params)
-    @task.category = DEFAULT_CATEGORY
+    @task.category = default_category
 
     if @task.save
       redirect_to list_path(@list), flash: { highlight: @task.id }
@@ -14,12 +13,9 @@ class TasksController < ApplicationController
     end
   end
 
+  def edit = nil
+
   def update
-    if params[:task][:completed] == true
-      params[:task][:completed_on] = DateTime.current
-    elsif params[:task][:completed] == false
-      params[:task][:completed_on] = nil
-    end
     if @task.update(task_params)
       redirect_to @task.list
     else
@@ -30,29 +26,28 @@ class TasksController < ApplicationController
   def sort
     Task.transaction do
       params[:task_ids].each_with_index do |id, index|
-        task = Task.find(id)
-        task.update(position: index + 1)  # Use update instead of update_all to trigger callbacks
+        Task.find(id).update(position: index + 1)
       end
     end
     head :ok
   end
 
-  def edit_note
-    render partial: "tasks/note_form", locals: { task: @task }
-  end
-
   def destroy
-    if @task.destroy!
-      redirect_to @task.list
-    end
+    @task.destroy!
+    redirect_to @task.list
   end
 
   private
-    def set_task
-      @task = Current.user.tasks.find(params[:id])
-    end
 
-    def task_params
-      params.expect(task: [ :description, :list_id, :position, :category, :completed_on, :snoozed_until, :note ])
-    end
+  def set_task
+    @task = Current.user.tasks.find(params[:id])
+  end
+
+  def task_params
+    params.expect(task: [ :description, :list_id, :position, :category, :completed, :completed_on, :snoozed_until, :note ])
+  end
+
+  def default_category
+    Category.first&.name || "Work"
+  end
 end

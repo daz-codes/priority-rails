@@ -15,10 +15,6 @@ Rails.application.routes.draw do
     collection do
       patch :sort
     end
-    member do
-      patch :snooze
-      get :edit_note
-    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

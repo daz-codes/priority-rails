@@ -5,7 +5,13 @@ export default class extends Controller {
   static values = { url: String };
 
   async toggle(event) {
-    const checked = event.target.checked; // Get new checkbox state
+    const checked = event.target.checked;
+    const container = this.element;
+    const link = container.querySelector("a");
+
+    container.classList.toggle("opacity-50", checked);
+    if (link) link.classList.toggle("line-through", checked);
+
     try {
       const response = await patch(this.urlValue, {
         body: JSON.stringify({ task: { completed: checked } }),
@@ -20,6 +26,9 @@ export default class extends Controller {
       }
     } catch (error) {
       console.error("Error during patch request:", error);
+      container.classList.toggle("opacity-50", !checked);
+      if (link) link.classList.toggle("line-through", !checked);
+      event.target.checked = !checked;
     }
   }
 }

@@ -8,6 +8,6 @@
     <%= form_with url: add_user_list_path(@list), method: :post, local: true, class: "mt-6 space-y-2" do |form| %>
     <%= form.label :email_address, "Add user by email", class: "block mb-1" %>
     <%= form.email_field :email_address, required: true, class: "w-full p-2 border border-gray-300 rounded" %>
-    <%= form.submit "Add User", class: "bg-brand-blue text-white border-brand-blue px-4 py-2 rounded cursor-pointer hover:bg-blue-700" %>
+    <%= form.submit "Add User", class: "bg-sky-400 text-white border-sky-400 px-4 py-2 rounded-full cursor-pointer hover:bg-sky-500 transition-all duration-100 font-semibold" %>
     <% end %>
 </div>
