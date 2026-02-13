@@ -1,23 +1,23 @@
 module ApplicationHelper
   def logo(size = :medium, link: true)
     size_class = case size
-                 when :small  then "small"
-                 when :large  then "big"
-                 else              "medium"
+                 when :small  then "text-3xl"
+                 when :large  then "text-[128px]"
+                 else              "text-6xl"
                  end
 
     logo_content = safe_join([
       "PR".html_safe,
-      content_tag(:span, "!", class: "blue-text"),
+      content_tag(:span, "!", class: "text-brand-blue"),
       "OR".html_safe,
-      content_tag(:span, "!", class: "green-text"),
+      content_tag(:span, "!", class: "text-brand-green"),
       "TY".html_safe,
-      content_tag(:span, "!", class: "red-text")
+      content_tag(:span, "!", class: "text-brand-red")
     ])
 
-    content_tag(:h1, class: "logo #{size_class}") do
+    content_tag(:h1, class: "font-brand my-2.5 text-left #{size_class}") do
       if link
-        link_to("/", title: "PR!OR!TY!", class: "text-center") do
+        link_to("/", title: "PR!OR!TY!", class: "no-underline text-brand-carbon hover:text-brand-carbon visited:text-brand-carbon text-center") do
           logo_content
         end
       else
@@ -26,4 +26,16 @@ module ApplicationHelper
     end
   end
 
+  def task_button_classes
+    "bg-transparent border-0 text-gray-400 cursor-pointer p-1 text-sm hover:text-green-600 transition-all duration-100"
+  end
+
+  def filter_tab_classes(active:)
+    base = "text-sm px-3 py-1.5 rounded-full no-underline inline-block transition-all duration-100 font-semibold"
+    if active
+      "#{base} bg-green-100 text-green-800 border border-green-300"
+    else
+      "#{base} text-gray-500 border border-transparent hover:bg-gray-100 hover:text-gray-700"
+    end
+  end
 end

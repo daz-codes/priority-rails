@@ -1,21 +1,21 @@
 <%= turbo_frame_tag "task_frame_#{@task.id}" do %>
-  <%= form_with(model: @task, id: :edit_task_form) do |form| %>
+  <%= form_with(model: @task, id: :edit_task_form, class: "flex items-center w-full") do |form| %>
     <% if @task.errors.any? %>
-      <div style="color: red">
+      <div class="text-red-600">
         <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-        <ul>
+        <ul class="list-disc pl-5">
           <% @task.errors.each do |error| %>
             <li><%= error.full_message %></li>
           <% end %>
         </ul>
       </div>
     <% end %>
-    <%= form.text_field :description %>
-    <div class="actions">
-        <%= button_tag(type: "submit", class: "task_button") do %>
+    <%= form.text_field :description, class: "ml-2 p-2.5 border border-gray-300 rounded flex-grow" %>
+    <div class="w-[70px] flex items-center gap-2 ml-2">
+        <%= button_tag(type: "submit", class: task_button_classes) do %>
           <i class="fa-solid fa-check"></i>
         <% end %>
-        <%= link_to "<i class='fa-solid fa-xmark'></i>".html_safe, @task.list, class: "task_button" %>
+        <%= link_to "<i class='fa-solid fa-xmark'></i>".html_safe, @task.list, class: task_button_classes %>
   </div>
   <% end %>
 <% end %>

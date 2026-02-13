@@ -18,6 +18,7 @@ function yozu() {
     const url = el.getAttribute(`yozu-${methodAttr}`);
 
     el.addEventListener("click", async (e) => {
+      console.log("click");
       const scope = { event: e, target: e.target, checked: e.target.checked };
       let body;
       const rawParams = el.getAttribute("yozu-params");
@@ -32,13 +33,13 @@ function yozu() {
           console.error("Error evaluating yozu-params:", err);
         }
       }
-
+      console.log("body: ", body);
       try {
         const options =
           ["post", "patch", "delete"].includes(methodAttr) && body
-            ? { body }
-            : {};
-
+            ? { body, headers: { Accept: "text/vnd.turbo-stream.html" } }
+            : { headers: { Accept: "text/vnd.turbo-stream.html" } };
+        console.log(METHODS[methodAttr]);
         const response = await METHODS[methodAttr](url, options);
 
         const contentType = response.headers.get("content-type") || "";
@@ -59,3 +60,6 @@ function yozu() {
 }
 
 yozu();
+
+import "lexxy"
+import "@rails/actiontext"

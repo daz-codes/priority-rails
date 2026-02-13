@@ -1,19 +1,14 @@
 <% highlight = local_assigns[:highlight] %>
 <li id="<%= dom_id(task) %>"
     data-id="<%= task.id %>"
-    class="task_container<%= highlight_class(task.id, highlight) %>">
+    class="group p-0 m-0 border-b border-dotted border-gray-200<%= highlight_class(task.id, highlight) %>">
   <%= turbo_frame_tag "task_frame_#{task.id}" do %>
-    <div <%= "class=completed" if task.completed? %>
-
+    <div class="flex items-center w-full cursor-move<%= ' opacity-50' if task.completed? %>"
+         data-controller="task"
          data-task-url-value="<%= task_path(task) %>">
 
-    <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?,
-        {
-            data: { action: "task#toggle" },
-            "yozu-patch" => "/tasks/#{task.id}",
-            "yozu-params" => "{ task: { completed: checked } }"
-        } %>
-      <%= link_to task.description, edit_task_path(task), class: "task #{'completed' if task.completed?}" %>
+      <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, class: "task-checkbox", data: { action: "task#toggle" } %>
+      <%= link_to task.description, edit_task_path(task), class: "text-base flex-grow no-underline text-brand-carbon block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'line-through' if task.completed?}" %>
       <%= render "tasks/actions", task: task unless @priority %>
     </div>
 

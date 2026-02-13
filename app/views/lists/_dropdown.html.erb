@@ -1,12 +1,12 @@
-<div data-controller="list-picker" class="custom-select">
-  <button title="Choose a List" class="list-picker" data-action="click->list-picker#toggle">
+<div data-controller="list-picker" class="relative inline-block sm:hidden">
+  <button title="Choose a List" class="text-2xl bg-transparent border border-brand-grey text-brand-grey rounded px-2 pb-1 m-2.5 hover:bg-brand-light-grey" data-action="click->list-picker#toggle">
       <i class="fa-solid fa-bars"></i>
   </button>
-  <ul data-list-picker-target="lists" class="dropdown-menu" hidden>
-      <li>Select a list ... </li>
+  <ul data-list-picker-target="lists" class="absolute top-4 left-4 bg-white border border-brand-light-grey list-none p-0 m-0 z-10 w-full max-sm:top-0 max-sm:left-0 max-sm:w-screen" hidden>
+      <li class="px-4 py-1 border-b border-brand-light-grey text-base">Select a list ... </li>
     <% Current.user.lists.each do |list| %>
-        <li class="list" data-action="click->list-picker#select" data-list-picker-value="<%= list.id %>"><%= list.name %></li>
+        <li class="px-4 py-1 border-b border-brand-light-grey font-heading text-2xl uppercase cursor-pointer hover:bg-brand-accent" data-action="click->list-picker#select" data-list-picker-value="<%= list.id %>"><%= list.name %></li>
     <% end %>
-    <li data-action="click->list-picker#create">Create New List</li>
+    <li class="px-4 py-1 border-b border-brand-light-grey text-base cursor-pointer hover:bg-brand-accent" data-action="click->list-picker#create">Create New List</li>
   </ul>
 </div>

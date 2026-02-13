@@ -8,6 +8,9 @@ class Task < ApplicationRecord
   # position
   positioned on: :list
 
+  # lexxy
+  has_rich_text :note
+
   # broadcasts
   after_destroy_commit -> { broadcast_remove_to list }
   after_update_commit :refresh_list

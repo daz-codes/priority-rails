@@ -1,9 +1,9 @@
-<%= turbo_frame_tag "note_#{task&.id || @task&.id}", class: "note" do %>
-    <%= form_with model: task || @task, url: task_path(task || @task), method: :patch do |form| %>
-        <%= form.text_area :note, rows: 5, class: "note-field", placeholder: "Write a note..." %>
-        <div class="buttons">
-            <%= form.submit "Save Note", class: "button" %>
-            <%= link_to "CANCEL", @task.list %>
+<%= turbo_frame_tag "note_#{task.id}" do %>
+    <%= form_with model: task, url: task_path(task), method: :patch, class: "max-w-full overflow-hidden", data: { turbo_frame: "_top" } do |form| %>
+        <%= form.rich_textarea :note, class: "w-full", placeholder: "Write a note..." %>
+        <div class="flex gap-3 items-center py-2">
+            <%= form.submit "Save", class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-500 text-white text-sm font-semibold cursor-pointer hover:bg-emerald-600 transition-all duration-100" %>
+            <%= link_to "Cancel", task.list, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-gray-300 text-sm font-semibold text-gray-600 hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100 no-underline", data: { turbo_frame: "_top" } %>
         </div>
     <% end %>
 <% end %>

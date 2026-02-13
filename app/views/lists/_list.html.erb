@@ -1,4 +1,4 @@
-<li id="<%= dom_id list %>">
-    <span class="task_count badge" title="<%= list.tasks.active.count %> tasks remaining"><%= list.tasks.active.count %></span>
-    <%= link_to list.name, list %>
+<li id="<%= dom_id list %>" class="flex items-center gap-4 px-4 mb-1 rounded-lg hover:bg-brand-light-grey">
+    <span class="bg-emerald-500 rounded-full text-white size-7 flex items-center justify-center font-bold text-xs shrink-0" title="<%= list.tasks.active.count %> tasks remaining"><%= list.tasks.active.count %></span>
+    <%= link_to list.name, list, class: "no-underline text-brand-carbon w-full block py-2 hover:text-blue-600" %>
 </li>

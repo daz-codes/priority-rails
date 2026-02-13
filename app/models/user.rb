@@ -16,7 +16,7 @@ class User < ApplicationRecord
   private
 
   def accept_pending_invitations
-    PendingInvitation.where(email: self.email.downcase).find_each do |invite|
+    PendingInvitation.where(email: self.email_address).find_each do |invite|
       invite.list.users << self unless invite.list.users.include?(self)
       invite.destroy
     end

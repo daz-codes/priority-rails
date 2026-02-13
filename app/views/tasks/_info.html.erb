@@ -1,4 +1,4 @@
-<div class="info italic">
+<div class="text-xs text-brand-grey italic pl-14 -mt-3 pb-1">
     <%= "Snoozed #{snooze_time(task)}" if task.snoozed? %>
     <%= "Completed #{time_ago_in_words(task.completed_on)} ago" if task.completed? %>
 </div>

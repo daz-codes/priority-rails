@@ -1,4 +1,4 @@
-<div class="actions">
+<div class="w-[70px] shrink-0 flex justify-end items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
 <%= render "tasks/note_button", task: task %>
 <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task unless task.completed? %>
 <%= render "tasks/delete_button", task: task %>

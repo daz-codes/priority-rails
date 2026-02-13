@@ -1,4 +1,4 @@
-<%= form_with(model: [@list,@task], id: :new_task_form) do |form| %>
-    <%= form.text_field :description, autofocus: true, placeholder: "What do you need to do?" %>
-    <%= form.submit "ADD" %>
+<%= form_with(model: [@list,@task], id: :new_task_form, class: "flex w-4/5 min-w-[400px] mx-auto") do |form| %>
+    <%= form.text_field :description, autofocus: true, placeholder: "What do you need to do?", class: "flex-1 p-2 border border-gray-300 border-r-0 rounded-l-xl outline-none" %>
+    <%= form.submit "ADD", class: "w-20 p-2 border border-brand-blue border-l-0 rounded-r-xl bg-brand-blue text-white cursor-pointer hover:bg-blue-700 transition-colors" %>
 <% end %>

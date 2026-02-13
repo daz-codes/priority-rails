@@ -8,6 +8,6 @@ module TasksHelper
   end
 
   def highlight_class(task_id, highlight_id)
-    ' highlight' if highlight_id == task_id
+    " animate-highlight" if highlight_id == task_id
   end
 end

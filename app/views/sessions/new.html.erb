@@ -1,23 +1,23 @@
-<div class="home">
+<div class="col-start-1 sm:col-start-2">
     <%= logo :large %>
 
-<p class="text-center display-l">
+<p class="text-center text-lg">
     Time to focus on what's important...
 <p>
 
 <p>
     The simple task manager that let's you focus on your priorities!
 <p>
-    <ul>
+    <ul class="list-disc pl-5">
         <li>Order your tasks by priority</li>
         <li>Snooze any tasks you don't want to think about right now</li>
         <li>Focus on your top 3 tasks in PR!OR!TY! mode</li>
     </ul>
 <p>Log in below or  <strong><%= link_to "Sign Up", new_registration_path %></strong> if you don't have an account</p>
-<%= form_with url: session_path do |form| %>
-    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %><br>
-    <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72 %><br>
-    <%= form.submit "Sign in" %>
+<%= form_with url: session_path, class: "space-y-3" do |form| %>
+    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "w-full p-2 border border-gray-300 rounded" %><br>
+    <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "w-full p-2 border border-gray-300 rounded" %><br>
+    <%= form.submit "Sign in", class: "bg-brand-blue text-white border-brand-blue px-4 py-2 rounded cursor-pointer hover:bg-blue-700" %>
 <% end %>
 
 <p>

@@ -16,12 +16,12 @@ export default class extends Controller {
   }
 
   removeAfterAnimation = () => {
-    const highlighted = this.element.querySelectorAll(".highlight");
+    const highlighted = this.element.querySelectorAll(".animate-highlight");
     highlighted.forEach((el) => {
       el.addEventListener(
         "animationend",
         () => {
-          el.classList.remove("highlight");
+          el.classList.remove("animate-highlight");
         },
         { once: true },
       );

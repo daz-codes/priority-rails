@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@import "./custom.css";
+
+@theme {
+  --color-brand-red: #f5002f;
+  --color-brand-blue: #0085ca;
+  --color-brand-green: #b0fc38;
+  --color-brand-yellow: #ffdc00;
+  --color-brand-accent: #ccedf5;
+  --color-brand-carbon: #292929;
+  --color-brand-grey: #a4a5a6;
+  --color-brand-light-grey: #f1f1f1;
+  --color-brand-dark-grey: #585858;
+
+  --font-brand: "Bebas Neue", sans-serif;
+  --font-heading: "Jost", serif;
+  --font-body: "Nunito", sans-serif;
+
+  --animate-highlight: highlight 1s ease-out;
+}
+
+@keyframes highlight {
+  0% { background: #b0fc38; }
+  100% { background: transparent; }
+}

@@ -2,6 +2,7 @@ class List < ApplicationRecord
   has_and_belongs_to_many :users
   has_many :tasks, dependent: :destroy
   has_many :list_categories, dependent: :destroy
+  has_many :pending_invitations, dependent: :destroy
   has_many :categories, through: :list_categories
   validates :name, presence: true
   after_create :assign_default_categories

@@ -1,8 +1,8 @@
-<h3 class="completed_heading"><%= title %></h1>
+<h3 class="text-xl font-heading text-left pl-4 m-0"><%= title %></h3>
 <% if tasks.any? %>
-    <ul class="tasks">
+    <ul class="list-none p-1">
         <%= render tasks %>
     </ul>
 <% else %>
-    <p class="italic">No tasks completed!</p>
+    <p class="italic text-sm text-brand-grey my-2 ml-4">No tasks completed!</p>
 <% end %>
