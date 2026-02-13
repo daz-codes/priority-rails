@@ -1,3 +1,9 @@
+/* Prevent turbo frames from overflowing */
+turbo-frame {
+  display: block;
+  overflow: hidden;
+}
+
 /* Task checkbox SVG circles */
 .task-checkbox {
   width: 40px;

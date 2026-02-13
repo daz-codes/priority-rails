@@ -8,7 +8,7 @@
          data-task-url-value="<%= task_path(task) %>">
 
       <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, class: "task-checkbox", data: { action: "task#toggle" } %>
-      <%= link_to task.description, edit_task_path(task), class: "text-base flex-grow no-underline text-brand-carbon block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}" %>
+      <%= link_to task.description, edit_task_path(task), class: "text-base flex-grow min-w-0 no-underline text-brand-carbon block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}" %>
       <%= render "tasks/actions", task: task unless @priority %>
     </div>
 
