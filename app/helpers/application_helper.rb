@@ -2,7 +2,7 @@ module ApplicationHelper
   def logo(size = :medium, link: true)
     size_class = case size
                  when :small  then "text-3xl"
-                 when :large  then "text-[128px]"
+                 when :large  then "text-7xl sm:text-[128px]"
                  else              "text-6xl"
                  end
 
