@@ -7,6 +7,7 @@
 <%= render "title" %>
 <%= render "tabs" %>
 <%= render "task_form" unless @priority %>
+<%= render "category_filters" unless @priority %>
 
 <% if @filter == "completed" %>
 <div id="tasks">

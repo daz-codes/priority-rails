@@ -1,0 +1,29 @@
+<% all_category_ids = @list.categories.map(&:id) %>
+<% active_ids = @category_ids.empty? ? all_category_ids : @category_ids %>
+<% all_active = active_ids.sort == all_category_ids.sort %>
+<div class="flex justify-center gap-1.5 mb-4 flex-wrap">
+  <%# "All" selects every category %>
+  <%= link_to list_path(@list, list: @filter),
+      class: "text-[11px] px-3 py-0.5 rounded-full font-semibold no-underline transition-all duration-100 #{all_active ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-400'}" do %>
+    All
+  <% end %>
+
+  <% @list.categories.each do |category| %>
+    <% active = active_ids.include?(category.id) %>
+    <% if active %>
+      <% new_ids = active_ids - [ category.id ] %>
+    <% else %>
+      <% new_ids = active_ids + [ category.id ] %>
+    <% end %>
+    <%# If toggling results in all selected, clear params (same as "All") %>
+    <% show_all = new_ids.sort == all_category_ids.sort %>
+    <% path_params = {} %>
+    <% path_params[:list] = @filter if @filter %>
+    <% path_params[:category_ids] = new_ids unless show_all || new_ids.empty? %>
+    <%= link_to list_path(@list, path_params),
+        class: "text-[11px] px-3 py-0.5 rounded-full font-semibold no-underline transition-all duration-100",
+        style: "background-color: #{category.color}; color: #374151; #{'opacity: 0.4;' unless active}" do %>
+      <%= category.name %>
+    <% end %>
+  <% end %>
+</div>

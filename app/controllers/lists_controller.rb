@@ -7,6 +7,7 @@ class ListsController < ApplicationController
     @task = Task.new
     @filter = params[:list]
     @priority = @filter == "priority"
+    @category_ids = Array(params[:category_ids]).map(&:to_i).select(&:positive?)
     @tasks = case @filter
               when "priority"
                 @list.tasks.priority
@@ -17,6 +18,7 @@ class ListsController < ApplicationController
               else
                 @list.tasks.active
               end
+    @tasks = @tasks.where(category_id: @category_ids) if @category_ids.any?
   end
 
   def new
