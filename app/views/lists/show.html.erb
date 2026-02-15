@@ -6,8 +6,9 @@
 <section class="min-w-0 overflow-hidden">
 <%= render "title" %>
 <%= render "tabs" %>
-<%= render "task_form" unless @priority %>
+<% unless @priority %><hr class="border-gray-200 mb-4"><% end %>
 <%= render "category_filters" unless @priority %>
+<%= render "task_form" unless @priority %>
 
 <% if @filter == "completed" %>
 <div id="tasks">
