@@ -18,8 +18,14 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
+    fallback = @list.categories.where.not(id: @category.id).first
+    @list.tasks.where(category_id: @category.id).update_all(category_id: fallback&.id)
     @list.categories.delete(@category)
-    redirect_to edit_list_path(@list)
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@category) }
+      format.html { redirect_to edit_list_path(@list) }
+    end
   end
 
   private
