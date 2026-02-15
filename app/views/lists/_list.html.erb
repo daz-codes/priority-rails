@@ -1,5 +1,5 @@
 <% current = local_assigns[:current_list] == list %>
-<li id="<%= dom_id list %>" class="flex items-center gap-4 px-4 mb-1 rounded-lg <%= current ? 'bg-lime-50' : 'hover:bg-sky-50' %>">
+<li id="<%= dom_id list %>" class="flex items-center gap-4 px-4 mb-1 rounded-lg <%= current ? 'bg-lime-200' : 'hover:bg-sky-50' %>">
     <span class="bg-emerald-500 rounded-full text-white size-7 flex items-center justify-center font-bold text-xs shrink-0" title="<%= list.tasks.incomplete.count %> tasks remaining"><%= list.tasks.incomplete.count %></span>
     <%= link_to list.name, list, class: "no-underline text-brand-carbon w-full block py-2" %>
     <% if current %>
