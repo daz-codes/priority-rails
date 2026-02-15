@@ -1,5 +1,5 @@
 <div data-controller="menu" class="relative w-full sm:w-auto sm:inline-block">
-  <button data-action="click->menu#toggle" class="font-brand text-xl w-full sm:w-auto sm:px-12 py-1 rounded-full bg-white border border-gray-200 hover:border-green-400 hover:bg-green-50 transition-all duration-100 cursor-pointer">
+  <button data-action="click->menu#toggle" class="font-brand text-3xl w-full sm:w-auto sm:px-12 py-1.5 rounded-full bg-white border-2 border-gray-300 hover:border-green-400 hover:bg-green-50 transition-all duration-100 cursor-pointer">
     PR<span class="text-brand-blue">!</span>OR<span class="text-brand-green">!</span>TY<span class="text-brand-red">!</span>
   </button>
 
@@ -13,7 +13,7 @@
     </div>
 
     <ul class="list-none p-0 m-0 max-h-64 overflow-y-auto">
-      <%= render Current.user.lists %>
+      <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list } %>
     </ul>
 
     <div class="p-3 border-t border-gray-100">

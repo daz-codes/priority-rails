@@ -1,7 +1,9 @@
+<% unless local_assigns[:current_list] == list %>
 <li id="<%= dom_id list %>" class="flex items-center gap-4 px-4 mb-1 rounded-lg hover:bg-sky-50">
-    <span class="bg-emerald-500 rounded-full text-white size-7 flex items-center justify-center font-bold text-xs shrink-0" title="<%= list.tasks.active.count %> tasks remaining"><%= list.tasks.active.count %></span>
+    <span class="bg-emerald-500 rounded-full text-white size-7 flex items-center justify-center font-bold text-xs shrink-0" title="<%= list.tasks.incomplete.count %> tasks remaining"><%= list.tasks.incomplete.count %></span>
     <%= link_to list.name, list, class: "no-underline text-brand-carbon w-full block py-2" %>
     <%= link_to edit_list_path(list), class: "no-underline text-gray-300 hover:text-gray-500 transition-all duration-100 shrink-0" do %>
       <i class="fa-solid fa-gear text-sm"></i>
     <% end %>
 </li>
+<% end %>

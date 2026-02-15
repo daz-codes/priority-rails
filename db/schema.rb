@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_13_114542) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_15_124232) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_13_114542) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color", default: "#a5f3fc"
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
@@ -99,7 +100,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_13_114542) do
   create_table "tasks", force: :cascade do |t|
     t.string "description", null: false
     t.integer "position"
-    t.string "category"
     t.datetime "completed_on"
     t.datetime "snoozed_until"
     t.integer "list_id", null: false

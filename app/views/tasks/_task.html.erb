@@ -8,11 +8,29 @@
          data-task-url-value="<%= task_path(task) %>">
 
       <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, class: "task-checkbox", data: { action: "task#toggle" } %>
-      <%= link_to task.description, edit_task_path(task), class: "text-base flex-grow min-w-0 no-underline text-brand-carbon block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}" %>
-      <%= render "tasks/actions", task: task unless @priority %>
+      <% strike_color = task.category&.color || "#bfdbfe" %>
+      <%= link_to task.description, edit_task_path(task),
+          class: "text-base flex-grow min-w-0 no-underline text-brand-carbon block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}",
+          style: (task.completed? ? "--strike-color: #{strike_color}" : nil) %>
     </div>
 
-    <%= render "tasks/info", task: task if @filter %>
+    <% unless @priority %>
+      <div class="flex items-center pl-1 pr-1 -mt-1 pb-0.5 gap-2">
+        <div class="<%= 'opacity-50' if task.completed? %>">
+          <%= render "tasks/category_button", task: task %>
+        </div>
+        <div class="text-xs text-gray-400 italic flex-grow">
+          <%= "Snoozed #{snooze_time(task)}" if task.snoozed? %>
+          <%= "Completed #{time_ago_in_words(task.completed_on)} ago" if task.completed? %>
+        </div>
+        <div class="flex items-center gap-1">
+          <%= render "tasks/note_button", task: task %>
+          <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task unless task.completed? %>
+          <%= render "tasks/delete_button", task: task %>
+        </div>
+      </div>
+    <% end %>
+
     <%= render "tasks/note", task: task %>
   <% end %>
 

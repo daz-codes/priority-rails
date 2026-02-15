@@ -4,7 +4,7 @@ one:
   description: MyString
   list: one
   position: 1
-  category: MyString
+  category: two
   completed_on: 2025-02-08 17:01:19
   snoozed_until: 2025-02-08 17:01:19
 
@@ -12,6 +12,6 @@ two:
   description: MyString
   list: two
   position: 1
-  category: MyString
+  category: two
   completed_on: 2025-02-08 17:01:19
   snoozed_until: 2025-02-08 17:01:19

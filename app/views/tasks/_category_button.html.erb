@@ -1,9 +1,11 @@
 <%= form_with model: task, class: "inline-block", data: {controller: "category-toggle"} do |f| %>
-    <%= f.select :category,
-    task.list.categories.pluck(:name),
-    { selected: task.category },
-    class: "text-xs border border-gray-300 rounded p-1 cursor-pointer",
-    include_blank: false,
+    <% categories = task.list.categories %>
+    <% current_color = task.category&.color || "#e5e7eb" %>
+    <%= f.select :category_id,
+    options_for_select(categories.map { |c| [c.name, c.id, { "data-color": c.color }] }, task.category_id),
+    { include_blank: false },
+    class: "category-select text-[10px] px-2 py-0.5 rounded-full font-semibold border-none cursor-pointer appearance-none text-center text-gray-500",
+    style: "background-color: #{current_color}",
     data: {
         action: "change->category-toggle#submit"
     } %>

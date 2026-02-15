@@ -1,5 +1,5 @@
     <div id="list_actions" class="flex justify-center gap-1 mb-4">
-        <%= link_to "PR!OR!TY!", list_path(@list, list: "priority"), class: filter_tab_classes(active: @filter == "priority") %>
+        <%= link_to "Focus", list_path(@list, list: "priority"), class: filter_tab_classes(active: @filter == "priority") %>
         <%= link_to "Inbox", list_path(@list), class: filter_tab_classes(active: @filter == nil) %>
         <%= link_to "Snoozed", list_path(@list, list: "snoozed"), class: filter_tab_classes(active: @filter == "snoozed") %>
         <%= link_to "Completed", list_path(@list, list: "completed"), class: filter_tab_classes(active: @filter == "completed") %>

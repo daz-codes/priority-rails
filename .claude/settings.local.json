@@ -16,7 +16,10 @@
       "WebSearch",
       "WebFetch(domain:basecamp.github.io)",
       "Bash(grep:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(bin/rails generate migration:*)",
+      "Bash(bin/rails db:migrate:*)",
+      "Bash(bin/rails db:migrate:redo:*)"
     ]
   }
 }

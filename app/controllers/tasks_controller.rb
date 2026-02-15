@@ -4,7 +4,7 @@ class TasksController < ApplicationController
   def create
     @list = Current.user.lists.find(params[:list_id])
     @task = @list.tasks.build(task_params)
-    @task.category = default_category
+    @task.category_id ||= default_category_id(@list)
 
     if @task.save
       redirect_to list_path(@list), flash: { highlight: @task.id }
@@ -44,10 +44,10 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.expect(task: [ :description, :list_id, :position, :category, :completed, :completed_on, :snoozed_until, :note ])
+    params.expect(task: [ :description, :list_id, :position, :category_id, :completed, :completed_on, :snoozed_until, :note ])
   end
 
-  def default_category
-    Category.first&.name || "Work"
+  def default_category_id(list)
+    list.categories.find_by(name: "Work")&.id || list.categories.first&.id
   end
 end

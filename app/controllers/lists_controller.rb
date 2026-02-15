@@ -1,6 +1,7 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show edit update destroy add_user ]
   before_action :set_lists, only: %i[ index show ]
+  before_action :set_weekly_stats, only: %i[ index ]
 
   def show
     @task = Task.new
@@ -73,6 +74,10 @@ class ListsController < ApplicationController
 
     def set_lists
       @lists = Current.user.lists
+    end
+
+    def set_weekly_stats
+      @completed_this_week = Current.user.tasks.completed_this_week.count
     end
 
     def list_params

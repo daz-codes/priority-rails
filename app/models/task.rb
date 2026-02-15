@@ -1,6 +1,7 @@
 class Task < ApplicationRecord
   #associations
   belongs_to :list, touch: true
+  belongs_to :category, optional: true
 
   # validations
   validates :description, presence: true

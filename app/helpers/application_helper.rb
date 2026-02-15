@@ -27,7 +27,7 @@ module ApplicationHelper
   end
 
   def task_button_classes
-    "bg-transparent border-0 text-gray-400 cursor-pointer p-1 text-sm hover:text-green-600 transition-all duration-100"
+    "bg-transparent border-0 text-gray-300 cursor-pointer p-0.5 text-sm hover:text-gray-500 transition-all duration-100"
   end
 
   def filter_tab_classes(active:)
