@@ -27,7 +27,7 @@ turbo-frame {
 
 /* SortableJS dynamic classes */
 .sortable-ghost {
-  background: linear-gradient(#ccedf5, white);
+  background: #e0f2fe;
 }
 
 .sortable-drag {

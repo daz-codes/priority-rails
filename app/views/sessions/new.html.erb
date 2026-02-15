@@ -1,26 +1,40 @@
-<div>
+<div class="max-w-md mx-auto py-8">
+  <div class="text-center mb-8">
     <%= logo :large %>
+    <p class="text-lg text-gray-500 mt-2 mb-6">Focus on what matters.</p>
+  </div>
 
-<p class="text-center text-lg">
-    Time to focus on what's important...
-<p>
+  <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+    <div class="space-y-3 text-sm text-gray-500 mb-6">
+      <div class="flex items-start gap-3">
+        <span class="size-5 shrink-0 rounded-full border-2 border-brand-blue text-brand-blue flex items-center justify-center text-xs font-bold mt-0.5">!</span>
+        <span>Drag and drop to organise tasks by what matters most</span>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="size-5 shrink-0 rounded-full border-2 border-brand-green text-brand-green flex items-center justify-center text-xs font-bold mt-0.5">!</span>
+        <span>Snooze tasks until you're ready to deal with them</span>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="size-5 shrink-0 rounded-full border-2 border-brand-red text-brand-red flex items-center justify-center text-xs font-bold mt-0.5">!</span>
+        <span>Focus mode shows only your top 3 priorities</span>
+      </div>
+      <div class="flex items-start gap-3">
+        <span class="size-5 shrink-0 rounded-full border-2 border-brand-blue text-brand-blue flex items-center justify-center text-xs font-bold mt-0.5">!</span>
+        <span>Categorise, collaborate and share lists with others</span>
+      </div>
+    </div>
 
-<p>
-    The simple task manager that let's you focus on your priorities!
-<p>
-    <ul class="list-disc pl-5">
-        <li>Order your tasks by priority</li>
-        <li>Snooze any tasks you don't want to think about right now</li>
-        <li>Focus on your top 3 tasks in PR!OR!TY! mode</li>
-    </ul>
-<p>Log in below or  <strong><%= link_to "Sign Up", new_registration_path %></strong> if you don't have an account</p>
-<%= form_with url: session_path, class: "space-y-3" do |form| %>
-    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "w-full p-2 border border-gray-300 rounded" %><br>
-    <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Enter your password", maxlength: 72, class: "w-full p-2 border border-gray-300 rounded" %><br>
-    <%= form.submit "Sign in", class: "bg-sky-400 text-white border-sky-400 px-4 py-2 rounded-full cursor-pointer hover:bg-sky-500 transition-all duration-100 font-semibold" %>
-<% end %>
+    <hr class="border-gray-100 mb-5">
 
-<p>
-<%= link_to "Forgot password?", new_password_path %>
-</p>
+    <%= form_with url: session_path, class: "space-y-3" do |form| %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Email address", value: params[:email_address], class: "w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-sky-400" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", maxlength: 72, class: "w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-sky-400" %>
+      <%= form.submit "Sign In", class: "w-full py-2.5 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+    <% end %>
+  </div>
+
+  <div class="text-center text-sm text-gray-400 space-y-2">
+    <p class="m-0">Don't have an account? <%= link_to "Sign up", new_registration_path, class: "text-sky-500 font-semibold no-underline hover:text-sky-600" %></p>
+    <p class="m-0"><%= link_to "Forgot password?", new_password_path, class: "text-gray-400 no-underline hover:text-gray-600" %></p>
+  </div>
 </div>
