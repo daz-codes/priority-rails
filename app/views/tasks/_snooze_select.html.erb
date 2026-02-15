@@ -2,7 +2,7 @@
   <button title="Snooze" class="<%= task_button_classes %>" data-action="click->snoozer#toggle">
       <i class="fa-solid fa-clock"></i>
   </button>
-  <ul data-snoozer-target="menu" class="fixed text-[11px] bg-white/50 border border-gray-300 list-none p-0 m-0 z-50" hidden>
+  <ul data-snoozer-target="menu" class="fixed text-[11px] bg-white border border-gray-300 rounded-lg shadow-lg list-none p-0 m-0 z-50" hidden>
     <li class="px-4 py-1 cursor-pointer hover:bg-brand-accent" data-action="click->snoozer#select" data-snoozer-value="<%= 1.day.from_now.iso8601 %>">Day</li>
     <li class="px-4 py-1 cursor-pointer hover:bg-brand-accent" data-action="click->snoozer#select" data-snoozer-value="<%= 3.days.from_now.iso8601 %>">3 Days</li>
     <li class="px-4 py-1 cursor-pointer hover:bg-brand-accent" data-action="click->snoozer#select" data-snoozer-value="<%= 1.week.from_now.iso8601 %>">Week</li>
