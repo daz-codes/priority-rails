@@ -1,0 +1,21 @@
+<%= turbo_frame_tag dom_id(category) do %>
+  <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-50">
+    <span class="size-4 rounded-full shrink-0 border border-gray-200" style="background-color: <%= category.color %>"></span>
+    <%= form_with model: [list, category], class: "flex items-center gap-2 flex-1 min-w-0" do |f| %>
+      <%= f.text_field :name, value: category.name, class: "flex-1 min-w-0 px-2 py-1 border border-transparent rounded text-sm bg-transparent hover:border-gray-300 focus:border-sky-400 focus:outline-none transition-all", data: { action: "blur->category-toggle#submit" } %>
+
+      <div class="flex items-center gap-0.5 shrink-0" data-controller="category-toggle">
+        <% CategoriesController::COLORS.each do |color| %>
+          <label class="cursor-pointer">
+            <%= f.radio_button :color, color, class: "hidden", data: { action: "change->category-toggle#submit" } %>
+            <span class="block size-5 rounded-full border-2 transition-all duration-100 hover:scale-110 <%= color == category.color ? 'border-gray-500 scale-110' : 'border-transparent' %>" style="background-color: <%= color %>"></span>
+          </label>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= button_to list_category_path(list, category), method: :delete, class: "shrink-0 text-gray-300 hover:text-red-400 transition-all duration-100 cursor-pointer bg-transparent border-none p-1", data: { turbo_confirm: "Remove this category?" } do %>
+      <i class="fa-solid fa-xmark text-xs"></i>
+    <% end %>
+  </div>
+<% end %>

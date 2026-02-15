@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post :add_user
     end
     resources :tasks, only: [ :create ]
+    resources :categories, only: [ :create, :update, :destroy ]
   end
   resources :tasks, only: [ :destroy, :edit, :update ] do
     collection do
