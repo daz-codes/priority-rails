@@ -3,7 +3,7 @@
         <%= form.rich_textarea :note, class: "w-full", placeholder: "Write a note..." %>
         <div class="flex gap-3 items-center py-2">
             <%= form.submit "Save", class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-emerald-500 text-white text-sm font-semibold cursor-pointer hover:bg-emerald-600 transition-all duration-100" %>
-            <%= link_to "Cancel", task.list, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-gray-300 text-sm font-semibold text-gray-600 hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100 no-underline", data: { turbo_frame: "_top" } %>
+            <%= link_to "Cancel", task.list, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100 no-underline", data: { turbo_frame: "_top" } %>
         </div>
     <% end %>
 <% end %>

@@ -1,11 +1,11 @@
 <div class="max-w-md mx-auto py-8">
   <div class="text-center mb-8">
     <%= logo :large %>
-    <p class="text-lg text-gray-500 mt-2 mb-6">Focus on what matters.</p>
+    <p class="text-lg text-text-secondary mt-2 mb-6">Focus on what matters.</p>
   </div>
 
-  <div class="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
-    <div class="space-y-3 text-sm text-gray-500 mb-6">
+  <div class="bg-surface-primary rounded-2xl border border-border-primary p-6 mb-6">
+    <div class="space-y-3 text-sm text-text-secondary mb-6">
       <div class="flex items-start gap-3">
         <span class="size-5 shrink-0 rounded-full border-2 border-brand-blue text-brand-blue flex items-center justify-center text-xs font-bold mt-0.5">!</span>
         <span>Drag and drop to organise tasks by what matters most</span>
@@ -24,17 +24,17 @@
       </div>
     </div>
 
-    <hr class="border-gray-100 mb-5">
+    <hr class="border-border-secondary mb-5">
 
     <%= form_with url: session_path, class: "space-y-3" do |form| %>
-      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Email address", value: params[:email_address], class: "w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-sky-400" %>
-      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", maxlength: 72, class: "w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-sky-400" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Email address", value: params[:email_address], class: "w-full px-4 py-2.5 border border-border-primary rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", maxlength: 72, class: "w-full px-4 py-2.5 border border-border-primary rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
       <%= form.submit "Sign In", class: "w-full py-2.5 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
     <% end %>
   </div>
 
-  <div class="text-center text-sm text-gray-400 space-y-2">
+  <div class="text-center text-sm text-text-tertiary space-y-2">
     <p class="m-0">Don't have an account? <%= link_to "Sign up", new_registration_path, class: "text-sky-500 font-semibold no-underline hover:text-sky-600" %></p>
-    <p class="m-0"><%= link_to "Forgot password?", new_password_path, class: "text-gray-400 no-underline hover:text-gray-600" %></p>
+    <p class="m-0"><%= link_to "Forgot password?", new_password_path, class: "text-text-tertiary no-underline hover:text-text-secondary" %></p>
   </div>
 </div>

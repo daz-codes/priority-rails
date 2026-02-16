@@ -4,7 +4,7 @@
 <div class="flex justify-center gap-1.5 mb-4 flex-wrap">
   <%# "All" selects every category %>
   <%= link_to list_path(@list, list: @filter),
-      class: "text-[11px] px-3 py-0.5 rounded-full font-semibold no-underline transition-all duration-100 #{all_active ? 'bg-gray-400 text-white' : 'bg-gray-200 text-gray-400'}" do %>
+      class: "text-[11px] px-3 py-0.5 rounded-full font-semibold no-underline transition-all duration-100 #{all_active ? 'bg-gray-400 text-white' : 'bg-surface-secondary text-text-tertiary'}" do %>
     All
   <% end %>
 

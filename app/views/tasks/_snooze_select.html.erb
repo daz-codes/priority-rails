@@ -2,11 +2,11 @@
   <button title="Snooze" class="<%= task_button_classes %>" data-action="click->snoozer#toggle">
       <i class="fa-solid fa-clock"></i>
   </button>
-  <ul data-snoozer-target="menu" class="fixed text-sm bg-white border border-gray-200 rounded-xl shadow-lg list-none p-1 m-0 z-50 min-w-[120px]" hidden>
-    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-sky-50 text-gray-600" data-action="click->snoozer#select" data-snoozer-value="<%= 1.day.from_now.iso8601 %>">Day</li>
-    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-sky-50 text-gray-600" data-action="click->snoozer#select" data-snoozer-value="<%= 3.days.from_now.iso8601 %>">3 Days</li>
-    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-sky-50 text-gray-600" data-action="click->snoozer#select" data-snoozer-value="<%= 1.week.from_now.iso8601 %>">Week</li>
-    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-sky-50 text-gray-600" data-action="click->snoozer#select" data-snoozer-value="<%= 1.month.from_now.iso8601 %>">Month</li>
-    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-sky-50 text-gray-600" data-action="click->snoozer#select" data-snoozer-value="<%= 200.years.from_now.iso8601 %>">Forever</li>
+  <ul data-snoozer-target="menu" class="fixed text-sm bg-surface-primary border border-border-primary rounded-xl shadow-lg list-none p-1 m-0 z-50 min-w-[120px]" hidden>
+    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary" data-action="click->snoozer#select" data-snoozer-value="<%= 1.day.from_now.iso8601 %>">Day</li>
+    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary" data-action="click->snoozer#select" data-snoozer-value="<%= 3.days.from_now.iso8601 %>">3 Days</li>
+    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary" data-action="click->snoozer#select" data-snoozer-value="<%= 1.week.from_now.iso8601 %>">Week</li>
+    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary" data-action="click->snoozer#select" data-snoozer-value="<%= 1.month.from_now.iso8601 %>">Month</li>
+    <li class="px-4 py-2 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary" data-action="click->snoozer#select" data-snoozer-value="<%= 200.years.from_now.iso8601 %>">Forever</li>
   </ul>
 </div>

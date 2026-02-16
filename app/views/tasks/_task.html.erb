@@ -1,7 +1,7 @@
 <% highlight = local_assigns[:highlight] %>
 <li id="<%= dom_id(task) %>"
     data-id="<%= task.id %>"
-    class="group p-0 m-0 border-b border-dotted border-gray-200<%= highlight_class(task.id, highlight) %>">
+    class="group p-0 m-0 border-b border-dotted border-border-primary<%= highlight_class(task.id, highlight) %>">
   <%= turbo_frame_tag "task_frame_#{task.id}" do %>
     <div class="flex items-center w-full cursor-move"
          data-controller="task"
@@ -12,10 +12,10 @@
       <div class="flex-grow min-w-0 <%= 'opacity-50' if task.completed? %>">
         <% strike_color = task.category&.color || "#a5f3fc" %>
         <%= link_to task.description, edit_task_path(task),
-            class: "text-base no-underline text-brand-carbon block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}",
+            class: "text-base no-underline text-text-primary block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}",
             style: (task.completed? ? "--strike-color: #{strike_color}" : nil) %>
         <% unless @priority %>
-          <div class="text-xs text-gray-400 italic">
+          <div class="text-xs text-text-tertiary italic">
             <%= "Snoozed #{snooze_time(task)}" if task.snoozed? %>
             <%= "Completed #{time_ago_in_words(task.completed_on)} ago" if task.completed? %>
           </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-controller="theme">
   <head>
     <title><%= content_for(:title) || "Priority" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -7,6 +7,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <script>
+      (function() {
+        var s = localStorage.getItem("theme");
+        var d = s ? s === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (d) document.documentElement.classList.add("dark");
+      })();
+    </script>
 
     <%= yield :head %>
 
@@ -22,7 +30,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="font-body text-brand-carbon max-w-[100vw] overflow-x-hidden">
+  <body class="font-body text-text-primary bg-surface-primary max-w-[100vw] overflow-x-hidden">
     <% if authenticated? %>
       <header class="px-4 pt-3 flex justify-center">
         <%= render "lists/menu" %>

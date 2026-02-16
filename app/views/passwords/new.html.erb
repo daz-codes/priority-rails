@@ -4,7 +4,7 @@
 <%= tag.div(flash[:alert], class: "text-red-600") if flash[:alert] %>
 
 <%= form_with url: passwords_path, class: "space-y-3" do |form| %>
-  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "w-full p-2 border border-gray-300 rounded" %><br>
+  <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "w-full p-2 border border-border-input rounded bg-input-bg" %><br>
   <%= form.submit "Email reset instructions", class: "bg-sky-400 text-white border-sky-400 px-4 py-2 rounded-full cursor-pointer hover:bg-sky-500 transition-all duration-100 font-semibold" %>
 <% end %>
 </div>

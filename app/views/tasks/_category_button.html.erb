@@ -4,7 +4,7 @@
     <%= f.select :category_id,
     options_for_select(categories.map { |c| [c.name, c.id, { "data-color": c.color }] }, task.category_id),
     { include_blank: false },
-    class: "category-select text-[10px] px-2 py-0.5 rounded-full font-semibold border-none cursor-pointer appearance-none text-center text-gray-500",
+    class: "category-select text-[10px] px-2 py-0.5 rounded-full font-semibold border-none cursor-pointer appearance-none text-center text-text-secondary",
     style: "background-color: #{current_color}",
     data: {
         action: "change->category-toggle#submit"
