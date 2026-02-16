@@ -100,6 +100,16 @@ turbo-frame {
   color: var(--text-primary);
 }
 
+/* Keyboard navigation highlight */
+li.keyboard-selected {
+  background-color: #ecfdf5;
+  border-radius: 6px;
+}
+
+.dark li.keyboard-selected {
+  background-color: #064e3b;
+}
+
 /* Dark mode trix editor */
 .dark trix-editor {
   background-color: var(--input-bg);

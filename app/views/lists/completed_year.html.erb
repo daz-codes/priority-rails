@@ -1,3 +1,1 @@
-<%= turbo_frame_tag "completed_year_#{@year}" do %>
-  <%= render "completed_list", title: @year.to_s, tasks: @tasks %>
-<% end %>
+<%= render "completed_list", title: @year.to_s, tasks: @tasks %>

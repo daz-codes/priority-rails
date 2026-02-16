@@ -1,12 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["modal", "input"]
+  static targets = ["modal", "input", "listContainer"]
 
   toggle() {
     this.modalTarget.toggleAttribute("hidden")
     if (!this.modalTarget.hidden) {
-      this.inputTarget.focus()
+      this.inputTarget.value = ""
+      this.filter()
     }
   }
 
@@ -16,26 +17,14 @@ export default class extends Controller {
     }
   }
 
-  async createList(event) {
-    if (event.key !== "Enter") return
-    const name = this.inputTarget.value.trim()
-    if (!name) return
+  filter() {
+    const query = this.inputTarget.value.trim().toLowerCase()
+    const items = this.listContainerTarget.querySelectorAll("li")
 
-    const token = document.querySelector('meta[name="csrf-token"]').content
-    const response = await fetch("/lists", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-Token": token,
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({ list: { name } })
+    items.forEach(item => {
+      const name = item.textContent.toLowerCase()
+      item.style.display = !query || name.includes(query) ? "" : "none"
     })
-
-    if (response.ok) {
-      const data = await response.json()
-      Turbo.visit(data.url)
-    }
   }
 
   connect() {

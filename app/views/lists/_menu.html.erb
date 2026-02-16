@@ -4,15 +4,18 @@
   </button>
 
   <div data-menu-target="modal" hidden class="fixed left-1/2 -translate-x-1/2 mt-2 w-72 sm:w-[30rem] bg-surface-primary rounded-xl shadow-lg border border-border-primary z-50 overflow-hidden">
-    <div class="p-3 border-b border-border-secondary">
+    <div class="p-3 border-b border-border-secondary space-y-2">
+      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full bg-green-500 text-white font-semibold text-sm hover:bg-green-600 transition-all duration-100 no-underline" do %>
+        <i class="fa-solid fa-plus text-xs"></i> Add New List
+      <% end %>
       <input data-menu-target="input"
-             data-action="keydown->menu#createList"
+             data-action="input->menu#filter"
              type="text"
-             placeholder="New list..."
+             placeholder="Search lists..."
              class="w-full px-3 py-2 rounded-lg border border-border-primary text-sm focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400">
     </div>
 
-    <ul class="list-none p-0 m-0 max-h-64 overflow-y-auto">
+    <ul data-menu-target="listContainer" class="list-none p-0 m-0 max-h-64 overflow-y-auto">
       <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list } %>
     </ul>
 

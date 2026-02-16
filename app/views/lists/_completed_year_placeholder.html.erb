@@ -1,9 +1,9 @@
-<%= turbo_frame_tag "completed_year_#{year}" do %>
+<div data-controller="completed-year" data-completed-year-url-value="<%= completed_year_list_path(list, year: year) %>">
   <h3 class="text-xl font-heading text-left pl-4 m-0">
-    <%= link_to completed_year_list_path(list, year: year),
-        data: { turbo_frame: "completed_year_#{year}" },
-        class: "no-underline text-brand-grey hover:text-text-primary transition-colors" do %>
-      <%= year %> &rsaquo;
-    <% end %>
+    <a href="#" data-action="click->completed-year#toggle"
+       class="no-underline text-brand-grey hover:text-text-primary transition-colors select-none">
+      <span data-completed-year-target="arrow">&rsaquo;</span> <%= year %>
+    </a>
   </h3>
-<% end %>
+  <div data-completed-year-target="content" hidden></div>
+</div>

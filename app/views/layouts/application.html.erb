@@ -30,7 +30,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="font-body text-text-primary bg-surface-primary max-w-[100vw] overflow-x-hidden">
+  <body class="font-body text-text-primary bg-surface-primary max-w-[100vw] overflow-x-hidden" data-controller="keyboard">
     <% if authenticated? %>
       <header class="px-4 pt-3 flex justify-center">
         <%= render "lists/menu" %>
