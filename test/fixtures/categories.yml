@@ -2,6 +2,12 @@
 
 one:
   name: Home
+  list: one
 
 two:
   name: Work
+  list: one
+
+three:
+  name: Work
+  list: two

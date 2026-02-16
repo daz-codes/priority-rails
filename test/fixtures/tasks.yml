@@ -12,6 +12,6 @@ two:
   description: MyString
   list: two
   position: 1
-  category: two
+  category: three
   completed_on: 2025-02-08 17:01:19
   snoozed_until: 2025-02-08 17:01:19
