@@ -1,1 +1,7 @@
-<%= render "completed_list", title: @year.to_s, tasks: @tasks %>
+<% if @tasks.any? %>
+  <ul class="list-none p-1">
+    <%= render @tasks %>
+  </ul>
+<% else %>
+  <p class="italic text-sm text-brand-grey my-2 ml-4">No tasks completed!</p>
+<% end %>
