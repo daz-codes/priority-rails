@@ -8,7 +8,7 @@ export default class extends Controller {
     event.preventDefault()
 
     if (!this.loadedValue) {
-      this.arrowTarget.textContent = "v"
+      this.arrowTarget.textContent = "▾"
       const response = await fetch(this.urlValue, {
         headers: { "Accept": "text/html" }
       })
@@ -16,10 +16,10 @@ export default class extends Controller {
       this.loadedValue = true
       this.contentTarget.hidden = false
     } else if (this.contentTarget.hidden) {
-      this.arrowTarget.textContent = "v"
+      this.arrowTarget.textContent = "▾"
       this.contentTarget.hidden = false
     } else {
-      this.arrowTarget.innerHTML = "&rsaquo;"
+      this.arrowTarget.textContent = "▸"
       this.contentTarget.hidden = true
     }
   }
