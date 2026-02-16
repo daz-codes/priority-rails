@@ -1,0 +1,9 @@
+<%= turbo_frame_tag "completed_year_#{year}" do %>
+  <h3 class="text-xl font-heading text-left pl-4 m-0">
+    <%= link_to completed_year_list_path(list, year: year),
+        data: { turbo_frame: "completed_year_#{year}" },
+        class: "no-underline text-brand-grey hover:text-text-primary transition-colors" do %>
+      <%= year %> &rsaquo;
+    <% end %>
+  </h3>
+<% end %>

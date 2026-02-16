@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy add_user ]
+  before_action :set_list, only: %i[ show edit update destroy add_user completed_year ]
   before_action :set_lists, only: %i[ index show ]
   before_action :set_weekly_stats, only: %i[ index ]
 
@@ -19,6 +19,7 @@ class ListsController < ApplicationController
                 @list.tasks.active
               end
     @tasks = @tasks.where(category_id: @category_ids) if @category_ids.any?
+    @completed_years = @list.tasks.completed_years if @filter == "completed"
   end
 
   def new
@@ -61,6 +62,12 @@ class ListsController < ApplicationController
       InviteMailer.with(email: email, list: @list).invite.deliver_later
       redirect_to @list, notice: "Invitation sent to #{email}."
     end
+  end
+
+  def completed_year
+    @year = params[:year].to_i
+    @tasks = @list.tasks.completed_in_year(@year)
+    render layout: false
   end
 
   def destroy

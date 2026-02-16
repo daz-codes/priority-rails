@@ -22,7 +22,8 @@ class Task < ApplicationRecord
   scope :completed_today, -> { where(completed_on: Date.current.all_day).ordered }
   scope :completed_yesterday, -> { where(completed_on: 1.day.ago.all_day).ordered }
   scope :completed_this_week, -> { where(completed_on: 7.days.ago ... 1.day.ago).ordered }
-  scope :completed_more_than_a_week_ago, -> { where("completed_on < ?", 7.days.ago).ordered }
+  scope :completed_this_month, -> { where(completed_on: Date.current.beginning_of_month ... 7.days.ago).ordered }
+  scope :completed_in_year, ->(year) { where(completed_on: Date.new(year)...Date.new(year + 1)).where("completed_on < ?", Date.current.beginning_of_month).ordered }
   scope :completed_before_today, -> { where("completed_on < ?", Date.current.beginning_of_day).ordered }
   scope :incomplete, -> { where(completed_on: nil).ordered }
   scope :snoozed, -> { where("snoozed_until > ?", Time.current).order(snoozed_until: :asc) }
@@ -33,6 +34,16 @@ class Task < ApplicationRecord
       .or(unsnoozed.where(completed_on: Date.current.all_day))
       .ordered
   }
+
+  def self.completed_years
+    where.not(completed_on: nil)
+      .where("completed_on < ?", Date.current.beginning_of_month)
+      .distinct
+      .pluck(Arel.sql("strftime('%Y', completed_on)"))
+      .map(&:to_i)
+      .sort
+      .reverse
+  end
 
   # methods
   def completed? = completed_on.present?

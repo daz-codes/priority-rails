@@ -15,7 +15,10 @@
     <%= render "completed_list", title: "Today", tasks: @tasks.completed_today %>
     <%= render "completed_list", title: "Yesterday", tasks: @tasks.completed_yesterday %>
     <%= render "completed_list", title: "This Week", tasks: @tasks.completed_this_week %>
-    <%= render "completed_list", title: "Longer ago ...", tasks: @tasks.completed_more_than_a_week_ago %>
+    <%= render "completed_list", title: "This Month", tasks: @tasks.completed_this_month %>
+    <% @completed_years.each do |year| %>
+      <%= render "completed_year_placeholder", list: @list, year: year %>
+    <% end %>
 </div>
 <% elsif @tasks.any? %>
     <%= tag.ul id: "tasks",
