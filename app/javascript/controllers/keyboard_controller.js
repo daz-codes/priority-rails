@@ -91,7 +91,7 @@ export default class extends Controller {
         this.toggleSelectedTask()
         break
       case "Escape":
-        this.clearTaskSelection()
+        this.escapeBack()
         break
       case "/":
         event.preventDefault()
@@ -178,6 +178,15 @@ export default class extends Controller {
 
     const checkbox = selected.querySelector("input[type='checkbox'].task-checkbox")
     if (checkbox) checkbox.click()
+  }
+
+  escapeBack() {
+    const backLink = document.querySelector("[data-escape-back]")
+    if (backLink) {
+      Turbo.visit(backLink.href)
+    } else {
+      this.clearTaskSelection()
+    }
   }
 
   clearTaskSelection() {

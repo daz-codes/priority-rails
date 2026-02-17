@@ -35,7 +35,15 @@ module Authentication
     end
 
     def after_authentication_url
-      session.delete(:return_to_after_authenticating) || root_url
+      url = session.delete(:return_to_after_authenticating)
+      return url if url.present?
+
+      user = Current.session.user
+      if user.last_list_id && user.lists.exists?(id: user.last_list_id)
+        list_url(user.last_list_id)
+      else
+        root_url
+      end
     end
 
     def start_new_session_for(user)

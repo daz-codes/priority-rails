@@ -19,15 +19,23 @@
       <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list } %>
     </ul>
 
-    <div class="p-3 border-t border-border-secondary flex items-center gap-2">
-      <%= button_to session_path, method: :delete, class: "inline-flex flex-1" do %>
-        <span class="inline-flex items-center justify-center gap-1.5 w-full px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer">
-          <i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out
-        </span>
-      <% end %>
-      <button data-action="click->theme#toggle" class="inline-flex items-center justify-center size-9 rounded-full border border-border-input text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer bg-surface-primary" title="Toggle dark mode">
-        <i data-theme-target="icon" class="fa-solid fa-moon text-xs"></i>
-      </button>
+    <div class="px-3 pt-3 pb-1 border-t border-border-secondary">
+      <div class="flex items-center gap-2 mb-2">
+        <span class="text-xs text-text-tertiary truncate flex-1"><%= Current.user.email_address %></span>
+        <%= link_to edit_account_path, class: "inline-flex items-center justify-center size-7 rounded-full text-text-tertiary hover:bg-surface-hover hover:text-text-primary transition-all duration-100", title: "Profile settings" do %>
+          <i class="fa-solid fa-gear text-xs"></i>
+        <% end %>
+      </div>
+      <div class="flex items-center gap-2">
+        <%= button_to session_path, method: :delete, class: "inline-flex flex-1" do %>
+          <span class="inline-flex items-center justify-center gap-1.5 w-full px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer">
+            <i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out
+          </span>
+        <% end %>
+        <button data-action="click->theme#toggle" class="inline-flex items-center justify-center size-9 rounded-full border border-border-input text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer bg-surface-primary" title="Toggle dark mode">
+          <i data-theme-target="icon" class="fa-solid fa-moon text-xs"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

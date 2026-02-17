@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
+  resource :account, only: [ :edit, :update ]
   resources :lists do
     member do
       get :snoozed

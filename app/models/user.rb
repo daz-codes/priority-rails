@@ -6,11 +6,14 @@ class User < ApplicationRecord
 
   after_create :accept_pending_invitations
 
-  validates :email_address, :password, presence: true
+  validates :email_address, presence: true
+  validates :password, presence: true, on: :create
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  def name = email_address
+  def name
+    self[:name].presence || email_address
+  end
 
 
   private

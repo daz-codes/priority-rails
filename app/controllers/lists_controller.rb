@@ -79,6 +79,7 @@ class ListsController < ApplicationController
     def set_list
       @list = Current.user.lists.find(params.expect(:id))
       redirect_to root_path unless @list
+      Current.user.update_column(:last_list_id, @list.id) if @list
     end
 
     def set_lists
