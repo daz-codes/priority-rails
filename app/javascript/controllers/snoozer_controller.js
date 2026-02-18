@@ -37,10 +37,25 @@ export default class extends Controller {
 
     if (isHidden) {
       const rect = this.element.getBoundingClientRect();
-      this.menuTarget.style.position = "fixed";
-      this.menuTarget.style.top = `${rect.bottom}px`;
-      this.menuTarget.style.right = `${window.innerWidth - rect.right}px`;
-      this.menuTarget.style.left = "auto";
+      const menu = this.menuTarget;
+
+      menu.style.position = "fixed";
+      menu.style.right = `${window.innerWidth - rect.right}px`;
+      menu.style.left = "auto";
+
+      // Temporarily show offscreen to measure height
+      menu.style.visibility = "hidden";
+      menu.hidden = false;
+      const menuHeight = menu.offsetHeight;
+      menu.style.visibility = "";
+
+      const spaceBelow = window.innerHeight - rect.bottom;
+
+      if (spaceBelow < menuHeight + 8) {
+        menu.style.top = `${rect.top - menuHeight}px`;
+      } else {
+        menu.style.top = `${rect.bottom}px`;
+      }
     }
   }
 
