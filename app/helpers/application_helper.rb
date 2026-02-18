@@ -15,7 +15,7 @@ module ApplicationHelper
       content_tag(:span, "!", class: "text-brand-red")
     ])
 
-    content_tag(:h1, class: "font-brand my-2.5 text-left #{size_class}") do
+    content_tag(:h1, class: "font-brand my-2.5 #{size_class}") do
       if link
         link_to("/", title: "PR!OR!TY!", class: "no-underline text-text-primary hover:text-text-primary visited:text-text-primary text-center") do
           logo_content
