@@ -17,8 +17,8 @@
     <ul class="list-none p-0 m-0 space-y-2 mb-4">
       <% @list.users.each do |user| %>
         <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
-          <span class="size-8 rounded-full bg-sky-400 text-white flex items-center justify-center font-bold text-sm shrink-0"><%= user.email_address[0].upcase %></span>
-          <span class="text-sm text-text-secondary truncate"><%= user.email_address %></span>
+          <span class="size-8 rounded-full bg-sky-400 text-white flex items-center justify-center font-bold text-sm shrink-0"><%= (user.name.presence || user.email_address)[0].upcase %></span>
+          <span class="text-sm text-text-secondary truncate"><%= user.name.presence || user.email_address %></span>
           <% if user == Current.user %>
             <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-600 font-semibold ml-auto">You</span>
           <% end %>
@@ -51,6 +51,24 @@
     <%= form_with url: list_categories_path(@list), method: :post, class: "flex gap-2" do |form| %>
       <%= form.text_field :name, required: true, placeholder: "New category...", class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
       <%= form.submit "Add", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+    <% end %>
+  </section>
+
+  <%# ── Focus ────────────────────────────────── %>
+  <section>
+    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Focus</h2>
+    <%= form_with(model: @list, class: "flex items-center gap-2", data: { controller: "auto-submit" }) do |form| %>
+      <%= form.number_field :focus_limit, min: 1, max: 20, data: { action: "change->auto-submit#submit" }, class: "w-20 px-3 py-2 border border-border-input rounded-lg text-base text-center focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <span class="text-sm text-text-secondary">tasks in focus view</span>
+    <% end %>
+  </section>
+
+  <%# ── Completed Tasks ─────────────────────── %>
+  <section>
+    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Completed Tasks</h2>
+    <%= form_with(model: @list, class: "flex items-center gap-2", data: { controller: "auto-submit" }) do |form| %>
+      <span class="text-sm text-text-secondary">Show completed tasks in inbox for</span>
+      <%= form.select :completed_display, List::COMPLETED_DISPLAY_OPTIONS, {}, data: { action: "change->auto-submit#submit" }, class: "px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
     <% end %>
   </section>
 

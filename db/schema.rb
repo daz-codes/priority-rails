@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_17_202805) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_18_160135) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -62,6 +62,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_17_202805) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "focus_limit", default: 3, null: false
+    t.string "completed_display", default: "1_day", null: false
   end
 
   create_table "lists_users", id: false, force: :cascade do |t|

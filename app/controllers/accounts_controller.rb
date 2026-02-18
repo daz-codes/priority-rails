@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
   def update
     @user = Current.user
     if @user.update(account_params)
-      redirect_to edit_account_path, notice: "Profile updated."
+      redirect_to @user.last_list_id? ? list_path(@user.last_list_id) : root_path, notice: "Profile updated."
     else
       render :edit, status: :unprocessable_entity
     end

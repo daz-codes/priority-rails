@@ -2,26 +2,24 @@
 
 <div class="max-w-lg mx-auto space-y-8 py-4">
 
-  <%# ── Display Name ─────────────────────────── %>
-  <section>
-    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Display Name</h2>
-    <%= form_with(model: @user, url: account_path, method: :patch, class: "flex gap-2") do |form| %>
-      <%= form.text_field :name, placeholder: "Your name", class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <%= form.submit "Save", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
-    <% end %>
-  </section>
+  <%= form_with(model: @user, url: account_path, method: :patch, class: "space-y-8") do |form| %>
 
-  <%# ── Email Address ────────────────────────── %>
-  <section>
-    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Email Address</h2>
-    <%= form_with(model: @user, url: account_path, method: :patch, class: "flex gap-2") do |form| %>
-      <%= form.email_field :email_address, class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <%= form.submit "Save", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
-    <% end %>
-  </section>
+    <%# ── Display Name ─────────────────────────── %>
+    <section>
+      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Display Name</h2>
+      <%= form.text_field :name, placeholder: "Your name", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+    </section>
 
-  <div class="flex items-center justify-center">
-    <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline", data: { escape_back: true } %>
-  </div>
+    <%# ── Email Address ────────────────────────── %>
+    <section>
+      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Email Address</h2>
+      <%= form.email_field :email_address, class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+    </section>
+
+    <div class="flex justify-center">
+      <%= form.submit "Save", class: "px-6 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+    </div>
+
+  <% end %>
 
 </div>
