@@ -2,14 +2,18 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   submit(event) {
-    const select = event.target
-    const option = select.options[select.selectedIndex]
-    const color = option?.dataset?.color
-    const textColor = option?.dataset?.textColor
+    const el = event.target
+    const form = el.closest("form")
 
-    if (color) select.style.backgroundColor = color
-    if (textColor) select.style.color = textColor
+    if (el.tagName === "SELECT") {
+      const option = el.options[el.selectedIndex]
+      const color = option?.dataset?.color
+      const textColor = option?.dataset?.textColor
 
-    select.form.requestSubmit()
+      if (color) el.style.backgroundColor = color
+      if (textColor) el.style.color = textColor
+    }
+
+    form.requestSubmit()
   }
 }

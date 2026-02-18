@@ -1,0 +1,54 @@
+<% content_for :title, "About PR!OR!TY!" %>
+
+<div class="max-w-lg mx-auto space-y-8 py-4">
+
+  <h1 class="text-3xl font-heading font-bold text-center">
+    About PR<span class="text-brand-blue">!</span>OR<span class="text-brand-green">!</span>TY<span class="text-brand-red">!</span>
+  </h1>
+
+  <div class="space-y-4 text-text-secondary text-sm leading-relaxed">
+    <p>
+      PR!OR!TY! is a simple task management app built around one idea: <span class="font-semibold text-text-primary">get everything out of your head, then focus on what matters most.</span>
+    </p>
+
+    <h2 class="text-lg font-heading font-bold text-text-primary pt-2">How it works</h2>
+
+    <ol class="list-decimal pl-5 space-y-3">
+      <li>
+        <span class="font-semibold text-text-primary">Brain dump.</span>
+        Write down everything you can think of. Every task, errand, idea, and thing you've been meaning to do. Don't worry about order or importance yet — just get it all out of your head and into a list.
+      </li>
+      <li>
+        <span class="font-semibold text-text-primary">Sort by priority.</span>
+        Drag and drop your tasks into order. Put the most important things at the top. This is where you decide what actually matters right now.
+      </li>
+      <li>
+        <span class="font-semibold text-text-primary">Enter focus mode.</span>
+        Switch to the Focus tab and all the noise disappears. You're left with just your top priority tasks — no distractions, no endless list to scroll through. Complete what's in front of you, and the next task rises to the top.
+      </li>
+    </ol>
+
+    <h2 class="text-lg font-heading font-bold text-text-primary pt-2">Features</h2>
+
+    <ul class="list-disc pl-5 space-y-2">
+      <li><span class="font-semibold text-text-primary">Multiple lists</span> — organise different areas of your life separately.</li>
+      <li><span class="font-semibold text-text-primary">Categories</span> — tag tasks with colour-coded categories to filter your view.</li>
+      <li><span class="font-semibold text-text-primary">Snooze</span> — hide tasks until a specific date so they're not cluttering your list.</li>
+      <li><span class="font-semibold text-text-primary">Shared lists</span> — invite others by email and collaborate in real time.</li>
+      <li><span class="font-semibold text-text-primary">Configurable focus</span> — choose how many tasks appear in focus mode per list.</li>
+    </ul>
+
+    <p class="pt-2">
+      The goal is simple: stop thinking about everything at once, and start doing the one thing that matters most.
+    </p>
+  </div>
+
+  <p class="text-center text-sm text-text-tertiary">
+    PR!OR!TY! was made by <%= link_to "DAZ", "https://daz.codes", target: "_blank", class: "font-semibold text-text-secondary hover:text-text-primary no-underline" %>.
+  </p>
+
+  <div class="flex items-center justify-center">
+    <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
+  </div>
+
+</div>
