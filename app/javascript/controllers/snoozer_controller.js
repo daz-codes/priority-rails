@@ -43,19 +43,12 @@ export default class extends Controller {
       menu.style.right = `${window.innerWidth - rect.right}px`;
       menu.style.left = "auto";
 
-      // Temporarily show offscreen to measure height
       menu.style.visibility = "hidden";
       menu.hidden = false;
       const menuHeight = menu.offsetHeight;
       menu.style.visibility = "";
 
-      const spaceBelow = window.innerHeight - rect.bottom;
-
-      if (spaceBelow < menuHeight + 8) {
-        menu.style.top = `${rect.top - menuHeight}px`;
-      } else {
-        menu.style.top = `${rect.bottom}px`;
-      }
+      menu.style.top = `${rect.top - menuHeight}px`;
     }
   }
 

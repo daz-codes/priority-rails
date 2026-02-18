@@ -22,7 +22,7 @@
 </div>
 <% elsif @tasks.any? %>
     <%= tag.ul id: "tasks",
-        class: class_names("p-1 list-none", "border-4 border-sky-400 rounded-lg": @filter == "priority"),
+        class: class_names("p-1 list-none", "border-4 border-sky-400 rounded-lg p-4 space-y-4": @filter == "priority"),
         data: (@filter ? {} : { controller: "sortable tasks highlight-remover", sortable_url_value: sort_tasks_path }) do %>
         <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: flash[:highlight] } %>
     <% end %>

@@ -1,7 +1,7 @@
 <% highlight = local_assigns[:highlight] %>
 <li id="<%= dom_id(task) %>"
     data-id="<%= task.id %>"
-    class="group p-0 m-0 border-b border-dotted border-border-primary<%= highlight_class(task.id, highlight) %>">
+    class="group m-0 border-b border-dotted border-border-primary <%= @priority ? 'p-3' : 'p-0' %><%= highlight_class(task.id, highlight) %>">
   <%= turbo_frame_tag "task_frame_#{task.id}" do %>
     <div class="flex items-center w-full cursor-move"
          data-controller="task"
