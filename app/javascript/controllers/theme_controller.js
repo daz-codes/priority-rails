@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["icon"]
+  static targets = ["icon", "label"]
 
   connect() {
     this.applyTheme()
@@ -36,9 +36,15 @@ export default class extends Controller {
   }
 
   updateIcon(dark) {
-    if (!this.hasIconTarget) return
-    this.iconTarget.className = dark
-      ? "fa-solid fa-sun text-xs"
-      : "fa-solid fa-moon text-xs"
+    if (this.hasIconTarget) {
+      this.iconTarget.className = dark
+        ? "fa-solid fa-sun text-xs"
+        : "fa-solid fa-moon text-xs"
+    }
+    if (this.hasLabelTarget) {
+      this.labelTarget.textContent = dark
+        ? "Switch to light mode"
+        : "Switch to dark mode"
+    }
   }
 }

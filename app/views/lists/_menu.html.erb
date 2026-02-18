@@ -5,7 +5,7 @@
 
   <div data-menu-target="modal" hidden class="fixed left-1/2 -translate-x-1/2 mt-2 w-72 sm:w-[30rem] bg-surface-primary rounded-xl shadow-lg border border-border-primary z-50 overflow-hidden">
     <div class="p-3 border-b border-border-secondary space-y-2">
-      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full bg-green-500 text-white font-semibold text-sm hover:bg-green-600 transition-all duration-100 no-underline" do %>
+      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full bg-emerald-500 text-white font-semibold text-sm hover:bg-emerald-600 transition-all duration-100 no-underline" do %>
         <i class="fa-solid fa-plus text-xs"></i> Add New List
       <% end %>
       <input data-menu-target="input"
@@ -21,17 +21,15 @@
 
     <div class="px-3 pt-3 pb-1 border-t border-border-secondary">
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-sm text-text-tertiary truncate flex-1">Signed in as <%= link_to (Current.user.name.presence || Current.user.email_address), edit_account_path, class: "font-semibold text-text-secondary hover:text-text-primary no-underline" %></span>
+        <span class="text-sm text-text-tertiary truncate flex-1">Signed in as <span class="font-semibold text-text-secondary"><%= Current.user.name.presence || Current.user.email_address %></span></span>
       </div>
-      <div class="flex items-center gap-2">
-        <%= button_to session_path, method: :delete, class: "inline-flex flex-1" do %>
-          <span class="inline-flex items-center justify-center gap-1.5 w-full px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer">
-            <i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out
-          </span>
+      <div class="flex gap-2">
+        <%= link_to edit_account_path, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline" do %>
+          <i class="fa-solid fa-user-pen text-xs"></i> Edit Profile
         <% end %>
-        <button data-action="click->theme#toggle" class="inline-flex items-center justify-center size-9 rounded-full border border-border-input text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer bg-surface-primary" title="Toggle dark mode">
-          <i data-theme-target="icon" class="fa-solid fa-moon text-xs"></i>
-        </button>
+        <%= link_to session_path, data: { turbo_method: :delete }, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline cursor-pointer" do %>
+          <i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out
+        <% end %>
       </div>
     </div>
   </div>
