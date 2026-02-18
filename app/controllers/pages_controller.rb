@@ -3,4 +3,7 @@ class PagesController < ApplicationController
 
   def about
   end
+
+  def shortcuts
+  end
 end

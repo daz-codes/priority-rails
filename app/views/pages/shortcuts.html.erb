@@ -1,0 +1,53 @@
+<% content_for :title, "Keyboard Shortcuts" %>
+
+<div class="max-w-lg mx-auto space-y-8 py-4">
+
+  <h1 class="text-3xl font-heading font-bold text-center">Keyboard Shortcuts</h1>
+
+  <div class="space-y-1 text-text-secondary text-sm">
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Open list switcher</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">P</kbd>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Switch to Inbox tab</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">1</kbd>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Switch to Focus tab</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">2</kbd>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Switch to Completed tab</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">3</kbd>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Switch to Snoozed tab</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">4</kbd>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Navigate tasks</span>
+      <span>
+        <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">&uarr;</kbd>
+        <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">&darr;</kbd>
+      </span>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Complete/uncomplete selected task</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">Enter</kbd>
+    </div>
+    <div class="flex justify-between py-1 border-b border-dotted border-border-primary">
+      <span>Focus task input</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">/</kbd>
+    </div>
+    <div class="flex justify-between py-1">
+      <span>Go back / close menu</span>
+      <kbd class="font-mono text-xs px-2 py-0.5 rounded bg-surface-secondary text-text-primary">Esc</kbd>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-center">
+    <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
+  </div>
+
+</div>

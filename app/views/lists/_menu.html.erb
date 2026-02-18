@@ -22,6 +22,9 @@
     <div class="px-3 pt-3 pb-3 border-t border-border-secondary">
       <div class="flex items-center gap-2 mb-2">
         <span class="text-sm text-text-tertiary truncate flex-1">Signed in as <span class="font-semibold text-text-secondary"><%= Current.user.name.presence || Current.user.email_address %></span></span>
+        <%= link_to shortcuts_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline shrink-0" do %>
+          <i class="fa-solid fa-keyboard"></i> Shortcuts
+        <% end %>
         <%= link_to about_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline shrink-0" do %>
           <i class="fa-solid fa-circle-info"></i> About PR!OR!TY!
         <% end %>
