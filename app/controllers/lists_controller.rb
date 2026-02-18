@@ -1,5 +1,5 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy add_user completed_year ]
+  before_action :set_list, only: %i[ show edit update destroy add_user completed_year stats ]
   before_action :set_lists, only: %i[ index show ]
   before_action :set_weekly_stats, only: %i[ index ]
 
@@ -62,6 +62,12 @@ class ListsController < ApplicationController
       InviteMailer.with(email: email, list: @list).invite.deliver_later
       redirect_to @list, notice: "Invitation sent to #{email}."
     end
+  end
+
+  def stats
+    @completed_today = @list.tasks.where(completed_on: Date.current.all_day).count
+    @completed_this_week = @list.tasks.where(completed_on: 6.days.ago.beginning_of_day..).count
+    @completed_all_time = @list.tasks.where.not(completed_on: nil).count
   end
 
   def completed_year

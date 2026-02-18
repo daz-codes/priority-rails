@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :lists do
     member do
       get :snoozed
+      get :stats
       post :add_user
       get "completed/:year", to: "lists#completed_year", as: :completed_year
     end

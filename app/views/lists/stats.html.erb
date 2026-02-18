@@ -1,0 +1,26 @@
+<% content_for :title, "Stats — #{@list.name}" %>
+
+<div class="max-w-lg mx-auto space-y-8 py-4">
+
+  <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Stats</h2>
+
+  <div class="space-y-3">
+    <div class="flex items-center justify-between px-4 py-3 rounded-lg bg-surface-secondary">
+      <span class="text-sm text-text-secondary">Completed today</span>
+      <span class="text-2xl font-heading font-bold"><%= @completed_today %></span>
+    </div>
+    <div class="flex items-center justify-between px-4 py-3 rounded-lg bg-surface-secondary">
+      <span class="text-sm text-text-secondary">Completed this week</span>
+      <span class="text-2xl font-heading font-bold"><%= @completed_this_week %></span>
+    </div>
+    <div class="flex items-center justify-between px-4 py-3 rounded-lg bg-surface-secondary">
+      <span class="text-sm text-text-secondary">Completed all time</span>
+      <span class="text-2xl font-heading font-bold"><%= @completed_all_time %></span>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-center">
+    <%= link_to "Back to list", @list, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline", data: { escape_back: true } %>
+  </div>
+
+</div>

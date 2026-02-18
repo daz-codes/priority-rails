@@ -1,5 +1,11 @@
 <h1 class="text-3xl sm:text-5xl font-heading m-0 mb-4 flex items-center gap-4">
+  <%= link_to edit_list_path(@list), class: "leading-none flex items-center text-text-muted hover:text-text-secondary transition-colors duration-100", title: "List settings" do %>
+    <i class="fa-solid fa-gear text-sm"></i>
+  <% end %>
   <span class="flex-1 h-[3px] rounded-full bg-border-input"></span>
   <span class="shrink-0"><%= @list.name %></span>
   <span class="flex-1 h-[3px] rounded-full bg-border-input"></span>
+  <%= link_to stats_list_path(@list), class: "leading-none flex items-center text-text-muted hover:text-text-secondary transition-colors duration-100", title: "List stats" do %>
+    <i class="fa-solid fa-chart-simple text-sm"></i>
+  <% end %>
 </h1>
