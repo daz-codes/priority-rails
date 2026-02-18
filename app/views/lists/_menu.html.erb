@@ -21,10 +21,7 @@
 
     <div class="px-3 pt-3 pb-1 border-t border-border-secondary">
       <div class="flex items-center gap-2 mb-2">
-        <span class="text-xs text-text-tertiary truncate flex-1"><%= Current.user.email_address %></span>
-        <%= link_to edit_account_path, class: "inline-flex items-center justify-center size-7 rounded-full text-text-tertiary hover:bg-surface-hover hover:text-text-primary transition-all duration-100", title: "Profile settings" do %>
-          <i class="fa-solid fa-gear text-xs"></i>
-        <% end %>
+        <span class="text-sm text-text-tertiary truncate flex-1">Signed in as <%= link_to (Current.user.name.presence || Current.user.email_address), edit_account_path, class: "font-semibold text-text-secondary hover:text-text-primary no-underline" %></span>
       </div>
       <div class="flex items-center gap-2">
         <%= button_to session_path, method: :delete, class: "inline-flex flex-1" do %>

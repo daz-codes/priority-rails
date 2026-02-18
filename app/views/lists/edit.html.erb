@@ -48,6 +48,9 @@
       <% end %>
     </div>
 
+    <% if @list.categories.any? %>
+      <p class="text-xs text-text-tertiary mb-3">The first category is the default for new tasks.</p>
+    <% end %>
     <%= form_with url: list_categories_path(@list), method: :post, class: "flex gap-2" do |form| %>
       <%= form.text_field :name, required: true, placeholder: "New category...", class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
       <%= form.submit "Add", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>

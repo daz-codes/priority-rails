@@ -24,9 +24,11 @@
 
       <% unless @priority %>
         <div class="flex flex-col items-end gap-0.5 shrink-0 ml-2">
-          <div class="<%= 'opacity-50' if task.completed? %>">
-            <%= render "tasks/category_button", task: task %>
-          </div>
+          <% if task.list.categories.any? %>
+            <div class="<%= 'opacity-50' if task.completed? %>">
+              <%= render "tasks/category_button", task: task %>
+            </div>
+          <% end %>
           <div class="flex items-center gap-1">
             <% unless task.completed? %>
               <%= render "tasks/note_button", task: task %>

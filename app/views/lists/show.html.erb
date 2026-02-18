@@ -7,7 +7,7 @@
 <%= render "title" %>
 <%= render "tabs" %>
 <% unless @priority %><hr class="border-border-primary mb-4"><% end %>
-<%= render "category_filters" unless @priority %>
+<%= render "category_filters" unless @priority || @list.categories.none? %>
 <%= render "task_form" unless @priority %>
 
 <% if @filter == "completed" %>
