@@ -18,6 +18,9 @@
           <div class="text-xs text-text-tertiary italic">
             <%= "Snoozed #{snooze_time(task)}" if task.snoozed? %>
             <%= "Completed #{time_ago_in_words(task.completed_on)} ago" if task.completed? %>
+            <% if task.recurring? %>
+              <span class="<%= 'ml-1' if task.snoozed? || task.completed? %>"><i class="fa-solid fa-arrows-rotate text-[10px]"></i> <%= task.recurrence_label %></span>
+            <% end %>
           </div>
         <% end %>
       </div>
@@ -32,6 +35,7 @@
           <div class="flex items-center gap-1">
             <% unless task.completed? %>
               <%= render "tasks/note_button", task: task %>
+              <%= render "tasks/recurrence_select", task: task %>
               <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task %>
               <%= render "tasks/delete_button", task: task %>
             <% end %>

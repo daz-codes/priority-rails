@@ -1,0 +1,101 @@
+<div data-controller="recurrence" data-recurrence-task-id-value="<%= task.id %>" class="relative inline-block">
+  <button title="Recurrence" class="<%= task_button_classes %> <%= 'text-cyan-400' if task.recurring? %>" data-action="click->recurrence#toggle">
+    <i class="fa-solid fa-arrows-rotate"></i>
+  </button>
+
+  <%# Backdrop %>
+  <div data-recurrence-target="backdrop" class="fixed inset-0 bg-black/50 z-40" hidden data-action="click->recurrence#close"></div>
+
+  <%# Modal %>
+  <div data-recurrence-target="modal" class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm bg-surface-primary border border-border-primary rounded-xl shadow-lg z-50 overflow-hidden" hidden>
+
+    <%# Header %>
+    <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
+      <h3 class="text-sm font-semibold text-text-primary m-0">Recurring Task</h3>
+      <button class="text-text-tertiary hover:text-text-primary cursor-pointer" data-action="click->recurrence#close">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <%# Current status %>
+    <div class="px-4 py-3 border-b border-border-secondary bg-surface-secondary/50">
+      <div class="text-xs text-text-tertiary uppercase tracking-wide mb-1">Current</div>
+      <div class="text-sm text-text-primary font-medium">
+        <% if task.recurring? %>
+          <i class="fa-solid fa-arrows-rotate text-cyan-400 text-xs mr-1"></i> <%= task.recurrence_label %>
+        <% else %>
+          <i class="fa-solid fa-minus text-text-tertiary text-xs mr-1"></i> Not recurring
+        <% end %>
+      </div>
+    </div>
+
+    <%# Main panel %>
+    <div data-recurrence-target="mainPanel" class="p-2">
+      <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2 <%= 'text-cyan-400 font-medium' unless task.recurring? %>" data-action="click->recurrence#remove">
+        <i class="fa-solid fa-minus w-4 text-center text-xs"></i> None
+      </div>
+      <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2 <%= 'text-cyan-400 font-medium' if task.recurrence_type == 'daily' %>" data-action="click->recurrence#selectDaily">
+        <i class="fa-solid fa-sun w-4 text-center text-xs"></i> Daily
+      </div>
+      <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2 <%= 'text-cyan-400 font-medium' if task.recurrence_type == 'weekly' %>" data-action="click->recurrence#showWeekly">
+        <i class="fa-solid fa-calendar-week w-4 text-center text-xs"></i> Weekly <span class="ml-auto text-text-tertiary text-xs">&rsaquo;</span>
+      </div>
+      <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2 <%= 'text-cyan-400 font-medium' if task.recurrence_type == 'monthly' %>" data-action="click->recurrence#showMonthly">
+        <i class="fa-solid fa-calendar-days w-4 text-center text-xs"></i> Monthly <span class="ml-auto text-text-tertiary text-xs">&rsaquo;</span>
+      </div>
+      <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2 <%= 'text-cyan-400 font-medium' if task.recurrence_type == 'yearly' %>" data-action="click->recurrence#showYearly">
+        <i class="fa-solid fa-calendar w-4 text-center text-xs"></i> Yearly <span class="ml-auto text-text-tertiary text-xs">&rsaquo;</span>
+      </div>
+    </div>
+
+    <%# Weekly panel - pick day of week %>
+    <div data-recurrence-target="weeklyPanel" class="p-2" hidden>
+      <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide flex items-center gap-2">
+        <button class="hover:text-text-primary cursor-pointer" data-action="click->recurrence#backToMain"><i class="fa-solid fa-arrow-left"></i></button>
+        Pick a day
+      </div>
+      <% %w[Sunday Monday Tuesday Wednesday Thursday Friday Saturday].each_with_index do |day, i| %>
+        <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm <%= 'text-cyan-400 font-medium' if task.recurrence_type == 'weekly' && task.recurrence_day == i %>" data-action="click->recurrence#selectWeekday" data-day="<%= i %>"><%= day %></div>
+      <% end %>
+    </div>
+
+    <%# Monthly panel - pick day of month %>
+    <div data-recurrence-target="monthlyPanel" class="p-2" hidden>
+      <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide flex items-center gap-2">
+        <button class="hover:text-text-primary cursor-pointer" data-action="click->recurrence#backToMain"><i class="fa-solid fa-arrow-left"></i></button>
+        Pick a day of the month
+      </div>
+      <div class="grid grid-cols-7 gap-1 p-2">
+        <% (1..31).each do |d| %>
+          <div class="w-8 h-8 flex items-center justify-center cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm <%= 'bg-cyan-400/20 text-cyan-400 font-medium' if task.recurrence_type == 'monthly' && task.recurrence_day == d %>" data-action="click->recurrence#selectMonthDay" data-day="<%= d %>"><%= d %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Yearly panel - pick month %>
+    <div data-recurrence-target="yearlyPanel" class="p-2" hidden>
+      <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide flex items-center gap-2">
+        <button class="hover:text-text-primary cursor-pointer" data-action="click->recurrence#backToMain"><i class="fa-solid fa-arrow-left"></i></button>
+        Pick a month
+      </div>
+      <div class="grid grid-cols-3 gap-1 p-2">
+        <% Date::MONTHNAMES.compact.each_with_index do |month, i| %>
+          <div class="px-2 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm text-center <%= 'bg-cyan-400/20 text-cyan-400 font-medium' if task.recurrence_type == 'yearly' && task.recurrence_month == i + 1 %>" data-action="click->recurrence#selectYearMonth" data-month="<%= i + 1 %>"><%= month %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <%# Yearly day panel - pick day after month selected %>
+    <div data-recurrence-target="yearlyDayPanel" class="p-2" hidden>
+      <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide flex items-center gap-2">
+        <button class="hover:text-text-primary cursor-pointer" data-action="click->recurrence#backToYearlyMonths"><i class="fa-solid fa-arrow-left"></i></button>
+        Pick a day
+      </div>
+      <div class="grid grid-cols-7 gap-1 p-2">
+        <% (1..31).each do |d| %>
+          <div class="w-8 h-8 flex items-center justify-center cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm" data-action="click->recurrence#selectYearDay" data-day="<%= d %>"><%= d %></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

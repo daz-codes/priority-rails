@@ -44,7 +44,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.expect(task: [ :description, :list_id, :position, :category_id, :completed, :completed_on, :snoozed_until, :note ])
+    params.expect(task: [ :description, :list_id, :position, :category_id, :completed, :completed_on, :snoozed_until, :note, :recurrence_type, :recurrence_day, :recurrence_month ])
   end
 
   def default_category_id(list)
