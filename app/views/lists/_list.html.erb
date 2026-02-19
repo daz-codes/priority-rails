@@ -1,8 +1,8 @@
 <% current = local_assigns[:current_list] == list %>
-<li id="<%= dom_id list %>" class="flex items-center gap-4 px-4 mb-1 rounded-lg <%= current ? 'bg-lime-200 text-lime-900' : 'hover:bg-surface-hover' %>">
-    <span class="bg-emerald-500 rounded-full text-white size-7 flex items-center justify-center font-bold text-xs shrink-0" title="<%= list.tasks.incomplete.count %> tasks remaining"><%= list.tasks.incomplete.count %></span>
-    <%= link_to list.name, list, class: "no-underline w-full block py-2 #{current ? 'text-lime-900' : 'text-text-primary'}" %>
+<li id="<%= dom_id list %>" class="flex items-center gap-4 px-4 mb-1 rounded-lg <%= current ? 'bg-sky-100 text-sky-900 dark:bg-sky-900 dark:text-sky-100' : 'hover:bg-surface-hover' %>">
+    <span class="bg-sky-400 rounded-full text-white size-7 flex items-center justify-center font-bold text-xs shrink-0" title="<%= list.tasks.incomplete.count %> tasks remaining"><%= list.tasks.incomplete.count %></span>
+    <%= link_to list.name, list, class: "no-underline w-full block py-2 #{current ? 'text-sky-900 dark:text-sky-100' : 'text-text-primary'}" %>
     <% if current %>
-      <span class="text-[10px] px-2 py-0.5 rounded-full bg-lime-200 text-lime-700 font-semibold shrink-0">Current</span>
+      <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-200 text-sky-700 dark:bg-sky-800 dark:text-sky-200 font-semibold shrink-0">Current</span>
     <% end %>
 </li>

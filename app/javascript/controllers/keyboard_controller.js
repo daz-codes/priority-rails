@@ -129,17 +129,17 @@ export default class extends Controller {
   highlightMenuItem(items) {
     items.forEach((item, i) => {
       if (i === this.selectedIndex) {
-        item.classList.add("bg-green-100", "dark:bg-green-900")
+        item.classList.add("bg-sky-100", "dark:bg-sky-900")
         item.scrollIntoView({ block: "nearest" })
       } else {
-        item.classList.remove("bg-green-100", "dark:bg-green-900")
+        item.classList.remove("bg-sky-100", "dark:bg-sky-900")
       }
     })
   }
 
   clearMenuHighlight(menu) {
     const items = menu.querySelectorAll("[data-menu-target='listContainer'] li")
-    items.forEach(item => item.classList.remove("bg-green-100", "dark:bg-green-900"))
+    items.forEach(item => item.classList.remove("bg-sky-100", "dark:bg-sky-900"))
   }
 
   switchTab(key) {

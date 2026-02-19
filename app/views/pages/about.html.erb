@@ -44,12 +44,20 @@
 
   </div>
 
-  <p class="text-center text-sm text-text-tertiary">
-    PR!OR!TY! was made by <%= link_to "DAZ", "https://daz.codes", target: "_blank", class: "font-semibold text-text-secondary hover:text-text-primary no-underline" %>.
-  </p>
+  <% if params[:welcome] %>
+    <div class="flex justify-center">
+      <%= link_to new_list_path, class: "px-6 py-3 rounded-full bg-emerald-500 text-white font-semibold text-base hover:bg-emerald-600 transition-all duration-100 no-underline" do %>
+        Create your first PR!OR!TY! list &rarr;
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-center text-sm text-text-tertiary">
+      PR!OR!TY! was made by <%= link_to "DAZ", "https://daz.codes", target: "_blank", class: "font-semibold text-text-secondary hover:text-text-primary no-underline" %>.
+    </p>
 
-  <div class="flex items-center justify-center">
-    <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
-  </div>
+    <div class="flex items-center justify-center">
+      <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
+    </div>
+  <% end %>
 
 </div>

@@ -8,7 +8,8 @@ class RegistrationsController < ApplicationController
       @user = User.new(user_params)
   
       if @user.save
-        redirect_to root_path, notice: "You have successfully registered!"
+        start_new_session_for @user
+        redirect_to about_path(welcome: true)
       else
         render :new, status: :unprocessable_entity
       end

@@ -33,7 +33,7 @@ module ApplicationHelper
   def filter_tab_classes(active:)
     base = "text-sm px-3 py-1.5 rounded-full no-underline inline-block transition-all duration-100 font-semibold"
     if active
-      "#{base} bg-lime-200 text-lime-700 border border-lime-300"
+      "#{base} bg-sky-100 text-sky-700 border border-sky-300 dark:bg-sky-900 dark:text-sky-200 dark:border-sky-700"
     else
       "#{base} text-text-secondary border border-transparent hover:bg-surface-hover hover:text-text-primary"
     end
