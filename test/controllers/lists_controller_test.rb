@@ -7,9 +7,9 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(@user)
   end
 
-  test "should get index" do
+  test "should redirect index to last list" do
     get lists_url
-    assert_response :success
+    assert_response :redirect
   end
 
   test "should get new" do

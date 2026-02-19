@@ -3,6 +3,17 @@ class ListsController < ApplicationController
   before_action :set_lists, only: %i[ index show ]
   before_action :set_weekly_stats, only: %i[ index ]
 
+  def index
+    last_list = Current.user.last_list_id && Current.user.lists.find_by(id: Current.user.last_list_id)
+    list = last_list || Current.user.lists.first
+
+    if list
+      redirect_to list
+    else
+      redirect_to new_list_path
+    end
+  end
+
   def show
     @task = Task.new
     @filter = params[:list]

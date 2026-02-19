@@ -19,17 +19,15 @@
       <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list } %>
     </ul>
 
-    <div class="px-3 pt-3 pb-3 border-t border-border-secondary">
-      <div class="flex items-center gap-2 mb-2">
-        <span class="text-sm text-text-tertiary truncate flex-1">Signed in as <span class="font-semibold text-text-secondary"><%= Current.user.name.presence || Current.user.email_address %></span></span>
-        <%= link_to shortcuts_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline shrink-0" do %>
-          <i class="fa-solid fa-keyboard"></i> Shortcuts
-        <% end %>
-        <%= link_to about_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline shrink-0" do %>
-          <i class="fa-solid fa-circle-info"></i> About PR!OR!TY!
-        <% end %>
-      </div>
-      <div class="flex gap-2">
+    <div class="px-3 pt-3 pb-3 border-t border-border-secondary space-y-2">
+      <div class="text-sm text-text-tertiary">Signed in as <span class="font-semibold text-text-secondary"><%= Current.user.name.presence || Current.user.email_address %></span></div>
+      <%= link_to shortcuts_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
+        <i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts
+      <% end %>
+      <%= link_to about_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
+        <i class="fa-solid fa-circle-info"></i> About PR!OR!TY!
+      <% end %>
+      <div class="flex gap-2 pt-1">
         <%= link_to edit_account_path, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline" do %>
           <i class="fa-solid fa-user-pen text-xs"></i> Edit Profile
         <% end %>
