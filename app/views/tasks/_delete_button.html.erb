@@ -2,6 +2,7 @@
     task_path(task),
     title: "Delete task",
     method: :delete,
+    form: { data: { actions_menu_target: "deleteForm" } },
     data: {
       turbo_frame: "_top"
     },

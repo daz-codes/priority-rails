@@ -34,7 +34,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy!
-    redirect_to @task.list
+    redirect_back fallback_location: @task.list
   end
 
   private

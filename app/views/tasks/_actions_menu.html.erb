@@ -1,0 +1,45 @@
+<div data-controller="actions-menu" class="relative inline-block">
+  <button title="Actions" class="<%= task_button_classes %> text-base px-1" data-action="click->actions-menu#toggle" type="button">
+    <i class="fa-solid fa-ellipsis"></i>
+  </button>
+
+  <%# Backdrop %>
+  <div data-actions-menu-target="backdrop" class="fixed inset-0 bg-black/50 z-40" hidden data-action="click->actions-menu#close"></div>
+
+  <%# Modal %>
+  <div data-actions-menu-target="modal" class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm bg-surface-primary border border-border-primary rounded-xl shadow-lg z-50 overflow-hidden" hidden>
+
+    <%# Header %>
+    <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
+      <h3 class="text-sm font-semibold text-text-primary m-0">Actions</h3>
+      <button class="text-text-tertiary hover:text-text-primary cursor-pointer" data-action="click->actions-menu#close" type="button">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <%# Options %>
+    <div class="p-2">
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#editNote">
+        <i class="fa-solid fa-pen-to-square w-5 text-center"></i> Edit Note
+      </button>
+
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#recurring">
+        <i class="fa-solid fa-arrows-rotate w-5 text-center"></i> Recurring
+      </button>
+
+      <% if task.snoozed? %>
+        <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#unsnooze">
+          <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i> Unsnooze
+        </button>
+      <% else %>
+        <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#snooze">
+          <i class="fa-solid fa-clock w-5 text-center"></i> Snooze
+        </button>
+      <% end %>
+
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-red-400 text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#delete">
+        <i class="fa-solid fa-trash w-5 text-center"></i> Delete
+      </button>
+    </div>
+  </div>
+</div>

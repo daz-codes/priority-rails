@@ -32,14 +32,26 @@
               <%= render "tasks/category_button", task: task %>
             </div>
           <% end %>
-          <div class="flex items-center gap-1">
-            <% unless task.completed? %>
-              <%= render "tasks/note_button", task: task %>
-              <%= render "tasks/recurrence_select", task: task %>
-              <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task %>
-              <%= render "tasks/delete_button", task: task %>
+          <% unless task.completed? %>
+            <% if Current.user.fat_finger_mode? %>
+              <div class="flex items-center gap-1">
+                <%= render "tasks/actions_menu", task: task %>
+              </div>
+              <div hidden>
+                <%= render "tasks/note_button", task: task %>
+                <%= render "tasks/recurrence_select", task: task %>
+                <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task %>
+                <%= render "tasks/delete_button", task: task %>
+              </div>
+            <% else %>
+              <div class="flex items-center gap-1">
+                <%= render "tasks/note_button", task: task %>
+                <%= render "tasks/recurrence_select", task: task %>
+                <%= render task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: task %>
+                <%= render "tasks/delete_button", task: task %>
+              </div>
             <% end %>
-          </div>
+          <% end %>
         </div>
       <% end %>
     </div>
