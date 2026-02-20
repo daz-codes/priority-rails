@@ -1,5 +1,5 @@
 class Task < ApplicationRecord
-  #associations
+  # associations
   belongs_to :list, touch: true
   belongs_to :category, optional: true
 

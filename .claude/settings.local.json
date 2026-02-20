@@ -19,7 +19,11 @@
       "WebFetch(domain:github.com)",
       "Bash(bin/rails generate migration:*)",
       "Bash(bin/rails db:migrate:*)",
-      "Bash(bin/rails db:migrate:redo:*)"
+      "Bash(bin/rails db:migrate:redo:*)",
+      "Bash(bin/rubocop:*)",
+      "Bash(bin/brakeman:*)",
+      "Bash(echo:*)",
+      "Bash(bundle update:*)"
     ]
   }
 }

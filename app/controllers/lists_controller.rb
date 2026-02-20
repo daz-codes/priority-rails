@@ -20,15 +20,15 @@ class ListsController < ApplicationController
     @priority = @filter == "priority"
     @category_ids = Array(params[:category_ids]).map(&:to_i).select(&:positive?)
     @tasks = case @filter
-              when "priority"
+    when "priority"
                 @list.active_tasks.incomplete.ordered.limit(@list.focus_limit)
-              when "completed"
+    when "completed"
                 @list.tasks.completed
-              when "snoozed"
+    when "snoozed"
                 @list.tasks.snoozed
-              else
+    else
                 @list.active_tasks
-              end
+    end
     @tasks = @tasks.where(category_id: @category_ids) if @category_ids.any?
     @completed_years = @list.tasks.completed_years if @filter == "completed"
   end

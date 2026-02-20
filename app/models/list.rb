@@ -22,11 +22,11 @@ class List < ApplicationRecord
     return base if completed_display == "never"
 
     completed = case completed_display
-                when "1_day"  then tasks.unsnoozed.where(completed_on: Date.current.all_day)
-                when "3_days" then tasks.unsnoozed.where(completed_on: 2.days.ago.beginning_of_day..)
-                when "1_week" then tasks.unsnoozed.where(completed_on: 6.days.ago.beginning_of_day..)
-                when "forever" then tasks.unsnoozed.where.not(completed_on: nil)
-                end
+    when "1_day"  then tasks.unsnoozed.where(completed_on: Date.current.all_day)
+    when "3_days" then tasks.unsnoozed.where(completed_on: 2.days.ago.beginning_of_day..)
+    when "1_week" then tasks.unsnoozed.where(completed_on: 6.days.ago.beginning_of_day..)
+    when "forever" then tasks.unsnoozed.where.not(completed_on: nil)
+    end
     base.or(completed.ordered)
   end
 

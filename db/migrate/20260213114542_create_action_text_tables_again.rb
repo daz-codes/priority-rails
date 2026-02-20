@@ -6,7 +6,7 @@ class CreateActionTextTablesAgain < ActiveRecord::Migration[8.0]
       t.references :record, null: false, polymorphic: true, index: false
       t.timestamps
 
-      t.index [:record_type, :record_id, :name], name: "index_action_text_rich_texts_uniqueness", unique: true
+      t.index [ :record_type, :record_id, :name ], name: "index_action_text_rich_texts_uniqueness", unique: true
     end
   end
 end
