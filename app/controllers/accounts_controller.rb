@@ -15,6 +15,6 @@ class AccountsController < ApplicationController
   private
 
   def account_params
-    params.expect(user: [ :name, :email_address, :fat_finger_mode ])
+    params.require(:user).permit(:name, :email_address, :fat_finger_mode)
   end
 end

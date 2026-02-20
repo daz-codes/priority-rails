@@ -1,5 +1,5 @@
-<div data-controller="actions-menu" class="relative inline-block">
-  <button title="Actions" class="<%= task_button_classes %> text-base px-1" data-action="click->actions-menu#toggle" type="button">
+<div data-controller="actions-menu" data-actions-menu-task-id-value="<%= task.id %>" class="relative inline-block">
+  <button title="Actions" class="bg-transparent border-0 text-text-muted cursor-pointer text-lg px-3 py-0.5 hover:text-text-secondary transition-all duration-100" data-action="click->actions-menu#toggle" type="button">
     <i class="fa-solid fa-ellipsis"></i>
   </button>
 
@@ -11,14 +11,14 @@
 
     <%# Header %>
     <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
-      <h3 class="text-sm font-semibold text-text-primary m-0">Actions</h3>
+      <h3 data-actions-menu-target="title" class="text-sm font-semibold text-text-primary m-0">Actions</h3>
       <button class="text-text-tertiary hover:text-text-primary cursor-pointer" data-action="click->actions-menu#close" type="button">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
 
-    <%# Options %>
-    <div class="p-2">
+    <%# Main actions panel %>
+    <div data-actions-menu-target="mainPanel" class="p-2">
       <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#editNote">
         <i class="fa-solid fa-pen-to-square w-5 text-center"></i> Edit Note
       </button>
@@ -32,13 +32,36 @@
           <i class="fa-solid fa-clock-rotate-left w-5 text-center"></i> Unsnooze
         </button>
       <% else %>
-        <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#snooze">
+        <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#showSnooze">
           <i class="fa-solid fa-clock w-5 text-center"></i> Snooze
         </button>
       <% end %>
 
       <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-red-400 text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#delete">
         <i class="fa-solid fa-trash w-5 text-center"></i> Delete
+      </button>
+    </div>
+
+    <%# Snooze panel %>
+    <div data-actions-menu-target="snoozePanel" class="p-2" hidden>
+      <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide flex items-center gap-2">
+        <button class="hover:text-text-primary cursor-pointer bg-transparent border-0 text-text-tertiary" data-action="click->actions-menu#backToMain" type="button"><i class="fa-solid fa-arrow-left"></i></button>
+        Snooze for
+      </div>
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#selectSnooze" data-snooze-value="<%= 1.day.from_now.iso8601 %>">
+        <i class="fa-solid fa-clock w-5 text-center"></i> Day
+      </button>
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#selectSnooze" data-snooze-value="<%= 3.days.from_now.iso8601 %>">
+        <i class="fa-solid fa-clock w-5 text-center"></i> 3 Days
+      </button>
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#selectSnooze" data-snooze-value="<%= 1.week.from_now.iso8601 %>">
+        <i class="fa-solid fa-clock w-5 text-center"></i> Week
+      </button>
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#selectSnooze" data-snooze-value="<%= 1.month.from_now.iso8601 %>">
+        <i class="fa-solid fa-clock w-5 text-center"></i> Month
+      </button>
+      <button type="button" class="w-full px-4 py-3 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-3 bg-transparent border-0" data-action="click->actions-menu#selectSnooze" data-snooze-value="<%= 200.years.from_now.iso8601 %>">
+        <i class="fa-solid fa-clock w-5 text-center"></i> Forever
       </button>
     </div>
   </div>
