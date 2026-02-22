@@ -23,7 +23,8 @@
       "Bash(bin/rubocop:*)",
       "Bash(bin/brakeman:*)",
       "Bash(echo:*)",
-      "Bash(bundle update:*)"
+      "Bash(bundle update:*)",
+      "Bash(ls:*)"
     ]
   }
 }
