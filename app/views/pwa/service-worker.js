@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1"
+const CACHE_VERSION = "v2"
 const CACHE_NAME = `priority-${CACHE_VERSION}`
 
 // Cache key assets on install
