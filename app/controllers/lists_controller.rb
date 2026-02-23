@@ -55,7 +55,11 @@ class ListsController < ApplicationController
 
   def update
     if @list.update(list_params)
-      redirect_to @list, notice: "List was successfully updated."
+      if request.format.turbo_stream?
+        head :ok
+      else
+        redirect_to @list, notice: "List was successfully updated."
+      end
     else
       render :edit, status: :unprocessable_entity
     end
