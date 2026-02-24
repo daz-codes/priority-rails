@@ -17,7 +17,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to @task.list
+      redirect_back fallback_location: @task.list
     else
       render :edit, status: :unprocessable_entity
     end
