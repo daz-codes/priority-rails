@@ -1,7 +1,6 @@
 <div>
 <h1 class="text-2xl font-heading font-bold mb-4">Forgot your password?</h1>
 
-<%= tag.div(flash[:alert], class: "text-red-600") if flash[:alert] %>
 
 <%= form_with url: passwords_path, class: "space-y-3" do |form| %>
   <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: "w-full p-2 border border-border-input rounded bg-input-bg" %><br>

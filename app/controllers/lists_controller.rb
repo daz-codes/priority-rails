@@ -30,6 +30,7 @@ class ListsController < ApplicationController
                 @list.active_tasks
     end
     @tasks = @tasks.where(category_id: @category_ids) if @category_ids.any?
+    @tasks = @tasks.includes(:category, :rich_text_note)
     @completed_years = @list.tasks.completed_years if @filter == "completed"
   end
 
@@ -38,9 +39,8 @@ class ListsController < ApplicationController
   end
 
   def create
-    @list = Current.user.lists.new(list_params)
-    if @list.save
-      Current.user.lists << @list
+    @list = Current.user.lists.create(list_params)
+    if @list.persisted?
       respond_to do |format|
         format.html { redirect_to @list, notice: "List was successfully created." }
         format.json { render json: { url: list_url(@list) }, status: :created }
@@ -66,16 +66,17 @@ class ListsController < ApplicationController
   end
 
   def add_user
-    email = params[:email_address].strip.downcase
+    email = params[:email_address].to_s.strip.downcase
     user = User.find_by(email_address: email)
 
     if user
       @list.users << user unless @list.users.include?(user)
       redirect_to @list, notice: "#{email} has been added to the list."
-    else
-      PendingInvitation.create!(email: email, list: @list)
+    elsif (invitation = @list.pending_invitations.find_or_initialize_by(email: email)).save
       InviteMailer.with(email: email, list: @list).invite.deliver_later
       redirect_to @list, notice: "Invitation sent to #{email}."
+    else
+      redirect_to edit_list_path(@list), alert: invitation.errors.full_messages.to_sentence
     end
   end
 
@@ -87,7 +88,7 @@ class ListsController < ApplicationController
 
   def completed_year
     @year = params[:year].to_i
-    @tasks = @list.tasks.completed_in_year(@year)
+    @tasks = @list.tasks.completed_in_year(@year).includes(:category, :rich_text_note)
     render layout: false
   end
 

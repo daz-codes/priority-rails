@@ -9,7 +9,7 @@ export default class extends Controller {
   }
 
   disconnect() {
-    document.removeEventListener(
+    this.element.removeEventListener(
       "turbo:morph-element",
       this.removeAfterAnimation,
     );

@@ -5,7 +5,12 @@ class AccountsController < ApplicationController
 
   def update
     @user = Current.user
-    if @user.update(account_params)
+    @user.assign_attributes(account_params)
+
+    if @user.email_address_changed? && !@user.authenticate(params.dig(:user, :current_password).to_s)
+      @user.errors.add(:current_password, "is required to change your email address")
+      render :edit, status: :unprocessable_entity
+    elsif @user.save
       redirect_to @user.last_list_id? ? list_path(@user.last_list_id) : root_path, notice: "Profile updated."
     else
       render :edit, status: :unprocessable_entity

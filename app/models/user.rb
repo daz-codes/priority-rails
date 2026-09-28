@@ -6,8 +6,9 @@ class User < ApplicationRecord
 
   after_create :accept_pending_invitations
 
-  validates :email_address, presence: true
+  validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, on: :create
+  validates :password, length: { minimum: 8 }, allow_nil: true
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
@@ -15,6 +16,9 @@ class User < ApplicationRecord
     self[:name].presence || email_address
   end
 
+  def incomplete_task_counts
+    tasks.where(completed_on: nil).group(:list_id).count
+  end
 
   private
 

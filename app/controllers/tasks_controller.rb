@@ -9,7 +9,7 @@ class TasksController < ApplicationController
     if @task.save
       redirect_to list_path(@list), flash: { highlight: @task.id }
     else
-      render @list, status: :unprocessable_entity
+      redirect_to list_path(@list), alert: @task.errors.full_messages.to_sentence
     end
   end
 
@@ -25,8 +25,8 @@ class TasksController < ApplicationController
 
   def sort
     Task.transaction do
-      params[:task_ids].each_with_index do |id, index|
-        Task.find(id).update(position: index + 1)
+      Array(params[:task_ids]).each_with_index do |id, index|
+        Current.user.tasks.find(id).update(position: index + 1)
       end
     end
     head :ok
@@ -44,7 +44,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.expect(task: [ :description, :list_id, :position, :category_id, :completed, :completed_on, :snoozed_until, :note, :recurrence_type, :recurrence_day, :recurrence_month ])
+    params.expect(task: [ :description, :position, :category_id, :completed, :completed_on, :snoozed_until, :note, :recurrence_type, :recurrence_day, :recurrence_month ])
   end
 
   def default_category_id(list)

@@ -5,15 +5,15 @@ class CategoriesController < ApplicationController
   COLORS = %w[#fca5a5 #fdba74 #fef08a #d9f99d #a5f3fc #93c5fd #c4b5fd #f9a8d4].freeze
 
   def create
-    @list.categories.find_or_create_by!(name: params[:name].strip) do |c|
+    category = @list.categories.find_or_create_by(name: params[:name].to_s.strip) do |c|
       c.color = COLORS.first
     end
-    redirect_to edit_list_path(@list)
+    redirect_to edit_list_path(@list), alert: category.errors.full_messages.to_sentence.presence
   end
 
   def update
-    @category.update!(category_params)
-    redirect_to edit_list_path(@list)
+    @category.update(category_params)
+    redirect_to edit_list_path(@list), alert: @category.errors.full_messages.to_sentence.presence
   end
 
   def destroy

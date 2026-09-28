@@ -16,7 +16,7 @@
     </div>
 
     <ul data-menu-target="listContainer" class="list-none p-0 m-0 max-h-64 overflow-y-auto">
-      <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list } %>
+      <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list, incomplete_counts: Current.user.incomplete_task_counts } %>
     </ul>
 
     <div class="px-3 pt-3 pb-3 border-t border-border-secondary space-y-2">

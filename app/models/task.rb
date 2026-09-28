@@ -2,9 +2,16 @@ class Task < ApplicationRecord
   # associations
   belongs_to :list, touch: true
   belongs_to :category, optional: true
+  belongs_to :previous_occurrence, class_name: "Task", optional: true
+  has_one :next_occurrence, class_name: "Task", foreign_key: :previous_occurrence_id, dependent: :nullify, inverse_of: :previous_occurrence
 
   # validations
+  RECURRENCE_TYPES = %w[daily weekly monthly yearly].freeze
+
   validates :description, presence: true
+  validates :recurrence_type, inclusion: { in: RECURRENCE_TYPES }, allow_blank: true
+  validates :recurrence_month, inclusion: { in: 1..12 }, allow_nil: true
+  validate :category_belongs_to_list
 
   # position
   positioned on: :list
@@ -112,14 +119,22 @@ class Task < ApplicationRecord
     "#{n}#{suffix}"
   end
 
+  def category_belongs_to_list
+    return if category.nil? || category.list_id == list_id
+
+    errors.add(:category, "must belong to the same list")
+  end
+
   def refresh_list
     broadcast_remove_to list if saved_change_to_snoozed_until?
   end
 
   def create_next_recurrence
     return unless recurring? && saved_change_to_completed_on? && completed?
+    return if reload_next_occurrence
 
     list.tasks.create!(
+      previous_occurrence: self,
       description: description,
       category_id: category_id,
       note: note&.body&.to_html,

@@ -23,6 +23,33 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to list_url(List.last)
+    assert_includes List.last.users, @user
+  end
+
+  test "inviting a new email creates one invitation and sends mail" do
+    assert_difference("PendingInvitation.count") do
+      assert_enqueued_emails 1 do
+        post add_user_list_url(@list), params: { email_address: " Friend@Example.com " }
+      end
+    end
+
+    assert_redirected_to list_url(@list)
+    assert_equal "friend@example.com", PendingInvitation.last.email
+  end
+
+  test "re-inviting the same email does not create a duplicate" do
+    assert_no_difference("PendingInvitation.count") do
+      post add_user_list_url(@list), params: { email_address: pending_invitations(:one).email }
+    end
+  end
+
+  test "inviting an invalid email shows an error" do
+    assert_no_difference("PendingInvitation.count") do
+      post add_user_list_url(@list), params: { email_address: "nope" }
+    end
+
+    assert_redirected_to edit_list_url(@list)
+    assert_match "Email is invalid", flash[:alert]
   end
 
   test "should show list" do

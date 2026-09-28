@@ -16,6 +16,15 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to list_url(@list)
   end
 
+  test "creating a blank task redirects back with an error" do
+    assert_no_difference("Task.count") do
+      post list_tasks_url(@list), params: { task: { description: "" } }
+    end
+
+    assert_redirected_to list_url(@list)
+    assert_equal "Description can't be blank", flash[:alert]
+  end
+
   test "should get edit" do
     get edit_task_url(@task)
     assert_response :success
@@ -32,6 +41,45 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to list_url(@list)
+  end
+
+  test "sort reorders the user's own tasks" do
+    other = @list.tasks.create!(description: "Another task")
+
+    patch sort_tasks_url, params: { task_ids: [ other.id, @task.id ] }, as: :json
+
+    assert_response :ok
+    assert_equal 1, other.reload.position
+    assert_equal 2, @task.reload.position
+  end
+
+  test "sort cannot touch tasks on another user's list" do
+    foreign = tasks(:two)
+    original_position = foreign.position
+
+    patch sort_tasks_url, params: { task_ids: [ @task.id, foreign.id ] }, as: :json
+
+    assert_response :not_found
+    assert_equal original_position, foreign.reload.position
+  end
+
+  test "sort without task ids does nothing" do
+    patch sort_tasks_url, as: :json
+
+    assert_response :ok
+  end
+
+  test "update cannot move a task to another user's list" do
+    patch task_url(@task), params: { task: { list_id: lists(:two).id } }
+
+    assert_equal @list, @task.reload.list
+  end
+
+  test "update rejects a category from another list" do
+    patch task_url(@task), params: { task: { category_id: categories(:three).id } }
+
+    assert_response :unprocessable_entity
+    assert_equal categories(:two), @task.reload.category
   end
 
   private
