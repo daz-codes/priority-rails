@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_29_145343) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_150214) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -123,6 +123,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_29_145343) do
     t.string "name"
     t.integer "last_list_id"
     t.boolean "fat_finger_mode", default: false, null: false
+    t.string "time_zone", default: "UTC", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

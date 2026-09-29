@@ -1,0 +1,53 @@
+<% content_for :title, @query.present? ? "Search: #{@query}" : "Search" %>
+
+<div class="max-w-lg mx-auto space-y-6 py-4">
+  <%= form_with url: search_path, method: :get, class: "flex gap-2" do |form| %>
+    <%= form.search_field :q, value: @query, autofocus: true, minlength: 2, placeholder: "Search tasks, notes and lists...",
+          class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+    <%= form.submit "Search", name: nil, class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+  <% end %>
+
+  <% if @tasks %>
+    <% if @lists.any? %>
+      <section>
+        <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Lists</h2>
+        <ul class="list-none p-0 m-0 space-y-1">
+          <% @lists.each do |list| %>
+            <li><%= link_to list.name, list, class: "block px-3 py-2 rounded-lg hover:bg-surface-hover no-underline text-text-primary" %></li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+
+    <section>
+      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Tasks</h2>
+      <% if @tasks.any? %>
+        <ul class="list-none p-0 m-0 space-y-1">
+          <% @tasks.each do |task| %>
+            <% tab = ("completed" if task.completed?) || ("snoozed" if task.snoozed?) %>
+            <li id="<%= dom_id(task, :result) %>">
+              <%= link_to list_path(task.list, list: tab, anchor: dom_id(task)), class: "flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-hover no-underline" do %>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-text-primary <%= 'line-through opacity-60' if task.completed? %>"><%= task.description %></span>
+                  <span class="block text-xs text-text-tertiary truncate">
+                    <%= task.list.name %><%= " · Completed" if task.completed? %><%= " · Snoozed" if task.snoozed? %>
+                  </span>
+                </span>
+                <% if task.category %>
+                  <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold shrink-0" style="background-color: <%= task.category.color %>; color: <%= darken_color(task.category.color) %>"><%= task.category.name %></span>
+                <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+        <% if @tasks.size == SearchesController::RESULT_LIMIT %>
+          <p class="text-xs text-text-tertiary mt-2">Showing the first <%= SearchesController::RESULT_LIMIT %> matches. Try a more specific search.</p>
+        <% end %>
+      <% else %>
+        <p class="text-sm text-text-tertiary">No tasks match "<%= @query %>".</p>
+      <% end %>
+    </section>
+  <% elsif @query.present? %>
+    <p class="text-sm text-text-tertiary">Type at least 2 characters to search.</p>
+  <% end %>
+</div>

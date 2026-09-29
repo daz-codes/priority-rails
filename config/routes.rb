@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
+  resource :search, only: :show
   resource :account, only: [ :edit, :update ] do
     resources :sessions, only: :destroy, module: :account do
       delete :others, on: :collection, action: :destroy_others
@@ -18,6 +19,9 @@ Rails.application.routes.draw do
     end
     resources :tasks, only: [ :create ]
     resources :categories, only: [ :create, :update, :destroy ]
+    resources :invitations, only: :destroy do
+      post :resend, on: :member
+    end
     resources :memberships, only: :destroy do
       patch :transfer, on: :member
     end
@@ -25,7 +29,9 @@ Rails.application.routes.draw do
   resources :tasks, only: [ :destroy, :edit, :update ] do
     collection do
       patch :sort
+      post :restore
     end
+    patch :move, on: :member
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

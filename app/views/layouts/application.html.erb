@@ -37,6 +37,10 @@
       </header>
     <% end %>
 
+    <% if authenticated? %>
+      <div id="toasts" class="fixed bottom-6 inset-x-0 flex justify-center px-4 z-50 pointer-events-none"></div>
+    <% end %>
+
     <main class="max-w-2xl mx-auto w-full px-4 pt-2 overflow-hidden">
       <%= tag.div(flash[:alert], id: "flash_alert", role: "alert", class: "text-sm text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-300 rounded-lg px-4 py-2.5 my-2 text-center") if flash[:alert].present? %>
       <%= yield %>

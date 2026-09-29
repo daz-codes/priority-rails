@@ -82,6 +82,94 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal categories(:two), @task.reload.category
   end
 
+  test "move sends a task to another of the user's lists, keeping a matching category" do
+    destination = @user.lists.create!(name: "Other", owner: @user)
+    home = categories(:one)
+    @task.update!(category: home)
+
+    patch move_task_url(@task), params: { list_id: destination.id }
+
+    assert_redirected_to list_url(@list)
+    @task.reload
+    assert_equal destination, @task.list
+    assert_equal destination.categories.find_by(name: home.name), @task.category
+  end
+
+  test "moving falls back to the destination's first category when names don't match" do
+    destination = @user.lists.create!(name: "Other", owner: @user)
+    @task.update!(category: @list.categories.create!(name: "Errands"))
+
+    patch move_task_url(@task), params: { list_id: destination.id }
+
+    assert_equal destination.categories.first, @task.reload.category
+  end
+
+  test "moved tasks go to the end of the destination list" do
+    destination = @user.lists.create!(name: "Other", owner: @user)
+    existing = destination.tasks.create!(description: "Already here")
+
+    patch move_task_url(@task), params: { list_id: destination.id }
+
+    assert_equal existing.reload.position + 1, @task.reload.position
+  end
+
+  test "cannot move a task to a list the user isn't on" do
+    patch move_task_url(@task), params: { list_id: lists(:two).id }
+
+    assert_response :not_found
+    assert_equal @list, @task.reload.list
+  end
+
+  test "completing via Turbo shows an undo toast" do
+    @task.update!(completed: false)
+
+    patch task_url(@task), params: { task: { completed: true } }, as: :turbo_stream
+
+    assert_response :success
+    assert_select "turbo-stream[action=update][target=toasts] template [data-toast][data-turbo-permanent]", text: /Completed/
+    assert_select "turbo-stream template form[action='#{task_path(@task)}'] input[name='task[completed]'][value=false]"
+  end
+
+  test "undoing a completion clears the toast and refreshes" do
+    patch task_url(@task), params: { task: { completed: false } }, as: :turbo_stream
+
+    assert_nil @task.reload.completed_on
+    assert_select "turbo-stream[action=refresh]:not([request-id])"
+  end
+
+  test "editing a description via Turbo still redirects" do
+    patch task_url(@task), params: { task: { description: "Renamed" } }, as: :turbo_stream
+
+    assert_response :redirect
+  end
+
+  test "deleting via Turbo removes the row and offers undo, which restores the task" do
+    delete task_url(@task), as: :turbo_stream
+
+    assert_select "turbo-stream[action=remove][target=#{ActionView::RecordIdentifier.dom_id(@task)}]"
+    token = css_select("turbo-stream template input[name=token]").first["value"]
+
+    assert_difference("Task.count") do
+      post restore_tasks_url, params: { token: token }, as: :turbo_stream
+    end
+    assert_equal @task.description, @list.tasks.last.description
+  end
+
+  test "restoring with a bad token fails" do
+    post restore_tasks_url, params: { token: "nope" }, as: :turbo_stream
+
+    assert_response :gone
+  end
+
+  test "moving via Turbo offers an undo that moves it back" do
+    destination = @user.lists.create!(name: "Other", owner: @user)
+
+    patch move_task_url(@task), params: { list_id: destination.id }, as: :turbo_stream
+
+    assert_select "turbo-stream template [data-toast]", text: /Moved to Other/
+    assert_select "turbo-stream template input[name=list_id][value=#{@list.id}]"
+  end
+
   private
 
   def sign_in_as(user)

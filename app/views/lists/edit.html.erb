@@ -40,10 +40,19 @@
         </li>
       <% end %>
       <% @list.pending_invitations.each do |invite| %>
-        <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
+        <li id="<%= dom_id(invite) %>" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
           <span class="size-8 rounded-full bg-text-muted text-white flex items-center justify-center font-bold text-sm shrink-0"><%= invite.email[0].upcase %></span>
           <span class="text-sm text-text-tertiary truncate"><%= invite.email %></span>
-          <span class="text-[10px] px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-600 font-semibold ml-auto">Pending</span>
+          <span class="ml-auto flex items-center gap-2 shrink-0">
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-600 font-semibold" title="Last sent <%= time_ago_in_words(invite.updated_at) %> ago">Pending</span>
+            <%= button_to "Resend", resend_list_invitation_path(@list, invite),
+                  class: "text-xs text-text-tertiary hover:text-text-primary cursor-pointer bg-transparent border-none p-1" %>
+            <%= button_to list_invitation_path(@list, invite), method: :delete, title: "Cancel invite",
+                  data: { turbo_confirm: "Cancel the invite to #{invite.email}?" },
+                  class: "text-text-muted hover:text-red-400 cursor-pointer bg-transparent border-none p-1" do %>
+              <i class="fa-solid fa-xmark text-xs"></i>
+            <% end %>
+          </span>
         </li>
       <% end %>
     </ul>

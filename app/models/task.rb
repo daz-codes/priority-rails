@@ -7,6 +7,9 @@ class Task < ApplicationRecord
 
   # validations
   RECURRENCE_TYPES = %w[daily weekly monthly yearly].freeze
+  RESTORE_WINDOW = 10.minutes
+  RESTORABLE_ATTRIBUTES = %w[id list_id category_id description position completed_on snoozed_until
+                             recurrence_type recurrence_day recurrence_month created_at].freeze
 
   validates :description, presence: true
   validates :recurrence_type, inclusion: { in: RECURRENCE_TYPES }, allow_blank: true
@@ -23,6 +26,7 @@ class Task < ApplicationRecord
   after_destroy_commit -> { broadcast_remove_to list }
   after_update_commit :refresh_list
   after_update_commit :create_next_recurrence
+  after_update_commit :remove_next_recurrence
 
   # scopes
   scope :ordered, -> { order(position: :asc) }
@@ -43,6 +47,18 @@ class Task < ApplicationRecord
       .ordered
   }
 
+  def self.restore_verifier = Rails.application.message_verifier(:task_restore)
+
+  # Recreates a deleted task from #restore_token, only into one of the given lists and only once
+  def self.restore(token, lists:)
+    attributes = restore_verifier.verified(token) or return
+    list = lists.find_by(id: attributes["list_id"]) or return
+    return unless Rails.cache.write("tasks/restored/#{attributes["id"]}", true, unless_exist: true, expires_in: RESTORE_WINDOW)
+
+    attributes["category_id"] = nil unless list.categories.exists?(attributes["category_id"])
+    list.tasks.create!(attributes.except("id", "list_id"))
+  end
+
   def self.completed_years
     where.not(completed_on: nil)
       .where("completed_on < ?", Date.current.beginning_of_month)
@@ -54,6 +70,22 @@ class Task < ApplicationRecord
   end
 
   # methods
+  # Keeps the category when the destination has one with the same name, otherwise uses its default
+  def move_to(new_list)
+    return if new_list == list
+
+    self.category = new_list.categories.find_by(name: category&.name) || new_list.categories.first
+    self.list = new_list
+    save!
+  end
+
+  def restore_token
+    self.class.restore_verifier.generate(
+      attributes.slice(*RESTORABLE_ATTRIBUTES).merge("note" => note&.body&.to_html),
+      expires_in: RESTORE_WINDOW
+    )
+  end
+
   def completed? = completed_on.present?
   def snoozed? = snoozed_until&.future?
   def recurring? = recurrence_type.present?
@@ -117,6 +149,13 @@ class Task < ApplicationRecord
       end
     end
     "#{n}#{suffix}"
+  end
+
+  def remove_next_recurrence
+    return unless saved_change_to_completed_on? && !completed?
+
+    occurrence = reload_next_occurrence
+    occurrence.destroy if occurrence && !occurrence.completed?
   end
 
   def category_belongs_to_list

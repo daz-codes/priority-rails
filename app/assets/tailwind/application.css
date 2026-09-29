@@ -69,6 +69,13 @@
   --font-body: "Nunito", sans-serif;
 
   --animate-highlight: highlight 1s ease-out;
+  --animate-toast: toast 8s ease-in-out forwards;
+}
+
+@keyframes toast {
+  0% { opacity: 0; transform: translateY(1rem); }
+  4%, 90% { opacity: 1; transform: none; }
+  100% { opacity: 0; visibility: hidden; }
 }
 
 @keyframes highlight {

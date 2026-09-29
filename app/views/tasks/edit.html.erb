@@ -20,4 +20,14 @@
       <% end %>
     </div>
   <% end %>
+
+  <% other_lists = Current.user.lists.where.not(id: @task.list_id).order(:name) %>
+  <% if other_lists.any? %>
+    <%= form_with url: move_task_path(@task), method: :patch, data: { turbo_frame: "_top" }, class: "flex items-center gap-2 px-2 pb-2" do |form| %>
+      <%= form.label :list_id, "Move to", for: "move_task_#{@task.id}_list_id", class: "text-xs text-text-tertiary shrink-0" %>
+      <%= form.select :list_id, other_lists.map { |l| [ l.name, l.id ] }, {}, id: "move_task_#{@task.id}_list_id",
+            class: "flex-1 min-w-0 px-2 py-1 border border-border-input rounded-lg text-sm bg-input-bg" %>
+      <%= form.submit "Move", class: "px-3 py-1 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover cursor-pointer bg-surface-primary" %>
+    <% end %>
+  <% end %>
 <% end %>
