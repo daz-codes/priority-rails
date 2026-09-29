@@ -120,21 +120,13 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal @list, @task.reload.list
   end
 
-  test "completing via Turbo shows an undo toast" do
+  test "completing a task doesn't show a toast" do
     @task.update!(completed: false)
 
     patch task_url(@task), params: { task: { completed: true } }, as: :turbo_stream
 
-    assert_response :success
-    assert_select "turbo-stream[action=update][target=toasts] template [data-toast][data-turbo-permanent]", text: /Completed/
-    assert_select "turbo-stream template form[action='#{task_path(@task)}'] input[name='task[completed]'][value=false]"
-  end
-
-  test "undoing a completion clears the toast and refreshes" do
-    patch task_url(@task), params: { task: { completed: false } }, as: :turbo_stream
-
-    assert_nil @task.reload.completed_on
-    assert_select "turbo-stream[action=refresh]:not([request-id])"
+    assert_response :redirect
+    assert @task.reload.completed?
   end
 
   test "editing a description via Turbo still redirects" do
@@ -168,6 +160,33 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "turbo-stream template [data-toast]", text: /Moved to Other/
     assert_select "turbo-stream template input[name=list_id][value=#{@list.id}]"
+  end
+
+  test "the task panel saves name, note and list together" do
+    destination = @user.lists.create!(name: "Other", owner: @user)
+
+    patch task_url(@task), params: { task: { description: "Renamed", note: "<p>details</p>", list_id: destination.id } }, as: :turbo_stream
+
+    @task.reload
+    assert_equal "Renamed", @task.description
+    assert_match "details", @task.note.to_plain_text
+    assert_equal destination, @task.list
+    assert_select "turbo-stream template [data-toast]", text: /Moved to Other/
+  end
+
+  test "saving the panel without changing list just redirects back" do
+    patch task_url(@task), params: { task: { description: "Renamed", list_id: @list.id } }, as: :turbo_stream
+
+    assert_response :redirect
+    assert_equal @list, @task.reload.list
+  end
+
+  test "the panel form can't move a task to someone else's list" do
+    patch task_url(@task), params: { task: { description: "Sneaky", list_id: lists(:two).id } }
+
+    assert_response :not_found
+    assert_equal @list, @task.reload.list
+    assert_not_equal "Sneaky", @task.description
   end
 
   private

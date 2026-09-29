@@ -70,13 +70,17 @@ class Task < ApplicationRecord
   end
 
   # methods
-  # Keeps the category when the destination has one with the same name, otherwise uses its default
   def move_to(new_list)
+    assign_list(new_list)
+    save!
+  end
+
+  # Keeps the category when the destination has one with the same name, otherwise uses its default
+  def assign_list(new_list)
     return if new_list == list
 
     self.category = new_list.categories.find_by(name: category&.name) || new_list.categories.first
     self.list = new_list
-    save!
   end
 
   def restore_token

@@ -16,11 +16,16 @@ class TasksController < ApplicationController
   def edit = nil
 
   def update
-    if @task.update(task_params)
-      if request.format.turbo_stream? && @task.saved_change_to_completed_on?
-        render turbo_stream: completion_streams
+    source = @task.list
+    @task.assign_attributes(task_params)
+    # list_id isn't a permitted param; moving only ever targets one of the user's own lists
+    @task.assign_list(Current.user.lists.find(params.dig(:task, :list_id))) if params.dig(:task, :list_id).present?
+
+    if @task.save
+      if @task.list != source && request.format.turbo_stream?
+        render turbo_stream: moved_streams(source)
       else
-        redirect_back fallback_location: @task.list
+        redirect_back fallback_location: source
       end
     else
       render :edit, status: :unprocessable_entity
@@ -33,13 +38,7 @@ class TasksController < ApplicationController
     @task.move_to(destination)
 
     respond_to do |format|
-      format.turbo_stream do
-        render turbo_stream: [
-          turbo_stream.remove(@task),
-          toast("Moved to #{destination.name}", undo: { url: move_task_path(@task), method: :patch, params: { list_id: source.id } }),
-          turbo_stream.refresh(request_id: nil)
-        ]
-      end
+      format.turbo_stream { render turbo_stream: moved_streams(source) }
       format.html { redirect_to list_path(source), status: :see_other }
     end
   end
@@ -88,14 +87,12 @@ class TasksController < ApplicationController
     params.expect(task: [ :description, :position, :category_id, :completed, :completed_on, :snoozed_until, :note, :recurrence_type, :recurrence_day, :recurrence_month ])
   end
 
-  # The broadcast refresh that follows a completion re-renders the list, so only the toast is needed here.
-  # Undoing comes from a Turbo form, whose own broadcast Turbo ignores, so that path refreshes explicitly.
-  def completion_streams
-    if @task.completed?
-      toast("Completed “#{@task.description}”", undo: { url: task_path(@task), method: :patch, params: { task: { completed: false } } })
-    else
-      [ turbo_stream.update("toasts", html: ""), turbo_stream.refresh(request_id: nil) ]
-    end
+  def moved_streams(source)
+    [
+      turbo_stream.remove(@task),
+      toast("Moved to #{@task.list.name}", undo: { url: move_task_path(@task), method: :patch, params: { list_id: source.id } }),
+      turbo_stream.refresh(request_id: nil)
+    ]
   end
 
   def toast(message, undo: nil)
