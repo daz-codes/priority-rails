@@ -26,6 +26,12 @@ module ApplicationHelper
     end
   end
 
+  # Centered task modals (snooze, recurrence, actions), styled to match the priority menu
+  def modal_classes
+    "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm bg-surface-primary/95 backdrop-blur-sm " \
+      "border-2 border-border-input rounded-xl shadow-lg z-50 overflow-hidden"
+  end
+
   def task_button_classes
     "bg-transparent border-0 text-text-muted cursor-pointer p-0.5 text-sm hover:text-text-secondary transition-all duration-100"
   end

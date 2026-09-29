@@ -1,4 +1,5 @@
 class List < ApplicationRecord
+  belongs_to :owner, class_name: "User"
   has_and_belongs_to_many :users
   has_many :tasks, dependent: :destroy
   has_many :categories, dependent: :destroy
@@ -16,6 +17,8 @@ class List < ApplicationRecord
     [ "1 week",  "1_week" ],
     [ "Forever", "forever" ]
   ].freeze
+
+  def owned_by?(user) = owner_id == user.id
 
   def active_tasks
     base = tasks.unsnoozed.where(completed_on: nil).ordered

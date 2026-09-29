@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
   has_and_belongs_to_many :lists
+  has_many :owned_lists, class_name: "List", foreign_key: :owner_id, inverse_of: :owner, dependent: :nullify
   has_many :tasks, through: :lists
 
   after_create :accept_pending_invitations
@@ -14,6 +15,10 @@ class User < ApplicationRecord
 
   def name
     self[:name].presence || email_address
+  end
+
+  def sign_out_other_sessions(except:)
+    sessions.where.not(id: except).destroy_all
   end
 
   def incomplete_task_counts

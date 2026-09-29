@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_28_154805) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_29_145343) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -64,6 +64,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_154805) do
     t.datetime "updated_at", null: false
     t.integer "focus_limit", default: 3, null: false
     t.string "completed_display", default: "1_day", null: false
+    t.integer "owner_id"
+    t.index ["owner_id"], name: "index_lists_on_owner_id"
   end
 
   create_table "lists_users", id: false, force: :cascade do |t|
@@ -88,6 +90,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_154805) do
     t.string "user_agent"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_active_at", null: false
+    t.index ["last_active_at"], name: "index_sessions_on_last_active_at"
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
@@ -125,6 +129,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_28_154805) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "lists"
+  add_foreign_key "lists", "users", column: "owner_id", on_delete: :nullify
   add_foreign_key "pending_invitations", "lists"
   add_foreign_key "sessions", "users"
   add_foreign_key "tasks", "categories"

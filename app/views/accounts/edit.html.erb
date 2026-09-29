@@ -36,6 +36,46 @@
 
   <% end %>
 
+  <%# ── Password ─────────────────────────────── %>
+  <section>
+    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Change Password</h2>
+    <%= form_with(model: @user, url: account_path, method: :patch, class: "space-y-2") do |form| %>
+      <%= form.password_field :current_password, id: "change_password_current_password", autocomplete: "current-password", required: true, placeholder: "Current password", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <%= form.password_field :password, id: "change_password_password", autocomplete: "new-password", required: true, minlength: 8, maxlength: 72, placeholder: "New password (8+ characters)", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <%= form.password_field :password_confirmation, id: "change_password_confirmation", autocomplete: "new-password", required: true, maxlength: 72, placeholder: "Repeat new password", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <p class="text-xs text-text-tertiary m-0">Changing your password signs you out on all other devices.</p>
+      <%= form.submit "Change Password", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+    <% end %>
+  </section>
+
+  <%# ── Sessions ─────────────────────────────── %>
+  <section>
+    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Signed-in Devices</h2>
+    <ul class="list-none p-0 m-0 space-y-2 mb-4">
+      <% active_sessions.each do |session| %>
+        <li id="<%= dom_id(session) %>" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
+          <i class="fa-solid fa-display text-text-tertiary w-5 text-center"></i>
+          <div class="min-w-0 flex-1">
+            <div class="text-sm text-text-secondary truncate"><%= session.device_description %></div>
+            <div class="text-xs text-text-tertiary truncate">
+              <%= session.ip_address %> · Active <%= session == Current.session ? "now" : "#{time_ago_in_words(session.last_active_at)} ago" %>
+            </div>
+          </div>
+          <% if session == Current.session %>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-600 font-semibold shrink-0">This device</span>
+          <% else %>
+            <%= button_to "Sign out", account_session_path(session), method: :delete, class: "shrink-0 text-xs text-red-400 hover:text-red-600 cursor-pointer bg-transparent border-none p-1" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+    <% if active_sessions.size > 1 %>
+      <%= button_to "Sign out all other devices", others_account_sessions_path, method: :delete,
+            data: { turbo_confirm: "Sign out on every other device?" },
+            class: "px-4 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer bg-surface-primary" %>
+    <% end %>
+  </section>
+
   <%# ── Theme ──────────────────────────────── %>
   <section>
     <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Theme</h2>

@@ -5,3 +5,7 @@ one:
 two:
   list_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
   user_id: <%= ActiveRecord::FixtureSet.identify(:two) %>
+
+two_on_one:
+  list_id: <%= ActiveRecord::FixtureSet.identify(:one) %>
+  user_id: <%= ActiveRecord::FixtureSet.identify(:two) %>

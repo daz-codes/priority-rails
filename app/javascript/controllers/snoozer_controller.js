@@ -1,70 +1,36 @@
 import { Controller } from "@hotwired/stimulus";
+import { patch } from "@rails/request.js";
 
 export default class extends Controller {
-  static targets = ["menu"];
+  static targets = ["backdrop", "modal"];
+  static values = { taskId: Number };
 
-  connect() {
-    this.clickOutsideHandler = this.handleClickOutside.bind(this);
-    this.mouseLeaveHandler = this.hideMenu.bind(this);
-    document.addEventListener("click", this.clickOutsideHandler);
-
-    this.taskRow = this.element.closest("li");
-    if (this.taskRow) {
-      this.taskRow.addEventListener("mouseleave", this.mouseLeaveHandler);
+  toggle(event) {
+    event.stopPropagation();
+    if (this.modalTarget.hidden) {
+      this.open();
+    } else {
+      this.close();
     }
   }
 
-  disconnect() {
-    document.removeEventListener("click", this.clickOutsideHandler);
-    if (this.taskRow) {
-      this.taskRow.removeEventListener("mouseleave", this.mouseLeaveHandler);
-    }
+  open() {
+    this.backdropTarget.hidden = false;
+    this.modalTarget.hidden = false;
   }
 
-  hideMenu() {
-    this.menuTarget.hidden = true;
-  }
-
-  handleClickOutside(event) {
-    if (!this.element.contains(event.target)) {
-      this.menuTarget.hidden = true;
-    }
-  }
-
-  toggle() {
-    const isHidden = this.menuTarget.hidden;
-    this.menuTarget.hidden = !isHidden;
-
-    if (isHidden) {
-      const rect = this.element.getBoundingClientRect();
-      const menu = this.menuTarget;
-
-      menu.style.position = "fixed";
-      menu.style.right = `${window.innerWidth - rect.right}px`;
-      menu.style.left = "auto";
-
-      menu.style.visibility = "hidden";
-      menu.hidden = false;
-      const menuHeight = menu.offsetHeight;
-      menu.style.visibility = "";
-
-      menu.style.top = `${rect.top - menuHeight}px`;
-    }
+  close() {
+    this.backdropTarget.hidden = true;
+    this.modalTarget.hidden = true;
   }
 
   select(event) {
-    const snoozedUntil = event.currentTarget.dataset.snoozerValue;
-    const id = this.element.dataset.taskId;
-    this.menuTarget.hidden = true;
-    fetch(`/tasks/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "text/vnd.turbo-stream.html",
-        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']")
-          .content,
-      },
+    const snoozedUntil = event.currentTarget.dataset.snoozeUntil;
+    this.close();
+    patch(`/tasks/${this.taskIdValue}`, {
       body: JSON.stringify({ task: { snoozed_until: snoozedUntil } }),
+      contentType: "application/json",
+      responseKind: "turbo-stream",
     });
   }
 }

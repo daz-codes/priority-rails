@@ -34,4 +34,38 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert_equal "new@example.com", @user.reload.email_address
   end
+
+  test "changing password requires the current password" do
+    patch account_url, params: { user: { password: "newpassword", password_confirmation: "newpassword" } }
+
+    assert_response :unprocessable_entity
+    assert @user.reload.authenticate("password")
+  end
+
+  test "the new password cannot be used to confirm itself" do
+    patch account_url, params: { user: { password: "newpassword", password_confirmation: "newpassword", current_password: "newpassword" } }
+
+    assert_response :unprocessable_entity
+    assert @user.reload.authenticate("password")
+  end
+
+  test "changing password signs out other devices but not this one" do
+    other = @user.sessions.create!
+
+    patch account_url, params: { user: { password: "newpassword", password_confirmation: "newpassword", current_password: "password" } }
+
+    assert_response :redirect
+    assert @user.reload.authenticate("newpassword")
+    assert_not Session.exists?(other.id)
+    get edit_account_url
+    assert_response :success
+  end
+
+  test "updating the name keeps other devices signed in" do
+    other = @user.sessions.create!
+
+    patch account_url, params: { user: { name: "Daz" } }
+
+    assert Session.exists?(other.id)
+  end
 end

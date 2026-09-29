@@ -12,16 +12,31 @@
   </section>
 
   <%# ── Members ───────────────────────────────── %>
+  <% owner = @list.owned_by?(Current.user) %>
   <section>
     <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Members</h2>
     <ul class="list-none p-0 m-0 space-y-2 mb-4">
       <% @list.users.each do |user| %>
-        <li class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
+        <li id="<%= dom_id(user, :member) %>" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
           <span class="size-8 rounded-full bg-sky-400 text-white flex items-center justify-center font-bold text-sm shrink-0"><%= (user.name.presence || user.email_address)[0].upcase %></span>
           <span class="text-sm text-text-secondary truncate"><%= user.name.presence || user.email_address %></span>
-          <% if user == Current.user %>
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-600 font-semibold ml-auto">You</span>
-          <% end %>
+          <span class="ml-auto flex items-center gap-2 shrink-0">
+            <% if @list.owned_by?(user) %>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-semibold">Owner</span>
+            <% end %>
+            <% if user == Current.user %>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-600 font-semibold">You</span>
+            <% elsif owner %>
+              <%= button_to "Make owner", transfer_list_membership_path(@list, user), method: :patch,
+                    data: { turbo_confirm: "Make #{user.name} the owner? You'll no longer be able to delete this list or remove members." },
+                    class: "text-xs text-text-tertiary hover:text-text-primary cursor-pointer bg-transparent border-none p-1" %>
+              <%= button_to list_membership_path(@list, user), method: :delete, title: "Remove from list",
+                    data: { turbo_confirm: "Remove #{user.name} from this list?" },
+                    class: "text-text-muted hover:text-red-400 cursor-pointer bg-transparent border-none p-1" do %>
+                <i class="fa-solid fa-xmark text-xs"></i>
+              <% end %>
+            <% end %>
+          </span>
         </li>
       <% end %>
       <% @list.pending_invitations.each do |invite| %>
@@ -78,8 +93,14 @@
   <div class="flex items-center justify-center gap-4">
     <%= link_to "Back to list", @list, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline", data: { escape_back: true } %>
     <span class="text-text-muted">|</span>
-    <%= button_to list_path(@list), method: :delete, class: "inline", data: { turbo_confirm: "Are you sure you want to delete this list and all its tasks?" } do %>
-      <span class="text-sm text-red-400 hover:text-red-600 cursor-pointer">Delete list</span>
+    <% if owner %>
+      <%= button_to list_path(@list), method: :delete, class: "inline", data: { turbo_confirm: "Are you sure you want to delete this list and all its tasks?" } do %>
+        <span class="text-sm text-red-400 hover:text-red-600 cursor-pointer">Delete list</span>
+      <% end %>
+    <% else %>
+      <%= button_to list_membership_path(@list, Current.user), method: :delete, class: "inline", data: { turbo_confirm: "Leave this list? You'll need a new invite to rejoin." } do %>
+        <span class="text-sm text-red-400 hover:text-red-600 cursor-pointer">Leave list</span>
+      <% end %>
     <% end %>
   </div>
 

@@ -7,7 +7,7 @@
   <div data-actions-menu-target="backdrop" class="fixed inset-0 bg-black/50 z-40" hidden data-action="click->actions-menu#close"></div>
 
   <%# Modal %>
-  <div data-actions-menu-target="modal" class="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm bg-surface-primary border border-border-primary rounded-xl shadow-lg z-50 overflow-hidden" hidden>
+  <div data-actions-menu-target="modal" class="<%= modal_classes %>" hidden>
 
     <%# Header %>
     <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">

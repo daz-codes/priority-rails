@@ -24,6 +24,31 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to list_url(List.last)
     assert_includes List.last.users, @user
+    assert_equal @user, List.last.owner
+  end
+
+  test "a member who isn't the owner cannot destroy the list" do
+    delete session_url
+    sign_in_as users(:two)
+
+    assert_no_difference("List.count") do
+      delete list_url(@list)
+    end
+
+    assert_redirected_to edit_list_url(@list)
+    assert_equal "Only the list owner can delete it.", flash[:alert]
+  end
+
+  test "settings show delete to the owner and leave to other members" do
+    get edit_list_url(@list)
+    assert_select "button", text: "Delete list"
+    assert_select "button", text: "Leave list", count: 0
+
+    delete session_url
+    sign_in_as users(:two)
+    get edit_list_url(@list)
+    assert_select "button", text: "Leave list"
+    assert_select "button", text: "Delete list", count: 0
   end
 
   test "inviting a new email creates one invitation and sends mail" do

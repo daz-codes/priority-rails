@@ -39,7 +39,7 @@ class ListsController < ApplicationController
   end
 
   def create
-    @list = Current.user.lists.create(list_params)
+    @list = Current.user.lists.create(list_params.merge(owner: Current.user))
     if @list.persisted?
       respond_to do |format|
         format.html { redirect_to @list, notice: "List was successfully created." }
@@ -93,6 +93,8 @@ class ListsController < ApplicationController
   end
 
   def destroy
+    return redirect_to(edit_list_path(@list), alert: "Only the list owner can delete it.") unless @list.owned_by?(Current.user)
+
     @list.destroy!
     redirect_to lists_path, status: :see_other, notice: "List was successfully destroyed."
   end

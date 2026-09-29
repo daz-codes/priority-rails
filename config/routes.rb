@@ -4,7 +4,11 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
-  resource :account, only: [ :edit, :update ]
+  resource :account, only: [ :edit, :update ] do
+    resources :sessions, only: :destroy, module: :account do
+      delete :others, on: :collection, action: :destroy_others
+    end
+  end
   resources :lists do
     member do
       get :snoozed
@@ -14,6 +18,9 @@ Rails.application.routes.draw do
     end
     resources :tasks, only: [ :create ]
     resources :categories, only: [ :create, :update, :destroy ]
+    resources :memberships, only: :destroy do
+      patch :transfer, on: :member
+    end
   end
   resources :tasks, only: [ :destroy, :edit, :update ] do
     collection do
