@@ -1,4 +1,4 @@
-<%= turbo_frame_tag "note_#{task.id}", hidden: true, data: { controller: "note-editor" } do %>
+<%= turbo_frame_tag "note_#{task.id}", hidden: !local_assigns[:open], data: { controller: "note-editor" } do %>
   <% if task.note.present? %>
     <div class="p-4 border border-border-primary rounded-lg bg-surface-secondary max-w-full overflow-hidden" data-note-editor-target="display">
         <%= task.note %>

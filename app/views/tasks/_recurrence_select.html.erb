@@ -1,6 +1,7 @@
 <div data-controller="recurrence" data-recurrence-task-id-value="<%= task.id %>" class="relative inline-block">
-  <button title="Recurrence" class="<%= task_button_classes %> <%= 'text-cyan-400' if task.recurring? %>" data-action="click->recurrence#toggle">
-    <i class="fa-solid fa-arrows-rotate"></i>
+  <% labelled = local_assigns[:labelled] %>
+  <button type="button" title="Recurrence" class="<%= labelled ? task_panel_button_classes : task_button_classes %> <%= 'text-cyan-400' if task.recurring? %>" data-action="click->recurrence#toggle">
+    <%= task_action_content "fa-arrows-rotate", (task.recurring? ? task.recurrence_label : "Recur"), labelled: labelled %>
   </button>
 
   <%# Backdrop %>

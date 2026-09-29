@@ -1,9 +1,8 @@
-<%= button_to "<i class='fa-solid fa-trash'></i>".html_safe,
-    task_path(task),
+<% labelled = local_assigns[:labelled] %>
+<%= button_to task_path(task),
     title: "Delete task",
     method: :delete,
-    form: { data: { actions_menu_target: "deleteForm" } },
-    data: {
-      turbo_frame: "_top"
-    },
-    class: "bg-transparent border-0 text-text-muted cursor-pointer p-0.5 text-sm hover:text-red-400 transition-all duration-100" %>
+    data: { turbo_frame: "_top" },
+    class: labelled ? "#{task_panel_button_classes} hover:text-red-500 hover:border-red-300" : "bg-transparent border-0 text-text-muted cursor-pointer p-0.5 text-sm hover:text-red-400 transition-all duration-100" do %>
+  <%= task_action_content "fa-trash", "Delete", labelled: labelled %>
+<% end %>

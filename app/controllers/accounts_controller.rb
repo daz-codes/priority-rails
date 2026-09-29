@@ -30,6 +30,6 @@ class AccountsController < ApplicationController
   end
 
   def account_params
-    params.require(:user).permit(:name, :email_address, :fat_finger_mode, :time_zone, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email_address, :time_zone, :password, :password_confirmation)
   end
 end

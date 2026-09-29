@@ -1,33 +1,47 @@
 <%= turbo_frame_tag "task_frame_#{@task.id}" do %>
-  <%= form_with(model: @task, id: :edit_task_form, class: "flex items-center w-full gap-2 px-2 py-1") do |form| %>
-    <% if @task.errors.any? %>
-      <div class="text-red-600">
-        <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-        <ul class="list-disc pl-5">
-          <% @task.errors.each do |error| %>
-            <li><%= error.full_message %></li>
+  <div class="py-2 space-y-3" data-task-panel>
+    <%# Complete + name %>
+    <div class="flex items-center gap-2">
+      <span class="shrink-0" data-controller="task" data-task-url-value="<%= task_path(@task) %>">
+        <%= check_box_tag "task_panel_checkbox_#{@task.id}", "1", @task.completed?, class: "task-checkbox", data: { action: "task#toggle" }, aria: { label: "Complete task" } %>
+      </span>
+      <%= form_with(model: @task, id: :edit_task_form, class: "flex flex-1 min-w-0 items-center gap-2") do |form| %>
+        <%= form.text_field :description, autofocus: true, class: "flex-1 min-w-0 p-2 border border-border-input rounded-xl outline-none text-base focus:border-sky-400 focus:ring-1 focus:ring-sky-400 bg-input-bg" %>
+        <div class="flex items-center gap-1 shrink-0">
+          <%= button_tag(type: "submit", class: "px-3 py-1.5 rounded-full bg-sky-400 text-white text-sm font-semibold hover:bg-sky-500 transition-all duration-100 cursor-pointer border-0") do %>
+            <i class="fa-solid fa-check text-xs"></i> Save
           <% end %>
-        </ul>
-      </div>
-    <% end %>
-    <%= form.text_field :description, class: "flex-1 min-w-0 p-2 border border-border-input rounded-xl outline-none text-base focus:border-sky-400 focus:ring-1 focus:ring-sky-400 bg-input-bg" %>
-    <div class="flex items-center gap-1 shrink-0">
-      <%= button_tag(type: "submit", class: "px-3 py-1.5 rounded-full bg-sky-400 text-white text-sm font-semibold hover:bg-sky-500 transition-all duration-100 cursor-pointer border-0") do %>
-        <i class="fa-solid fa-check text-xs"></i> Save
-      <% end %>
-      <%= link_to request.referer || @task.list, class: "px-3 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover transition-all duration-100 no-underline", data: { turbo_frame: "_top" } do %>
-        <i class="fa-solid fa-xmark text-xs"></i> Cancel
+          <%= link_to request.referer || @task.list, class: "px-3 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover transition-all duration-100 no-underline", data: { turbo_frame: "_top" } do %>
+            <i class="fa-solid fa-xmark text-xs"></i> Cancel
+          <% end %>
+        </div>
       <% end %>
     </div>
-  <% end %>
-
-  <% other_lists = Current.user.lists.where.not(id: @task.list_id).order(:name) %>
-  <% if other_lists.any? %>
-    <%= form_with url: move_task_path(@task), method: :patch, data: { turbo_frame: "_top" }, class: "flex items-center gap-2 px-2 pb-2" do |form| %>
-      <%= form.label :list_id, "Move to", for: "move_task_#{@task.id}_list_id", class: "text-xs text-text-tertiary shrink-0" %>
-      <%= form.select :list_id, other_lists.map { |l| [ l.name, l.id ] }, {}, id: "move_task_#{@task.id}_list_id",
-            class: "flex-1 min-w-0 px-2 py-1 border border-border-input rounded-lg text-sm bg-input-bg" %>
-      <%= form.submit "Move", class: "px-3 py-1 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover cursor-pointer bg-surface-primary" %>
+    <% if @task.errors.any? %>
+      <div class="text-sm text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-300 rounded-lg px-4 py-2.5"><%= @task.errors.full_messages.to_sentence %></div>
     <% end %>
-  <% end %>
+
+    <%# Actions %>
+    <div class="flex flex-wrap items-center gap-2">
+      <% unless @task.completed? %>
+        <%= render @task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: @task, labelled: true %>
+        <%= render "tasks/recurrence_select", task: @task, labelled: true %>
+      <% end %>
+      <%= render "tasks/delete_button", task: @task, labelled: true %>
+    </div>
+
+    <%# Notes %>
+    <%= render "tasks/note", task: @task, open: true %>
+
+    <%# Move %>
+    <% other_lists = Current.user.lists.where.not(id: @task.list_id).order(:name) %>
+    <% if other_lists.any? %>
+      <%= form_with url: move_task_path(@task), method: :patch, data: { turbo_frame: "_top" }, class: "flex items-center gap-2" do |form| %>
+        <%= form.label :list_id, "Move to", for: "move_task_#{@task.id}_list_id", class: "text-sm text-text-tertiary shrink-0" %>
+        <%= form.select :list_id, other_lists.map { |l| [ l.name, l.id ] }, {}, id: "move_task_#{@task.id}_list_id",
+              class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-sm bg-input-bg" %>
+        <%= form.submit "Move", class: task_panel_button_classes %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>

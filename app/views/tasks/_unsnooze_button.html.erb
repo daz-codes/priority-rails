@@ -1,7 +1,8 @@
-<%= button_to "<i class='fa-solid fa-clock-rotate-left'></i>".html_safe,
-    task_path(task),
+<% labelled = local_assigns[:labelled] %>
+<%= button_to task_path(task),
     method: :patch,
     params: { task: { snoozed_until: nil } },
     title: "Unsnooze task",
-    form: { data: { actions_menu_target: "unsnoozeForm" } },
-    class: task_button_classes %>
+    class: labelled ? task_panel_button_classes : task_button_classes do %>
+  <%= task_action_content "fa-clock-rotate-left", "Unsnooze", labelled: labelled %>
+<% end %>

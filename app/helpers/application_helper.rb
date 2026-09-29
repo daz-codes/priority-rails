@@ -36,6 +36,17 @@ module ApplicationHelper
     "bg-transparent border-0 text-text-muted cursor-pointer p-0.5 text-sm hover:text-text-secondary transition-all duration-100"
   end
 
+  # Labelled, tap-sized version of the task action buttons, used in the expanded task panel
+  def task_panel_button_classes
+    "inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-input bg-surface-primary text-sm font-semibold " \
+      "text-text-secondary cursor-pointer hover:bg-surface-hover hover:text-text-primary transition-all duration-100"
+  end
+
+  # Icon-only in the task row, icon plus label when `labelled` (the expanded panel)
+  def task_action_content(icon, label, labelled:)
+    safe_join([ tag.i(class: "fa-solid #{icon}"), (tag.span(label) if labelled) ].compact)
+  end
+
   TAB_COLORS = {
     "sky"     => { active: "bg-sky-100 text-sky-700 border border-sky-300 dark:bg-sky-900 dark:text-sky-200 dark:border-sky-700",
                    hover: "hover:bg-sky-50 dark:hover:bg-sky-950" },

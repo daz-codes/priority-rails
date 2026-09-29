@@ -1,6 +1,7 @@
 <div data-controller="snoozer" data-snoozer-task-id-value="<%= task.id %>" class="relative inline-block">
-  <button title="Snooze" class="<%= task_button_classes %>" data-action="click->snoozer#toggle">
-    <i class="fa-solid fa-clock"></i>
+  <% labelled = local_assigns[:labelled] %>
+  <button type="button" title="Snooze" class="<%= labelled ? task_panel_button_classes : task_button_classes %>" data-action="click->snoozer#toggle">
+    <%= task_action_content "fa-clock", "Snooze", labelled: labelled %>
   </button>
 
   <%# Backdrop %>
