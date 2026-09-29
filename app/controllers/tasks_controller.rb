@@ -4,6 +4,7 @@ class TasksController < ApplicationController
   def create
     @list = Current.user.lists.find(params[:list_id])
     @task = @list.tasks.build(task_params)
+    @task.apply_category_hashtag
     @task.category_id ||= default_category_id(@list)
 
     if @task.save

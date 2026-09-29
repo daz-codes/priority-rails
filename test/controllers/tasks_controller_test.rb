@@ -16,6 +16,21 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to list_url(@list)
   end
 
+  test "quick add hashtag sets the category" do
+    post list_tasks_url(@list), params: { task: { description: "Buy milk #home" } }
+
+    task = @list.tasks.last
+    assert_equal "Buy milk", task.description
+    assert_equal categories(:one), task.category
+  end
+
+  test "a task that is only a hashtag is rejected as blank" do
+    assert_no_difference("Task.count") do
+      post list_tasks_url(@list), params: { task: { description: "#home" } }
+    end
+    assert_equal "Description can't be blank", flash[:alert]
+  end
+
   test "creating a blank task redirects back with an error" do
     assert_no_difference("Task.count") do
       post list_tasks_url(@list), params: { task: { description: "" } }

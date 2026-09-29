@@ -46,6 +46,20 @@
     </div>
   </div>
 
+  <h2 class="text-xl font-heading font-bold text-center">Quick Add</h2>
+
+  <div class="space-y-2 text-text-secondary text-sm">
+    <p class="m-0">
+      Add <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-surface-secondary text-text-primary">#category</code>
+      anywhere in a new task to file it under that category, e.g.
+      <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-surface-secondary text-text-primary">Buy milk #home</code>.
+    </p>
+    <p class="m-0 text-text-tertiary">
+      Case, spaces and dashes don't matter, so <code class="font-mono text-xs">#sideproject</code> matches "Side project".
+      Tags that don't match a category are left in the task name.
+    </p>
+  </div>
+
   <div class="flex items-center justify-center">
     <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
   </div>

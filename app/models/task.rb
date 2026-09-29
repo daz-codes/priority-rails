@@ -7,6 +7,8 @@ class Task < ApplicationRecord
 
   # validations
   RECURRENCE_TYPES = %w[daily weekly monthly yearly].freeze
+  # A #tag at the start of the text or after whitespace, so "C#" and "issue#42" are left alone
+  HASHTAG = /(?<!\S)#([[:alnum:]_-]+)/
   RESTORE_WINDOW = 10.minutes
   RESTORABLE_ATTRIBUTES = %w[id list_id category_id description position completed_on snoozed_until
                              recurrence_type recurrence_day recurrence_month created_at].freeze
@@ -70,6 +72,20 @@ class Task < ApplicationRecord
   end
 
   # methods
+  # Quick-add: "Buy milk #home" files the task under the list's Home category and drops the tag.
+  # Tags that don't match a category are left in the text.
+  def apply_category_hashtag
+    categories = list.categories.index_by { |category| Category.hashtag_key(category.name) }
+
+    description.to_s.scan(HASHTAG).flatten.each do |tag|
+      next unless (category = categories[Category.hashtag_key(tag)])
+
+      self.category = category
+      self.description = description.sub(/(?<!\S)##{Regexp.escape(tag)}(?!\S)/, "").squish
+      break
+    end
+  end
+
   def move_to(new_list)
     assign_list(new_list)
     save!

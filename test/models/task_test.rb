@@ -66,6 +66,56 @@ class TaskTest < ActiveSupport::TestCase
     end
   end
 
+  def quick_add(text)
+    lists(:one).tasks.build(description: text).tap(&:apply_category_hashtag)
+  end
+
+  test "a hashtag sets the category and is removed from the description" do
+    task = quick_add("Buy milk #home")
+
+    assert_equal categories(:one), task.category
+    assert_equal "Buy milk", task.description
+  end
+
+  test "hashtags match case-insensitively and anywhere in the text" do
+    task = quick_add("Call #WORK about the invoice")
+
+    assert_equal categories(:two), task.category
+    assert_equal "Call about the invoice", task.description
+  end
+
+  test "hashtags ignore spaces and punctuation in category names" do
+    side = lists(:one).categories.create!(name: "Side project")
+
+    assert_equal side, quick_add("Ship it #side-project").category
+    assert_equal side, quick_add("Ship it #SideProject").category
+  end
+
+  test "unknown hashtags are left in the text" do
+    task = quick_add("Book #2 appointment")
+
+    assert_nil task.category
+    assert_equal "Book #2 appointment", task.description
+  end
+
+  test "the first matching hashtag wins and other tags stay" do
+    task = quick_add("Tidy #garage #home #work")
+
+    assert_equal categories(:one), task.category
+    assert_equal "Tidy #garage #work", task.description
+  end
+
+  test "a # inside a word is not a tag" do
+    task = quick_add("Learn C#home and issue#work")
+
+    assert_nil task.category
+    assert_equal "Learn C#home and issue#work", task.description
+  end
+
+  test "only categories from the task's own list match" do
+    assert_nil lists(:two).tasks.build(description: "Thing #home").tap(&:apply_category_hashtag).category
+  end
+
   test "recurrence month must be a real month" do
     task = tasks(:one)
     task.recurrence_type = "yearly"
