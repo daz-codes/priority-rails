@@ -3,12 +3,17 @@
 <%= turbo_stream_from @list %>
 <% highlight_id = params[:highlight].to_i if params[:highlight] %>
 
-<section class="min-w-0 overflow-hidden">
-<%= render "title" %>
-<%= render "tabs" %>
-<%= render "progress", done: @done_today, total: @done_today + @still_to_do unless @priority %>
-<%= render "category_filters" unless @priority || @list.categories.none? %>
-<%= render "task_form" unless @priority %>
+<%# Focus mode shows only the tasks; the layout hides the menu button too %>
+<% content_for :focus_mode, "true" if @priority %>
+
+<section class="min-w-0 overflow-hidden <%= 'pt-6' if @priority %>">
+<% unless @priority %>
+  <%= render "tabs" %>
+  <%= render "title" %>
+  <%= render "progress", done: @done_today, total: @done_today + @still_to_do %>
+  <%= render "category_filters" unless @list.categories.none? %>
+  <%= render "task_form" %>
+<% end %>
 
 <% if @filter == "completed" %>
 <div id="tasks">
@@ -28,5 +33,10 @@
     <% end %>
 <% else %>
   <p id="tasks" class="text-center text-brand-grey px-4">No tasks yet!</p>
+<% end %>
+
+<% if @priority %>
+  <%= link_to "Back to inbox", list_path(@list), data: { escape_back: true },
+        class: "block w-fit mx-auto mt-8 text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
 <% end %>
 </section>

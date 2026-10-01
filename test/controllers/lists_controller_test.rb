@@ -95,10 +95,22 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     assert_select "#today_progress", text: /1 of 2 done today/
   end
 
-  test "focus mode has no progress bar" do
+  test "focus mode shows only the tasks and a way back" do
     get list_url(@list, list: "priority")
 
     assert_select "#today_progress", count: 0
+    assert_select "#list_actions", count: 0
+    assert_select "#new_task_form", count: 0
+    assert_select "[data-menu-toggle]", count: 0
+    assert_select "h1", text: @list.name, count: 0
+    assert_select "a[data-escape-back][href='#{list_path(@list)}']", text: "Back to inbox"
+  end
+
+  test "inbox shows the tabs above the list title" do
+    get list_url(@list)
+
+    assert_match(/id="list_actions".*<h1/m, response.body)
+    assert_select "[data-menu-toggle]"
   end
 
   test "should get edit" do

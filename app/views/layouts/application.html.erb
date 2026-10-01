@@ -31,7 +31,7 @@
   </head>
 
   <body class="font-body text-text-primary bg-surface-primary max-w-[100vw] overflow-x-hidden" @import="behaviors/keyboard">
-    <% if authenticated? %>
+    <% if authenticated? && !content_for?(:focus_mode) %>
       <header class="px-4 pt-3 flex justify-center">
         <%= render "lists/menu" %>
       </header>
