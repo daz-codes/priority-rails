@@ -6,7 +6,7 @@
 <section class="min-w-0 overflow-hidden">
 <%= render "title" %>
 <%= render "tabs" %>
-<% unless @priority %><hr class="border-border-primary mb-4"><% end %>
+<%= render "progress", done: @done_today, total: @done_today + @still_to_do unless @priority %>
 <%= render "category_filters" unless @priority || @list.categories.none? %>
 <%= render "task_form" unless @priority %>
 
@@ -22,7 +22,7 @@
 </div>
 <% elsif @tasks.any? %>
     <%= tag.ul id: "tasks",
-        class: class_names("p-1 list-none", "border-4 border-sky-400 rounded-lg p-4 space-y-4": @filter == "priority"),
+        class: class_names("p-1 list-none", "focus-list": @priority),
         data: (@filter ? {} : { he_import: "behaviors/sortable", sort_url: sort_tasks_path }) do %>
         <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: flash[:highlight] } %>
     <% end %>

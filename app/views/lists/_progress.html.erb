@@ -1,0 +1,21 @@
+<%# Today's progress through the inbox: tasks completed today out of today's total (snoozed tasks don't count) %>
+<% percent = total.zero? ? 0 : (done * 100.0 / total).round %>
+<div id="today_progress" class="mb-4">
+  <div class="h-3 rounded-full bg-border-secondary overflow-hidden"
+       role="progressbar" aria-label="Tasks done today" aria-valuemin="0" aria-valuemax="<%= total %>" aria-valuenow="<%= done %>">
+    <div class="h-full rounded-full bg-gradient-to-r from-emerald-400 via-sky-400 to-violet-500 transition-[width] duration-500 ease-out"
+         style="width: <%= percent %>%"></div>
+  </div>
+  <div class="mt-1.5 flex justify-between text-[11px] font-black uppercase tracking-wider text-text-tertiary">
+    <span>
+      <% if total.zero? %>
+        Nothing on the list today
+      <% elsif done == total %>
+        All done today!
+      <% else %>
+        <%= done %> of <%= total %> done today
+      <% end %>
+    </span>
+    <span><%= percent %>%</span>
+  </div>
+</div>

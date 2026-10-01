@@ -3,6 +3,7 @@
     data-id="<%= task.id %>"
     @data="{ noteOpen: false }"
     @animationend.self="$el.classList.remove('animate-highlight')"
+    style="<%= "--category-color: #{task.category.color}" if task.category %>"
     class="group m-0 border-b border-dotted border-border-primary <%= @priority ? 'p-3' : 'p-0' %><%= highlight_class(task.id, highlight) %>">
   <%= turbo_frame_tag "task_frame_#{task.id}" do %>
     <div class="flex items-center w-full cursor-move">
@@ -13,10 +14,10 @@
       <div class="flex-grow min-w-0 <%= 'opacity-50' if task.completed? %>">
         <% strike_color = task.category&.color || "#a5f3fc" %>
         <%= link_to task.description, edit_task_path(task),
-            class: "text-base no-underline text-text-primary block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}",
+            class: "task-title text-base no-underline text-text-primary block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}",
             style: (task.completed? ? "--strike-color: #{strike_color}" : nil) %>
         <% unless @priority %>
-          <div class="text-xs text-text-tertiary italic">
+          <div class="task-meta text-xs text-text-tertiary italic">
             <%= "Snoozed #{snooze_time(task)}" if task.snoozed? %>
             <%= "Completed #{time_ago_in_words(task.completed_on)} ago" if task.completed? %>
             <% if task.recurring? %>
@@ -43,6 +44,10 @@
             </div>
           <% end %>
         </div>
+      <% end %>
+
+      <% if @priority && local_assigns[:task_counter] %>
+        <span class="focus-rank" aria-hidden="true"><%= task_counter + 1 %></span>
       <% end %>
     </div>
 

@@ -1,4 +1,5 @@
-<%= form_with model: task, class: "inline-block" do |f| %>
+<%# _top: the row outside this task's frame also shows the category colour %>
+<%= form_with model: task, class: "inline-block", data: { turbo_frame: "_top" } do |f| %>
     <% categories = task.list.categories %>
     <% current_color = task.category&.color || "#e5e7eb" %>
     <% text_color = darken_color(current_color) %>

@@ -32,6 +32,8 @@ class ListsController < ApplicationController
     @tasks = @tasks.where(category_id: @category_ids) if @category_ids.any?
     @tasks = @tasks.includes(:category, :rich_text_note)
     @completed_years = @list.tasks.completed_years if @filter == "completed"
+    @done_today = @list.tasks.where(completed_on: Date.current.all_day).count
+    @still_to_do = @list.tasks.unsnoozed.where(completed_on: nil).count
   end
 
   def new

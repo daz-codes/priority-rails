@@ -1,0 +1,240 @@
+/*
+  Experimental "bold" theme, loosely inspired by Fizzy (github.com/basecamp/fizzy):
+  heavy black-weight type, uppercase micro-labels, vivid OKLCH colours, and task rows
+  tinted by their category like Fizzy's cards. Remove the @import in application.css to revert.
+*/
+
+@theme {
+  /* Vivid palettes (Fizzy-style OKLCH) replacing Tailwind's softer defaults app-wide */
+  --color-sky-50: oklch(97% 0.020 258);
+  --color-sky-100: oklch(93% 0.050 258);
+  --color-sky-200: oklch(87% 0.090 258);
+  --color-sky-300: oklch(79% 0.140 258);
+  --color-sky-400: oklch(67% 0.200 258);
+  --color-sky-500: oklch(58% 0.200 258);
+  --color-sky-600: oklch(51% 0.190 258);
+  --color-sky-700: oklch(43% 0.160 258);
+  --color-sky-800: oklch(36% 0.130 258);
+  --color-sky-900: oklch(29% 0.100 258);
+  --color-sky-950: oklch(22% 0.070 258);
+  --color-emerald-50: oklch(97% 0.020 148);
+  --color-emerald-100: oklch(93% 0.050 148);
+  --color-emerald-200: oklch(87% 0.090 148);
+  --color-emerald-300: oklch(79% 0.140 148);
+  --color-emerald-400: oklch(67% 0.200 148);
+  --color-emerald-500: oklch(58% 0.200 148);
+  --color-emerald-600: oklch(51% 0.190 148);
+  --color-emerald-700: oklch(43% 0.160 148);
+  --color-emerald-800: oklch(36% 0.130 148);
+  --color-emerald-900: oklch(29% 0.100 148);
+  --color-emerald-950: oklch(22% 0.070 148);
+  --color-amber-50: oklch(97% 0.023 72);
+  --color-amber-100: oklch(93% 0.057 72);
+  --color-amber-200: oklch(87% 0.103 72);
+  --color-amber-300: oklch(79% 0.161 72);
+  --color-amber-400: oklch(67% 0.230 72);
+  --color-amber-500: oklch(58% 0.200 72);
+  --color-amber-600: oklch(51% 0.190 72);
+  --color-amber-700: oklch(43% 0.160 72);
+  --color-amber-800: oklch(36% 0.130 72);
+  --color-amber-900: oklch(29% 0.100 72);
+  --color-amber-950: oklch(22% 0.070 72);
+  --color-red-50: oklch(97% 0.020 30);
+  --color-red-100: oklch(93% 0.050 30);
+  --color-red-200: oklch(87% 0.090 30);
+  --color-red-300: oklch(79% 0.140 30);
+  --color-red-400: oklch(67% 0.200 30);
+  --color-red-500: oklch(58% 0.200 30);
+  --color-red-600: oklch(51% 0.190 30);
+  --color-red-700: oklch(43% 0.160 30);
+  --color-red-800: oklch(36% 0.130 30);
+  --color-red-900: oklch(29% 0.100 30);
+  --color-red-950: oklch(22% 0.070 30);
+}
+
+:root {
+  --ink: oklch(26% 0.05 264);
+  --accent: oklch(67% 0.2 258);
+  --text-primary: var(--ink);
+  --text-secondary: oklch(40% 0.026 262);
+  --text-tertiary: oklch(56% 0.014 260);
+  --surface-secondary: oklch(97% 0.008 258);
+  --surface-hover: oklch(95% 0.03 258);
+  --border-input: oklch(84% 0.02 258);
+  --strike-color-default: oklch(85% 0.14 200);
+  --highlight-color: oklch(92% 0.2 125);
+}
+
+.dark {
+  --ink: oklch(96% 0.01 258);
+  --surface-primary: oklch(20% 0.03 264);
+  --surface-secondary: oklch(24% 0.035 264);
+  --surface-hover: oklch(28% 0.05 260);
+  --text-primary: var(--ink);
+  --text-secondary: oklch(80% 0.02 260);
+  --text-tertiary: oklch(66% 0.02 260);
+  --border-input: oklch(38% 0.04 262);
+  --border-primary: oklch(32% 0.035 262);
+  --input-bg: oklch(24% 0.035 264);
+}
+
+/* ── Type ─────────────────────────────────────────── */
+/* Plain (unlayered) rules, so they win over the font utilities defined in application.css */
+:root { --font-mono-bold: ui-monospace, "SF Mono", Menlo, monospace; }
+
+body, .font-body, .font-heading, .font-brand {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  font-weight: 500;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-heading {
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+.font-brand {
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
+}
+
+h1.font-heading { line-height: 1; }
+
+button, input[type="submit"], .rounded-full.font-semibold {
+  font-weight: 800;
+}
+
+/* Tabs and pills become uppercase black-weight micro-labels */
+#list_actions a,
+.category-pill,
+.category-select {
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#list_actions a { font-size: 0.75rem; }
+
+/* The main "add" action as a solid accent button */
+#new_task_form input[type="submit"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+
+#new_task_form input[type="submit"]:hover { filter: brightness(0.92); }
+
+/* ── Task rows as tinted cards ────────────────────── */
+#tasks li[id^="task_"] {
+  --card-color: var(--category-color, var(--accent));
+  background: color-mix(in oklch, var(--card-color) 14%, var(--surface-primary));
+  border: 0;
+  border-inline-start: 6px solid var(--card-color);
+  border-radius: 0.9rem;
+  margin-block: 0.45rem;
+  padding: 0.3rem 0.75rem 0.3rem 0.35rem;
+  transition: background-color 150ms ease-out, scale 150ms ease-out;
+}
+
+/* Fixed row height: ticking hides the action icons (desktop) and adds the "Completed…" line
+   (mobile), which would otherwise make the row jump */
+#tasks li[id^="task_"] > turbo-frame > .cursor-move {
+  min-height: 3.2rem;
+}
+
+#tasks li[id^="task_"]:hover {
+  background: color-mix(in oklch, var(--card-color) 24%, var(--surface-primary));
+}
+
+#tasks li.keyboard-selected {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.task-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: color-mix(in oklch, var(--card-color, var(--accent)) 25%, var(--ink));
+}
+
+.task-meta {
+  font-family: var(--font-mono-bold);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--card-color, var(--accent)) 45%, var(--text-tertiary));
+}
+
+/* Chunkier tick circles: thick ink ring, solid green when done. Both states use the same circle
+   (r=44, 9-unit ring) so ticking never changes its size */
+.task-checkbox {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='white' stroke='%23293145' stroke-width='9'/%3E%3C/svg%3E");
+}
+
+.task-checkbox:checked {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='%2322b14c' stroke='%2322b14c' stroke-width='9'/%3E%3Cpath fill='none' stroke='white' stroke-width='12' stroke-linecap='round' stroke-linejoin='round' d='M28 52l15 15 30-34'/%3E%3C/svg%3E");
+}
+
+.dark .task-checkbox {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='none' stroke='%23c9d3ea' stroke-width='9'/%3E%3C/svg%3E");
+}
+
+.dark .task-checkbox:checked {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='%2322b14c' stroke='%2322b14c' stroke-width='9'/%3E%3Cpath fill='none' stroke='white' stroke-width='12' stroke-linecap='round' stroke-linejoin='round' d='M28 52l15 15 30-34'/%3E%3C/svg%3E");
+}
+
+/* ── Focus mode ───────────────────────────────────── */
+/* Bigger cards in their category's full colour */
+#tasks.focus-list li[id^="task_"] {
+  background: var(--card-color);
+  border-inline-start-width: 0;
+  border-radius: 1.25rem;
+  margin-block: 0.9rem;
+  padding: 1.1rem 1.25rem;
+  box-shadow: 0 0.4rem 1.2rem color-mix(in oklch, var(--card-color) 45%, transparent);
+}
+
+#tasks.focus-list li[id^="task_"]:hover {
+  background: color-mix(in oklch, var(--card-color) 88%, var(--ink));
+}
+
+#tasks.focus-list .task-title {
+  color: oklch(26% 0.05 264);
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+}
+
+/* Huge black-weight rank numbers, after Fizzy's numbered bubbles */
+.focus-rank {
+  color: oklch(26% 0.05 264);
+  flex-shrink: 0;
+  font-size: 3.25rem;
+  font-weight: 900;
+  letter-spacing: -0.06em;
+  line-height: 1;
+  margin-inline-start: 0.75rem;
+  min-width: 2.75rem;
+  opacity: 0.85;
+  text-align: center;
+}
+
+
+@media (max-width: 639px) {
+  .focus-rank { font-size: 2.5rem; min-width: 2.1rem; }
+  #tasks.focus-list .task-title { font-size: 1.25rem; }
+}
+
+/* Full-colour focus cards are light in both themes, so keep the dark ink ring in dark mode */
+.dark #tasks.focus-list .task-checkbox:not(:checked) {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='white' stroke='%23293145' stroke-width='9'/%3E%3C/svg%3E");
+}

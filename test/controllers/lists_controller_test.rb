@@ -82,6 +82,25 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "inbox shows today's progress, ignoring snoozed tasks" do
+    @list.tasks.destroy_all
+    @list.tasks.create!(description: "Done today", completed: true)
+    @list.tasks.create!(description: "Done last week", completed_on: 8.days.ago)
+    @list.tasks.create!(description: "Still to do")
+    @list.tasks.create!(description: "Snoozed", snoozed_until: 1.day.from_now)
+
+    get list_url(@list)
+
+    assert_select "#today_progress [role=progressbar][aria-valuenow='1'][aria-valuemax='2']"
+    assert_select "#today_progress", text: /1 of 2 done today/
+  end
+
+  test "focus mode has no progress bar" do
+    get list_url(@list, list: "priority")
+
+    assert_select "#today_progress", count: 0
+  end
+
   test "should get edit" do
     get edit_list_url(@list)
     assert_response :success

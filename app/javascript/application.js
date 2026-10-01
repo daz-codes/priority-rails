@@ -9,10 +9,13 @@ helium({
   isDarkTheme,
   toggleTheme,
 
-  // Recolour the category pill straight away, then save the choice
+  // Recolour the category pill and its task row straight away, then save the choice
   chooseCategory(select) {
     const option = select.options[select.selectedIndex]
-    if (option?.dataset.color) select.style.backgroundColor = option.dataset.color
+    if (option?.dataset.color) {
+      select.style.backgroundColor = option.dataset.color
+      select.closest("li")?.style.setProperty("--category-color", option.dataset.color)
+    }
     if (option?.dataset.textColor) select.style.color = option.dataset.textColor
     select.form.requestSubmit()
   },
