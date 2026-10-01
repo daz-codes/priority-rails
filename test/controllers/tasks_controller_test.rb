@@ -110,13 +110,13 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal destination.categories.find_by(name: home.name), @task.category
   end
 
-  test "moving falls back to the destination's first category when names don't match" do
+  test "moving falls back to the destination's default category when names don't match" do
     destination = @user.lists.create!(name: "Other", owner: @user)
     @task.update!(category: @list.categories.create!(name: "Errands"))
 
     patch move_task_url(@task), params: { list_id: destination.id }
 
-    assert_equal destination.categories.first, @task.reload.category
+    assert_equal destination.default_category, @task.reload.category
   end
 
   test "moved tasks go to the end of the destination list" do
@@ -133,6 +133,14 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :not_found
     assert_equal @list, @task.reload.list
+  end
+
+  test "JSON updates from Helium refresh the page instead of redirecting" do
+    patch task_url(@task), params: { task: { snoozed_until: 1.day.from_now } }, as: :json
+
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_select "turbo-stream[action=refresh]:not([request-id])"
   end
 
   test "completing a task doesn't show a toast" do

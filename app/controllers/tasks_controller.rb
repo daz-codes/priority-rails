@@ -5,7 +5,7 @@ class TasksController < ApplicationController
     @list = Current.user.lists.find(params[:list_id])
     @task = @list.tasks.build(task_params)
     @task.apply_category_hashtag
-    @task.category_id ||= default_category_id(@list)
+    @task.category ||= @list.category_for_new_tasks
 
     if @task.save
       redirect_to list_path(@list), flash: { highlight: @task.id }
@@ -25,6 +25,10 @@ class TasksController < ApplicationController
     if @task.save
       if @task.list != source && request.format.turbo_stream?
         render turbo_stream: moved_streams(source)
+      elsif request.media_type == Mime[:json].to_s
+        # A Helium $patch (checkbox, snooze, recurrence): refresh this tab now. A redirect would be
+        # followed as another PATCH, and the broadcast refresh this coincides with is debounced into it.
+        render turbo_stream: turbo_stream.refresh(request_id: nil)
       else
         redirect_back fallback_location: source
       end
@@ -98,9 +102,5 @@ class TasksController < ApplicationController
 
   def toast(message, undo: nil)
     turbo_stream.update("toasts", partial: "toasts/toast", locals: { message: message, undo: undo })
-  end
-
-  def default_category_id(list)
-    list.categories.find_by(name: "Work")&.id || list.categories.first&.id
   end
 end

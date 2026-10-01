@@ -3,9 +3,11 @@ class List < ApplicationRecord
   has_and_belongs_to_many :users
   has_many :tasks, dependent: :destroy
   has_many :categories, dependent: :destroy
+  belongs_to :default_category, class_name: "Category", optional: true
   has_many :pending_invitations, dependent: :destroy
   validates :name, presence: true
   validates :completed_display, inclusion: { in: %w[never 1_day 3_days 1_week forever] }
+  validate :default_category_belongs_to_list
   after_create :assign_default_categories
 
   broadcasts_refreshes
@@ -19,6 +21,9 @@ class List < ApplicationRecord
   ].freeze
 
   def owned_by?(user) = owner_id == user.id
+
+  # The category new tasks get when none is given
+  def category_for_new_tasks = default_category || categories.first
 
   def active_tasks
     base = tasks.unsnoozed.where(completed_on: nil).ordered
@@ -41,5 +46,12 @@ class List < ApplicationRecord
       { name: "Hobbies", color: "#d9f99d" } ].each do |attrs|
       categories.create!(attrs)
     end
+    update!(default_category: categories.find_by(name: "Work"))
+  end
+
+  def default_category_belongs_to_list
+    return if default_category.nil? || default_category.list_id == id
+
+    errors.add(:default_category, "must be one of this list's categories")
   end
 end

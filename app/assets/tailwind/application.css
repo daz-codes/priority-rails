@@ -73,7 +73,7 @@
 }
 
 @keyframes toast {
-  0% { opacity: 0; transform: translateY(1rem); }
+  0% { opacity: 0; transform: translateY(-1rem); }
   4%, 90% { opacity: 1; transform: none; }
   100% { opacity: 0; visibility: hidden; }
 }

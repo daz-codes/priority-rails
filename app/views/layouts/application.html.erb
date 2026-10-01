@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-controller="theme">
+<html>
   <head>
     <title><%= content_for(:title) || "Priority" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -30,7 +30,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="font-body text-text-primary bg-surface-primary max-w-[100vw] overflow-x-hidden" data-controller="keyboard">
+  <body class="font-body text-text-primary bg-surface-primary max-w-[100vw] overflow-x-hidden" @import="behaviors/keyboard">
     <% if authenticated? %>
       <header class="px-4 pt-3 flex justify-center">
         <%= render "lists/menu" %>
@@ -38,7 +38,7 @@
     <% end %>
 
     <% if authenticated? %>
-      <div id="toasts" class="fixed inset-0 flex items-center justify-center px-4 z-50 pointer-events-none"></div>
+      <div id="toasts" class="fixed top-4 inset-x-4 flex justify-end z-50 pointer-events-none"></div>
     <% end %>
 
     <main class="max-w-2xl mx-auto w-full px-4 pt-2 overflow-hidden">

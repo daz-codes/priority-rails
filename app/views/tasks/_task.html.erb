@@ -1,13 +1,14 @@
 <% highlight = local_assigns[:highlight] %>
 <li id="<%= dom_id(task) %>"
     data-id="<%= task.id %>"
+    @data="{ noteOpen: false }"
+    @animationend.self="$el.classList.remove('animate-highlight')"
     class="group m-0 border-b border-dotted border-border-primary <%= @priority ? 'p-3' : 'p-0' %><%= highlight_class(task.id, highlight) %>">
   <%= turbo_frame_tag "task_frame_#{task.id}" do %>
-    <div class="flex items-center w-full cursor-move"
-         data-controller="task"
-         data-task-url-value="<%= task_path(task) %>">
+    <div class="flex items-center w-full cursor-move">
 
-      <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, class: "task-checkbox", data: { action: "task#toggle" } %>
+      <%= check_box_tag "task_checkbox_#{task.id}", "1", task.completed?, class: "task-checkbox",
+            data: { he_change: "$patch('#{task_path(task)}', { task: { completed: $el.checked } })" } %>
 
       <div class="flex-grow min-w-0 <%= 'opacity-50' if task.completed? %>">
         <% strike_color = task.category&.color || "#a5f3fc" %>

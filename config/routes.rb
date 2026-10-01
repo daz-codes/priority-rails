@@ -18,7 +18,9 @@ Rails.application.routes.draw do
       get "completed/:year", to: "lists#completed_year", as: :completed_year
     end
     resources :tasks, only: [ :create ]
-    resources :categories, only: [ :create, :update, :destroy ]
+    resources :categories, only: [ :create, :update, :destroy ] do
+      patch :make_default, on: :member
+    end
     resources :invitations, only: :destroy do
       post :resend, on: :member
     end

@@ -1,19 +1,19 @@
-<div data-controller="snoozer" data-snoozer-task-id-value="<%= task.id %>" class="relative inline-block">
+<div @data="{ open: false }" class="relative inline-block">
   <% labelled = local_assigns[:labelled] %>
-  <button type="button" title="Snooze" class="<%= labelled ? task_panel_button_classes : task_button_classes %>" data-action="click->snoozer#toggle">
+  <button type="button" title="Snooze" class="<%= labelled ? task_panel_button_classes : task_button_classes %>" @click="open = !open">
     <%= task_action_content "fa-clock", "Snooze", labelled: labelled %>
   </button>
 
   <%# Backdrop %>
-  <div data-snoozer-target="backdrop" class="fixed inset-0 bg-black/50 z-40" hidden data-action="click->snoozer#close"></div>
+  <div class="fixed inset-0 bg-black/50 z-40" hidden @hidden="!open" @click="open = false"></div>
 
   <%# Modal %>
-  <div data-snoozer-target="modal" class="<%= modal_classes %>" hidden>
+  <div class="<%= modal_classes %>" hidden @hidden="!open" data-snooze-modal>
 
     <%# Header %>
     <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
       <h3 class="text-sm font-semibold text-text-primary m-0">Snooze</h3>
-      <button class="text-text-tertiary hover:text-text-primary cursor-pointer" data-action="click->snoozer#close">
+      <button type="button" title="Close" class="text-text-tertiary hover:text-text-primary cursor-pointer" @click="open = false">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -23,7 +23,8 @@
       <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide">Snooze for</div>
       <% [ [ "Day", "fa-sun", 1.day ], [ "3 Days", "fa-calendar-day", 3.days ], [ "Week", "fa-calendar-week", 1.week ],
            [ "Month", "fa-calendar-days", 1.month ], [ "Forever", "fa-infinity", 200.years ] ].each do |label, icon, duration| %>
-        <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2" data-action="click->snoozer#select" data-snooze-until="<%= duration.from_now.iso8601 %>">
+        <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2"
+             @click="[open = false, $patch('<%= task_path(task) %>', { task: { snoozed_until: '<%= duration.from_now.iso8601 %>' } })]">
           <i class="fa-solid <%= icon %> w-4 text-center text-xs"></i> <%= label %>
         </div>
       <% end %>

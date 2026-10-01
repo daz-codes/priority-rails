@@ -1,13 +1,16 @@
-<%= turbo_frame_tag "note_#{task.id}", hidden: true, data: { controller: "note-editor" } do %>
+<%# Shown and hidden by the row's notes button (noteOpen is declared on the task's <li>) %>
+<%= turbo_frame_tag "note_#{task.id}", hidden: true, data: { he_hidden: "!noteOpen", he_data: "{ editing: false }" } do %>
   <% if task.note.present? %>
-    <div class="p-4 border border-border-primary rounded-lg bg-surface-secondary max-w-full overflow-hidden" data-note-editor-target="display">
+    <div class="p-4 border border-border-primary rounded-lg bg-surface-secondary max-w-full overflow-hidden" @hidden="editing" @init="openLinksInNewTab($el)">
         <%= task.note %>
         <div class="pt-2">
-            <%= button_tag "Edit", type: :button, data: { action: "note-editor#edit" }, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
+            <%= button_tag "Edit", type: :button, data: { he_click: "editing = true" }, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
         </div>
     </div>
-  <% end %>
-  <div data-note-editor-target="form" class="<%= 'hidden' if task.note.present? %>">
+    <div @hidden="!editing" hidden>
+      <%= render "tasks/note_form", task: task %>
+    </div>
+  <% else %>
     <%= render "tasks/note_form", task: task %>
-  </div>
+  <% end %>
 <% end %>

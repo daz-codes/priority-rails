@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
   before_action :set_list
-  before_action :set_category, only: [ :update, :destroy ]
+  before_action :set_category, only: [ :update, :destroy, :make_default ]
 
   COLORS = %w[#fca5a5 #fdba74 #fef08a #d9f99d #a5f3fc #93c5fd #c4b5fd #f9a8d4].freeze
 
@@ -16,13 +16,25 @@ class CategoriesController < ApplicationController
     redirect_to edit_list_path(@list), alert: @category.errors.full_messages.to_sentence.presence
   end
 
+  def make_default
+    @list.update!(default_category: @category)
+    redirect_to edit_list_path(@list), status: :see_other
+  end
+
   def destroy
-    fallback = @list.categories.where.not(id: @category.id).first
+    others = @list.categories.where.not(id: @category.id)
+    fallback = @list.default_category_id == @category.id ? others.first : @list.category_for_new_tasks
     @list.tasks.where(category_id: @category.id).update_all(category_id: fallback&.id)
+    default_changed = @list.default_category_id == @category.id
+    @list.update!(default_category: fallback) if default_changed
     @category.destroy!
 
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@category) }
+      format.turbo_stream do
+        streams = [ turbo_stream.remove(@category) ]
+        streams << turbo_stream.replace(fallback, partial: "categories/category", locals: { list: @list, category: fallback }) if default_changed && fallback
+        render turbo_stream: streams
+      end
       format.html { redirect_to edit_list_path(@list) }
     end
   end

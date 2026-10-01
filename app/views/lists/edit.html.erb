@@ -73,7 +73,7 @@
     </div>
 
     <% if @list.categories.any? %>
-      <p class="text-xs text-text-tertiary mb-3">The first category is the default for new tasks.</p>
+      <p class="text-xs text-text-tertiary mb-3"><i class="fa-solid fa-star text-amber-400"></i> marks the default for new tasks. Tap another star to change it.</p>
     <% end %>
     <%= form_with url: list_categories_path(@list), method: :post, class: "flex gap-2" do |form| %>
       <%= form.text_field :name, required: true, placeholder: "New category...", class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
@@ -84,8 +84,8 @@
   <%# ── Focus ────────────────────────────────── %>
   <section>
     <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Focus</h2>
-    <%= form_with(model: @list, class: "flex items-center gap-2", data: { controller: "auto-submit" }) do |form| %>
-      <%= form.number_field :focus_limit, min: 1, max: 20, data: { action: "change->auto-submit#submit" }, class: "w-20 px-3 py-2 border border-border-input rounded-lg text-base text-center focus:outline-none focus:border-sky-400 bg-input-bg" %>
+    <%= form_with(model: @list, class: "flex items-center gap-2") do |form| %>
+      <%= form.number_field :focus_limit, min: 1, max: 20, data: { he_change: "$el.form.requestSubmit()" }, class: "w-20 px-3 py-2 border border-border-input rounded-lg text-base text-center focus:outline-none focus:border-sky-400 bg-input-bg" %>
       <span class="text-sm text-text-secondary">tasks in focus view</span>
     <% end %>
   </section>
@@ -93,9 +93,9 @@
   <%# ── Completed Tasks ─────────────────────── %>
   <section>
     <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Completed Tasks</h2>
-    <%= form_with(model: @list, class: "flex items-center gap-2", data: { controller: "auto-submit" }) do |form| %>
+    <%= form_with(model: @list, class: "flex items-center gap-2") do |form| %>
       <span class="text-sm text-text-secondary">Show completed tasks in inbox for</span>
-      <%= form.select :completed_display, List::COMPLETED_DISPLAY_OPTIONS, {}, data: { action: "change->auto-submit#submit" }, class: "px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <%= form.select :completed_display, List::COMPLETED_DISPLAY_OPTIONS, {}, data: { he_change: "$el.form.requestSubmit()" }, class: "px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
     <% end %>
   </section>
 

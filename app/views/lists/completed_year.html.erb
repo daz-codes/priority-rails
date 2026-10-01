@@ -1,7 +1,9 @@
-<% if @tasks.any? %>
-  <ul class="list-none p-1">
-    <%= render @tasks %>
-  </ul>
-<% else %>
-  <p class="italic text-sm text-brand-grey my-2 ml-4">No tasks completed!</p>
+<%= turbo_frame_tag "completed_year_#{@year}" do %>
+  <% if @tasks.any? %>
+    <ul class="list-none p-1">
+      <%= render @tasks %>
+    </ul>
+  <% else %>
+    <p class="italic text-sm text-brand-grey my-2 ml-4">No tasks completed!</p>
+  <% end %>
 <% end %>

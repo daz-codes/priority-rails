@@ -4,8 +4,9 @@
     <%# Complete + name (the name belongs to the form below via the form attribute, as the
         action buttons in between are forms of their own and forms can't be nested) %>
     <div class="flex items-center gap-2">
-      <span class="shrink-0" data-controller="task" data-task-url-value="<%= task_path(@task) %>">
-        <%= check_box_tag "task_panel_checkbox_#{@task.id}", "1", @task.completed?, class: "task-checkbox", data: { action: "task#toggle" }, aria: { label: "Complete task" } %>
+      <span class="shrink-0">
+        <%= check_box_tag "task_panel_checkbox_#{@task.id}", "1", @task.completed?, class: "task-checkbox", aria: { label: "Complete task" },
+              data: { he_change: "$patch('#{task_path(@task)}', { task: { completed: $el.checked } })" } %>
       </span>
       <%= text_field_tag "task[description]", @task.description, form: form_id, id: "task_panel_description_#{@task.id}", required: true, aria: { label: "Task" },
             class: "flex-1 min-w-0 p-2 border border-border-input rounded-xl outline-none text-base focus:border-sky-400 focus:ring-1 focus:ring-sky-400 bg-input-bg" %>

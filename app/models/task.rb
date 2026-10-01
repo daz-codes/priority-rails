@@ -95,7 +95,7 @@ class Task < ApplicationRecord
   def assign_list(new_list)
     return if new_list == list
 
-    self.category = new_list.categories.find_by(name: category&.name) || new_list.categories.first
+    self.category = new_list.categories.find_by(name: category&.name) || new_list.category_for_new_tasks
     self.list = new_list
   end
 

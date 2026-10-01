@@ -1,4 +1,4 @@
-<%= form_with model: task, class: "inline-block", data: {controller: "category-toggle"} do |f| %>
+<%= form_with model: task, class: "inline-block" do |f| %>
     <% categories = task.list.categories %>
     <% current_color = task.category&.color || "#e5e7eb" %>
     <% text_color = darken_color(current_color) %>
@@ -7,7 +7,5 @@
     { include_blank: false },
     class: "category-select text-[10px] px-2 py-0.5 rounded-full font-semibold border-none cursor-pointer appearance-none text-center",
     style: "background-color: #{current_color}; color: #{text_color}",
-    data: {
-        action: "change->category-toggle#submit"
-    } %>
+    data: { he_change: "chooseCategory($el)" } %>
 <% end %>

@@ -1,9 +1,9 @@
-<div data-controller="completed-year" data-completed-year-url-value="<%= completed_year_list_path(list, year: year) %>">
-  <h3 class="text-xl font-heading text-left pl-4 m-0">
-    <a href="#" data-action="click->completed-year#toggle"
-       class="no-underline text-brand-grey hover:text-text-primary transition-colors select-none">
-      <span data-completed-year-target="arrow">▸</span> <%= year %>
-    </a>
-  </h3>
-  <div data-completed-year-target="content" hidden></div>
-</div>
+<%# The year's tasks load the first time it's opened: the frame is lazy, and closed <details> content isn't visible %>
+<details class="group">
+  <summary class="list-none cursor-pointer text-xl font-heading text-left pl-4 m-0 text-brand-grey hover:text-text-primary transition-colors select-none">
+    <span class="inline-block transition-transform group-open:rotate-90">▸</span> <%= year %>
+  </summary>
+  <%= turbo_frame_tag "completed_year_#{year}", src: completed_year_list_path(list, year: year), loading: :lazy do %>
+    <p class="italic text-sm text-brand-grey my-2 ml-4">Loading…</p>
+  <% end %>
+</details>

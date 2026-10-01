@@ -1,65 +1,32 @@
-import "@hotwired/turbo-rails";
-import "controllers";
-
-import { get, post, patch, put, destroy } from "@rails/request.js";
-
-function yozu() {
-  const METHODS = { get, post, patch, put, delete: destroy };
-  const SELECTOR = Object.keys(METHODS)
-    .map((m) => `[yozu-${m}]`)
-    .join(",");
-
-  document.querySelectorAll(SELECTOR).forEach((el) => request(el));
-
-  function request(el) {
-    const methodAttr = Object.keys(METHODS).find((m) =>
-      el.hasAttribute(`yozu-${m}`),
-    );
-    const url = el.getAttribute(`yozu-${methodAttr}`);
-
-    el.addEventListener("click", async (e) => {
-      console.log("click");
-      const scope = { event: e, target: e.target, checked: e.target.checked };
-      let body;
-      const rawParams = el.getAttribute("yozu-params");
-      if (rawParams) {
-        try {
-          body = JSON.stringify(
-            new Function(...Object.keys(scope), `return (${rawParams})`)(
-              ...Object.values(scope),
-            ),
-          );
-        } catch (err) {
-          console.error("Error evaluating yozu-params:", err);
-        }
-      }
-      console.log("body: ", body);
-      try {
-        const options =
-          ["post", "patch", "delete"].includes(methodAttr) && body
-            ? { body, headers: { Accept: "text/vnd.turbo-stream.html" } }
-            : { headers: { Accept: "text/vnd.turbo-stream.html" } };
-        console.log(METHODS[methodAttr]);
-        const response = await METHODS[methodAttr](url, options);
-
-        const contentType = response.headers.get("content-type") || "";
-
-        let data;
-        if (contentType.includes("application/json")) {
-          data = await response.json();
-        } else {
-          data = await response.text();
-        }
-
-        // You can process `data` or dispatch events here if you want
-      } catch (err) {
-        console.error("yozu request error:", err);
-      }
-    });
-  }
-}
-
-yozu();
-
+import "@hotwired/turbo-rails"
 import "lexxy"
 import "@rails/actiontext"
+import helium from "helium"
+import { isDarkTheme, toggleTheme } from "lib/theme"
+
+// Functions available to every Helium expression on the page
+helium({
+  isDarkTheme,
+  toggleTheme,
+
+  // Recolour the category pill straight away, then save the choice
+  chooseCategory(select) {
+    const option = select.options[select.selectedIndex]
+    if (option?.dataset.color) select.style.backgroundColor = option.dataset.color
+    if (option?.dataset.textColor) select.style.color = option.dataset.textColor
+    select.form.requestSubmit()
+  },
+
+  // Menu filter: true when a list's name matches the search text
+  matchesQuery(element, query) {
+    const text = query.trim().toLowerCase()
+    return !text || element.textContent.toLowerCase().includes(text)
+  },
+
+  openLinksInNewTab(element) {
+    element.querySelectorAll("a").forEach(link => {
+      link.target = "_blank"
+      link.rel = "noopener noreferrer"
+    })
+  }
+})
