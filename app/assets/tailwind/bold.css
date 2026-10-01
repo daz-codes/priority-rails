@@ -61,6 +61,7 @@
   --surface-secondary: oklch(97% 0.008 258);
   --surface-hover: oklch(95% 0.03 258);
   --border-input: oklch(84% 0.02 258);
+  --input-border-bold: oklch(72% 0.02 260);
   --strike-color-default: oklch(85% 0.14 200);
   --highlight-color: oklch(92% 0.2 125);
 }
@@ -74,6 +75,7 @@
   --text-secondary: oklch(80% 0.02 260);
   --text-tertiary: oklch(66% 0.02 260);
   --border-input: oklch(38% 0.04 262);
+  --input-border-bold: oklch(48% 0.04 262);
   --border-primary: oklch(32% 0.035 262);
   --input-bg: oklch(24% 0.035 264);
 }
@@ -117,13 +119,59 @@ button, input[type="submit"], .rounded-full.font-semibold {
   text-transform: uppercase;
 }
 
-#list_actions a { font-size: 0.75rem; }
+/* Centre pill text: selects need text-align-last, and the indent balances the letter-spacing
+   that would otherwise trail after the last letter */
+.category-pill,
+.category-select {
+  text-align: center;
+  text-align-last: center;
+  text-indent: 0.05em;
+}
+
+#list_actions a {
+  border-width: 2px; /* inactive tabs keep a transparent 2px border, so nothing shifts when switching */
+  font-size: 0.75rem;
+}
+
+/* The PR!OR!TY! menu button gets the same 3px grey border as the add-task box */
+[data-menu-toggle] {
+  border: 3px solid var(--input-border-bold);
+}
+
+[data-menu-toggle]:hover {
+  border-color: var(--accent);
+}
+
+/* The add-task box: a thick dark ink pill, with the input and button reading as one piece */
+#new_task_form input[type="text"] {
+  border: 3px solid var(--input-border-bold);
+  border-inline-end: 0;
+  color: var(--ink);
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding-block: 0.7rem;
+}
+
+#new_task_form input[type="text"]::placeholder {
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+#new_task_form input[type="text"]:focus {
+  border-color: var(--accent);
+}
+
+#new_task_form input[type="text"]:focus + input[type="submit"] {
+  border-color: var(--accent);
+}
 
 /* The main "add" action as a solid accent button */
 #new_task_form input[type="submit"] {
   background: var(--accent);
-  border-color: var(--accent);
+  border: 3px solid var(--accent);
+  border-inline-start: 0;
   color: white;
+  font-size: 1.05rem;
   font-weight: 900;
   letter-spacing: 0.04em;
 }
@@ -135,7 +183,6 @@ button, input[type="submit"], .rounded-full.font-semibold {
   --card-color: var(--category-color, var(--accent));
   background: color-mix(in oklch, var(--card-color) 14%, var(--surface-primary));
   border: 0;
-  border-inline-start: 6px solid var(--card-color);
   border-radius: 0.9rem;
   margin-block: 0.45rem;
   padding: 0.3rem 0.75rem 0.3rem 0.35rem;
@@ -196,7 +243,6 @@ button, input[type="submit"], .rounded-full.font-semibold {
 /* Bigger cards in their category's full colour */
 #tasks.focus-list li[id^="task_"] {
   background: var(--card-color);
-  border-inline-start-width: 0;
   border-radius: 1.25rem;
   margin-block: 0.9rem;
   padding: 1.1rem 1.25rem;
@@ -238,3 +284,17 @@ button, input[type="submit"], .rounded-full.font-semibold {
 .dark #tasks.focus-list .task-checkbox:not(:checked) {
   background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='white' stroke='%23293145' stroke-width='9'/%3E%3C/svg%3E");
 }
+
+/* Completed tasks: a wavy dark grey line through the name instead of the highlighter bar.
+   The row is faded with opacity, which would also lighten the line, so fade the text colour instead */
+.task-struck::after { display: none; }
+
+.task-struck {
+  color: var(--text-tertiary);
+  text-decoration: line-through wavy oklch(37% 0.02 260) 2px;
+  text-decoration-skip-ink: none;
+}
+
+.dark .task-struck { text-decoration-color: oklch(80% 0.02 260); }
+
+#tasks li .opacity-50:has(.task-struck) { opacity: 1; }
