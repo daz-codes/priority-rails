@@ -11,7 +11,7 @@ export function applyTheme() {
   return dark
 }
 
-// Returns the new state so a binding can store it, e.g. @click="dark = toggleTheme()"
+// Returns the new state so a binding can store it, e.g. data-he-click="dark = toggleTheme()"
 export function toggleTheme() {
   localStorage.setItem("theme", isDarkTheme() ? "light" : "dark")
   return applyTheme()

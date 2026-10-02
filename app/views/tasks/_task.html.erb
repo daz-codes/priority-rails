@@ -1,8 +1,8 @@
 <% highlight = local_assigns[:highlight] %>
 <li id="<%= dom_id(task) %>"
     data-id="<%= task.id %>"
-    @data="{ noteOpen: false }"
-    @animationend.self="$el.classList.remove('animate-highlight')"
+    data-he-data="{ noteOpen: false }"
+    data-he-animationend.self="$el.classList.remove('animate-highlight')"
     style="<%= "--category-color: #{task.category.color}" if task.category %>"
     class="group m-0 border-b border-dotted border-border-primary <%= @priority ? 'p-3' : 'p-0' %><%= highlight_class(task.id, highlight) %>">
   <%= turbo_frame_tag "task_frame_#{task.id}" do %>

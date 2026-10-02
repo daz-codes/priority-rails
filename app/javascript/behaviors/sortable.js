@@ -1,6 +1,6 @@
 import Sortable from "sortablejs"
 
-// Drag-and-drop ordering for the task list: <ul @import="behaviors/sortable" data-sort-url="...">
+// Drag-and-drop ordering for the task list: <ul data-he-import="behaviors/sortable" data-sort-url="...">
 export default function connectSortable({ element }) {
   const sortable = Sortable.create(element, {
     delay: 100,

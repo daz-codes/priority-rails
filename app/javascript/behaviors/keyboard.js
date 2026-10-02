@@ -1,4 +1,4 @@
-// Page-wide keyboard shortcuts, listed on /shortcuts. Attached with <body @import="behaviors/keyboard">.
+// Page-wide keyboard shortcuts, listed on /shortcuts. Attached with <body data-he-import="behaviors/keyboard">.
 const HIGHLIGHT = [ "bg-sky-100", "dark:bg-sky-900" ]
 
 const menuModal = () => document.querySelector("[data-menu-modal]")
