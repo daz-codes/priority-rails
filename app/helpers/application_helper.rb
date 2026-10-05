@@ -1,5 +1,5 @@
 module ApplicationHelper
-  ICON_VERSION = 3
+  ICON_VERSION = 4
 
   def logo(size = :medium, link: true)
     size_class = case size
