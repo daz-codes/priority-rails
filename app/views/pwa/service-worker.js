@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v2"
+const CACHE_VERSION = "v3"
 const CACHE_NAME = `priority-${CACHE_VERSION}`
 
 // Cache key assets on install
@@ -7,8 +7,8 @@ self.addEventListener("install", (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll([
         "/",
-        "/icon-192.png",
-        "/icon-512.png"
+        "/web-app-manifest-192x192.png",
+        "/web-app-manifest-512x512.png"
       ])
     })
   )

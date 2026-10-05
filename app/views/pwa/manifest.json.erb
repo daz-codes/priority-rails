@@ -1,19 +1,22 @@
+<% v = ApplicationHelper::ICON_VERSION %>
 {
   "name": "PR!OR!TY!",
   "short_name": "Priority",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "/web-app-manifest-192x192.png?v=<%= v %>",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/web-app-manifest-512x512.png?v=<%= v %>",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/web-app-manifest-maskable-512x512.png?v=<%= v %>",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "maskable"

@@ -1,4 +1,6 @@
 module ApplicationHelper
+  ICON_VERSION = 3
+
   def logo(size = :medium, link: true)
     size_class = case size
     when :small  then "text-3xl"

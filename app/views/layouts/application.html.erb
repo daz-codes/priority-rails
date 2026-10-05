@@ -20,8 +20,13 @@
 
     <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="apple-touch-icon" href="/icon-192.png">
+    <%# Icons live in public/. Bump ICON_VERSION when they change so browsers and devices refetch them %>
+    <% icon_version = ApplicationHelper::ICON_VERSION %>
+    <link rel="icon" href="/favicon.svg?v=<%= icon_version %>" type="image/svg+xml">
+    <link rel="icon" href="/favicon-96x96.png?v=<%= icon_version %>" type="image/png" sizes="96x96">
+    <link rel="icon" href="/favicon.ico?v=<%= icon_version %>" sizes="48x48">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=<%= icon_version %>" sizes="180x180">
+    <meta name="apple-mobile-web-app-title" content="Priority">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..900&family=Nunito&family=Jost&family=Bebas+Neue&family=Pacifico&family=Anton&display=swap" rel="stylesheet">
 
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
