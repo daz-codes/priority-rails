@@ -24,7 +24,7 @@
       <% [ [ "Day", "fa-sun", 1.day ], [ "3 Days", "fa-calendar-day", 3.days ], [ "Week", "fa-calendar-week", 1.week ],
            [ "Month", "fa-calendar-days", 1.month ], [ "Forever", "fa-infinity", 200.years ] ].each do |label, icon, duration| %>
         <div class="px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm flex items-center gap-2"
-             data-he-click="[open = false, $patch('<%= task_path(task) %>', { task: { snoozed_until: '<%= duration.from_now.iso8601 %>' } })]">
+             data-he-click="[open = false, $patch('<%= task_path(task) %>', { task: { snoozed_until: '<%= snooze_until(duration).iso8601 %>' } })]">
           <i class="fa-solid <%= icon %> w-4 text-center text-xs"></i> <%= label %>
         </div>
       <% end %>

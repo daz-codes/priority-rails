@@ -1,4 +1,10 @@
 module TasksHelper
+  # Snoozed tasks wake at the start of the day in the user's time zone, so "3 days" on Monday
+  # means Thursday morning rather than Thursday at whatever time the page was opened
+  def snooze_until(duration)
+    (Date.current + duration).beginning_of_day
+  end
+
   def snooze_time(task)
     if task.snoozed_until > 100.years.from_now
       "forever"
