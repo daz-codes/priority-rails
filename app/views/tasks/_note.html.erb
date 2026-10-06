@@ -1,16 +1,16 @@
-<%# Shown and hidden by the row's notes button (noteOpen is declared on the task's <li>) %>
-<%= turbo_frame_tag "note_#{task.id}", hidden: true, data: { he_hidden: "!noteOpen", he_data: "{ editing: false }" } do %>
+<%#
+  Read-only note, shown and hidden by the row's notes button (noteOpen is declared on the task's <li>).
+  Editing happens in the task panel, so rows don't each carry a hidden note editor.
+%>
+<% edit_classes = "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary no-underline hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
+<div id="note_<%= task.id %>" class="p-4 border border-border-primary rounded-lg bg-surface-secondary max-w-full overflow-hidden" hidden data-he-hidden="!noteOpen">
   <% if task.note.present? %>
-    <div class="p-4 border border-border-primary rounded-lg bg-surface-secondary max-w-full overflow-hidden" data-he-hidden="editing" data-he-init="openLinksInNewTab($el)">
-        <%= task.note %>
-        <div class="pt-2">
-            <%= button_tag "Edit", type: :button, data: { he_click: "editing = true" }, class: "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
-        </div>
-    </div>
-    <div data-he-hidden="!editing" hidden>
-      <%= render "tasks/note_form", task: task %>
+    <div data-he-init="openLinksInNewTab($el)"><%= task.note %></div>
+    <div class="pt-2">
+      <%= link_to "Edit", edit_task_path(task), class: edit_classes, data: { turbo_frame: "task_frame_#{task.id}" } %>
     </div>
   <% else %>
-    <%= render "tasks/note_form", task: task %>
+    <p class="m-0 mb-2 text-sm text-text-tertiary">No note yet.</p>
+    <%= link_to "Add a note", edit_task_path(task), class: edit_classes, data: { turbo_frame: "task_frame_#{task.id}" } %>
   <% end %>
-<% end %>
+</div>

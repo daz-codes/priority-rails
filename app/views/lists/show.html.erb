@@ -1,7 +1,6 @@
 <% content_for :title, @list.name %>
 <%= turbo_refreshes_with method: :morph, scroll: :preserve %>
 <%= turbo_stream_from @list %>
-<% highlight_id = params[:highlight].to_i if params[:highlight] %>
 
 <%# Focus mode shows only the tasks; the layout hides the menu button too %>
 <% content_for :focus_mode, "true" if @priority %>
@@ -26,14 +25,17 @@
     <% end %>
 </div>
 <% elsif @tasks.any? %>
+    <%# Dragging is off while filtered: sorting a subset would renumber the hidden tasks too %>
     <%= tag.ul id: "tasks",
         class: class_names("p-1 list-none", "focus-list": @priority),
-        data: (@filter ? {} : { he_import: "behaviors/sortable", sort_url: sort_tasks_path }) do %>
+        data: (@filter || @category_ids.any? ? {} : { he_import: "behaviors/sortable", sort_url: sort_tasks_path }) do %>
         <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: flash[:highlight] } %>
     <% end %>
 <% else %>
   <p id="tasks" class="text-center text-brand-grey px-4">No tasks yet!</p>
 <% end %>
+
+<%= render "tasks/modals" %>
 
 <% if @priority %>
   <%= link_to "Back to inbox", list_path(@list), data: { escape_back: true },

@@ -33,16 +33,17 @@ class Task < ApplicationRecord
   # scopes
   scope :ordered, -> { order(position: :asc) }
   scope :completed, -> { where.not(completed_on: nil).order(completed_on: :desc) }
+  # Completed tasks are grouped by calendar day in the user's time zone, each in exactly one section:
+  # today, yesterday, the rest of the last seven days, the rest of this month, then by year.
   scope :completed_today, -> { where(completed_on: Date.current.all_day).ordered }
-  scope :completed_yesterday, -> { where(completed_on: 1.day.ago.all_day).ordered }
-  scope :completed_this_week, -> { where(completed_on: 7.days.ago ... 1.day.ago).ordered }
-  scope :completed_this_month, -> { where(completed_on: Date.current.beginning_of_month ... 7.days.ago).ordered }
-  scope :completed_in_year, ->(year) { where(completed_on: Date.new(year)...Date.new(year + 1)).where("completed_on < ?", Date.current.beginning_of_month).ordered }
-  scope :completed_before_today, -> { where("completed_on < ?", Date.current.beginning_of_day).ordered }
+  scope :completed_yesterday, -> { where(completed_on: Date.yesterday.all_day).ordered }
+  scope :completed_this_week, -> { where(completed_on: week_start...Date.yesterday.beginning_of_day).ordered }
+  scope :completed_this_month, -> { where(completed_on: Date.current.beginning_of_month.beginning_of_day...week_start).ordered }
+  scope :completed_in_year, ->(year) { where(completed_on: Time.zone.local(year)...[ Time.zone.local(year + 1), older_than ].min).ordered }
+  scope :completed_in_last_seven_days, -> { where(completed_on: week_start..) }
   scope :incomplete, -> { where(completed_on: nil).ordered }
   scope :snoozed, -> { where("snoozed_until > ?", Time.current).order(snoozed_until: :asc) }
   scope :unsnoozed, -> { where("snoozed_until IS NULL OR snoozed_until <= ?", Time.current).ordered }
-  scope :priority, -> { active.incomplete.ordered.limit(3) }
   scope :active, -> {
     unsnoozed.where(completed_on: nil)
       .or(unsnoozed.where(completed_on: Date.current.all_day))
@@ -61,14 +62,15 @@ class Task < ApplicationRecord
     list.tasks.create!(attributes.except("id", "list_id"))
   end
 
+  # Start of the seven-day window (today and the six days before it)
+  def self.week_start = (Date.current - 6).beginning_of_day
+
+  # Completions before this belong to the year sections rather than this week or this month
+  def self.older_than = [ week_start, Date.current.beginning_of_month.beginning_of_day ].min
+
+  # Years are worked out in the user's time zone, so a New Year's Eve evening isn't filed under the next year
   def self.completed_years
-    where.not(completed_on: nil)
-      .where("completed_on < ?", Date.current.beginning_of_month)
-      .distinct
-      .pluck(Arel.sql("strftime('%Y', completed_on)"))
-      .map(&:to_i)
-      .sort
-      .reverse
+    where(completed_on: ...older_than).pluck(:completed_on).map { |at| at.in_time_zone.year }.uniq.sort.reverse
   end
 
   # methods
@@ -111,7 +113,7 @@ class Task < ApplicationRecord
   def recurring? = recurrence_type.present?
 
   def completed=(value)
-    self.completed_on = ActiveModel::Type::Boolean.new.cast(value) ? DateTime.current : nil
+    self.completed_on = ActiveModel::Type::Boolean.new.cast(value) ? Time.current : nil
   end
 
   def recurrence_label
@@ -124,7 +126,7 @@ class Task < ApplicationRecord
       day_name = Date::DAYNAMES[recurrence_day || 0]
       "Every #{day_name}"
     when "monthly"
-      "Every month on the #{ordinalize(recurrence_day || 1)}"
+      "Every month on the #{(recurrence_day || 1).ordinalize}"
     when "yearly"
       month_name = Date::MONTHNAMES[recurrence_month || 1]
       "Every year on #{month_name} #{recurrence_day || 1}"
@@ -156,20 +158,6 @@ class Task < ApplicationRecord
   end
 
   private
-
-  def ordinalize(n)
-    suffix = if (11..13).include?(n % 100)
-      "th"
-    else
-      case n % 10
-      when 1 then "st"
-      when 2 then "nd"
-      when 3 then "rd"
-      else "th"
-      end
-    end
-    "#{n}#{suffix}"
-  end
 
   def remove_next_recurrence
     return unless saved_change_to_completed_on? && !completed?

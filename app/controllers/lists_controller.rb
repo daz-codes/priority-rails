@@ -1,7 +1,5 @@
 class ListsController < ApplicationController
   before_action :set_list, only: %i[ show edit update destroy add_user completed_year stats ]
-  before_action :set_lists, only: %i[ index show ]
-  before_action :set_weekly_stats, only: %i[ index ]
 
   def index
     last_list = Current.user.last_list_id && Current.user.lists.find_by(id: Current.user.last_list_id)
@@ -15,6 +13,8 @@ class ListsController < ApplicationController
   end
 
   def show
+    # Remember the list to reopen on next visit; only show needs this, not stats/settings/etc.
+    Current.user.update_column(:last_list_id, @list.id) unless Current.user.last_list_id == @list.id
     @task = Task.new
     @filter = params[:list]
     @priority = @filter == "priority"
@@ -84,7 +84,7 @@ class ListsController < ApplicationController
 
   def stats
     @completed_today = @list.tasks.where(completed_on: Date.current.all_day).count
-    @completed_this_week = @list.tasks.where(completed_on: 6.days.ago.beginning_of_day..).count
+    @completed_last_seven_days = @list.tasks.completed_in_last_seven_days.count
     @completed_all_time = @list.tasks.where.not(completed_on: nil).count
   end
 
@@ -104,16 +104,6 @@ class ListsController < ApplicationController
   private
     def set_list
       @list = Current.user.lists.find(params.expect(:id))
-      redirect_to root_path unless @list
-      Current.user.update_column(:last_list_id, @list.id) if @list
-    end
-
-    def set_lists
-      @lists = Current.user.lists
-    end
-
-    def set_weekly_stats
-      @completed_this_week = Current.user.tasks.completed_this_week.count
     end
 
     def list_params

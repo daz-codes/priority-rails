@@ -10,6 +10,12 @@ helium({
   isDarkTheme,
   toggleTheme,
 
+  // The task whose snooze / recurrence modal is open (tasks/_modals, shared by every row)
+  snoozeTask: null,
+  recurTask: null,
+  recurPanel: "main",
+  recurMonth: null,
+
   // Recolour the category pill and its task row straight away, then save the choice
   chooseCategory(select) {
     const option = select.options[select.selectedIndex]

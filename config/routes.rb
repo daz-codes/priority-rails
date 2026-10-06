@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   end
   resources :lists do
     member do
-      get :snoozed
       get :stats
       post :add_user
       get "completed/:year", to: "lists#completed_year", as: :completed_year
@@ -46,7 +45,6 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
   # root "posts#index"

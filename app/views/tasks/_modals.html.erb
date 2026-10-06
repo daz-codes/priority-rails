@@ -1,0 +1,114 @@
+<%#
+  One snooze modal and one recurrence modal for the whole page, rather than a copy in every task row.
+  A row's Snooze/Recur button opens them by setting snoozeTask / recurTask (page-level Helium state,
+  declared in application.js) to that task's details.
+%>
+<% option_classes = "px-3 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm" %>
+<% back_classes = "px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide flex items-center gap-2" %>
+<% chosen = "text-cyan-400 font-medium" %>
+<% chosen_cell = "bg-cyan-400/20 text-cyan-400 font-medium" %>
+<%# Saves a recurrence rule for the open task; `month` may be the JS variable chosen in the yearly panel %>
+<% save = ->(type, day: "null", month: "null") {
+     "[$patch(recurTask.url, { task: { recurrence_type: #{type ? "'#{type}'" : 'null'}, recurrence_day: #{day}, recurrence_month: #{month} } }), recurTask = null]"
+   } %>
+
+<%# ── Snooze ─────────────────────────────────── %>
+<div class="fixed inset-0 bg-black/50 z-40" hidden data-he-hidden="!snoozeTask" data-he-click="snoozeTask = null"></div>
+<div class="<%= modal_classes %>" hidden data-he-hidden="!snoozeTask" data-snooze-modal>
+  <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
+    <h3 class="text-sm font-semibold text-text-primary m-0">Snooze</h3>
+    <button type="button" title="Close" class="text-text-tertiary hover:text-text-primary cursor-pointer" data-he-click="snoozeTask = null">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="p-2">
+    <div class="px-3 py-2 text-xs text-text-tertiary uppercase tracking-wide">Snooze for</div>
+    <% [ [ "Day", "fa-sun", 1.day ], [ "3 Days", "fa-calendar-day", 3.days ], [ "Week", "fa-calendar-week", 1.week ],
+         [ "Month", "fa-calendar-days", 1.month ], [ "Forever", "fa-infinity", 200.years ] ].each do |label, icon, duration| %>
+      <div class="<%= option_classes %> flex items-center gap-2"
+           data-he-click="[$patch(snoozeTask.url, { task: { snoozed_until: '<%= snooze_until(duration).iso8601 %>' } }), snoozeTask = null]">
+        <i class="fa-solid <%= icon %> w-4 text-center text-xs"></i> <%= label %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%# ── Recurrence ─────────────────────────────── %>
+<div class="fixed inset-0 bg-black/50 z-40" hidden data-he-hidden="!recurTask" data-he-click="recurTask = null"></div>
+<div class="<%= modal_classes %>" hidden data-he-hidden="!recurTask" data-recurrence-modal>
+  <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
+    <h3 class="text-sm font-semibold text-text-primary m-0">Recurring Task</h3>
+    <button type="button" title="Close" class="text-text-tertiary hover:text-text-primary cursor-pointer" data-he-click="recurTask = null">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="px-4 py-3 border-b border-border-secondary bg-surface-secondary/50">
+    <div class="text-xs text-text-tertiary uppercase tracking-wide mb-1">Current</div>
+    <div class="text-sm text-text-primary font-medium">
+      <i class="fa-solid fa-arrows-rotate text-cyan-400 text-xs mr-1" data-he-hidden="!(recurTask && recurTask.type)"></i>
+      <i class="fa-solid fa-minus text-text-tertiary text-xs mr-1" data-he-hidden="recurTask && recurTask.type"></i>
+      <span data-he-text="recurTask && recurTask.label ? recurTask.label : 'Not recurring'"></span>
+    </div>
+  </div>
+
+  <div class="p-2" data-he-hidden="recurPanel != 'main'">
+    <div class="<%= option_classes %> flex items-center gap-2" data-he-attr:class="{ '<%= chosen %>': recurTask && !recurTask.type }" data-he-click="<%= save.(nil) %>">
+      <i class="fa-solid fa-minus w-4 text-center text-xs"></i> None
+    </div>
+    <div class="<%= option_classes %> flex items-center gap-2" data-he-attr:class="{ '<%= chosen %>': recurTask && recurTask.type == 'daily' }" data-he-click="<%= save.("daily") %>">
+      <i class="fa-solid fa-sun w-4 text-center text-xs"></i> Daily
+    </div>
+    <% [ [ "weekly", "Weekly", "fa-calendar-week" ], [ "monthly", "Monthly", "fa-calendar-days" ], [ "yearly", "Yearly", "fa-calendar" ] ].each do |type, label, icon| %>
+      <div class="<%= option_classes %> flex items-center gap-2" data-he-attr:class="{ '<%= chosen %>': recurTask && recurTask.type == '<%= type %>' }" data-he-click="recurPanel = '<%= type %>'">
+        <i class="fa-solid <%= icon %> w-4 text-center text-xs"></i> <%= label %> <span class="ml-auto text-text-tertiary text-xs">&rsaquo;</span>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="p-2" hidden data-he-hidden="recurPanel != 'weekly'">
+    <div class="<%= back_classes %>">
+      <button type="button" title="Back" class="hover:text-text-primary cursor-pointer" data-he-click="recurPanel = 'main'"><i class="fa-solid fa-arrow-left"></i></button>
+      Pick a day
+    </div>
+    <% Date::DAYNAMES.each_with_index do |day, i| %>
+      <div class="<%= option_classes %>" data-he-attr:class="{ '<%= chosen %>': recurTask && recurTask.type == 'weekly' && recurTask.day == <%= i %> }" data-he-click="<%= save.("weekly", day: i) %>"><%= day %></div>
+    <% end %>
+  </div>
+
+  <div class="p-2" hidden data-he-hidden="recurPanel != 'monthly'">
+    <div class="<%= back_classes %>">
+      <button type="button" title="Back" class="hover:text-text-primary cursor-pointer" data-he-click="recurPanel = 'main'"><i class="fa-solid fa-arrow-left"></i></button>
+      Pick a day of the month
+    </div>
+    <div class="grid grid-cols-7 gap-1 p-2">
+      <% (1..31).each do |d| %>
+        <div class="w-8 h-8 flex items-center justify-center cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm" data-he-attr:class="{ '<%= chosen_cell %>': recurTask && recurTask.type == 'monthly' && recurTask.day == <%= d %> }" data-he-click="<%= save.("monthly", day: d) %>"><%= d %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="p-2" hidden data-he-hidden="recurPanel != 'yearly'">
+    <div class="<%= back_classes %>">
+      <button type="button" title="Back" class="hover:text-text-primary cursor-pointer" data-he-click="recurPanel = 'main'"><i class="fa-solid fa-arrow-left"></i></button>
+      Pick a month
+    </div>
+    <div class="grid grid-cols-3 gap-1 p-2">
+      <% Date::MONTHNAMES.compact.each.with_index(1) do |month, number| %>
+        <div class="px-2 py-2.5 cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm text-center" data-he-attr:class="{ '<%= chosen_cell %>': recurTask && recurTask.type == 'yearly' && recurTask.month == <%= number %> }" data-he-click="[recurMonth = <%= number %>, recurPanel = 'yearlyDay']"><%= month %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="p-2" hidden data-he-hidden="recurPanel != 'yearlyDay'">
+    <div class="<%= back_classes %>">
+      <button type="button" title="Back" class="hover:text-text-primary cursor-pointer" data-he-click="recurPanel = 'yearly'"><i class="fa-solid fa-arrow-left"></i></button>
+      Pick a day
+    </div>
+    <div class="grid grid-cols-7 gap-1 p-2">
+      <% (1..31).each do |d| %>
+        <div class="w-8 h-8 flex items-center justify-center cursor-pointer rounded-lg hover:bg-surface-hover text-text-secondary text-sm" data-he-click="<%= save.("yearly", day: d, month: "recurMonth") %>"><%= d %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
