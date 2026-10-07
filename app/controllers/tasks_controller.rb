@@ -59,11 +59,16 @@ class TasksController < ApplicationController
   end
 
   def sort
-    Task.transaction do
-      Array(params[:task_ids]).each_with_index do |id, index|
-        Current.user.tasks.find(id).update(position: index + 1)
-      end
-    end
+    ids = Array(params[:task_ids]).map(&:to_i).uniq
+    return head :ok if ids.empty?
+
+    tasks = Current.user.tasks.where(id: ids)
+    return head :not_found unless tasks.size == ids.size # unknown, or on someone else's list
+
+    list_ids = tasks.map(&:list_id).uniq
+    return head :unprocessable_entity unless list_ids.one?
+
+    List.find(list_ids.first).reorder_tasks(ids)
     head :ok
   end
 

@@ -25,6 +25,17 @@ class List < ApplicationRecord
   # The category new tasks get when none is given
   def category_for_new_tasks = default_category || categories.first
 
+  # Reorders just the given tasks within the positions they already hold, so tasks that weren't on
+  # screen (filtered by category, snoozed, older completed ones) keep their place. Dragging B3 above
+  # B2 in a filtered A1 B2 B3 B4 A5 B6 gives A1 B3 B2 B4 A5 B6.
+  def reorder_tasks(ids)
+    transaction do
+      slots = tasks.where(id: ids).order(:position).pluck(:position)
+      ids.zip(slots).each { |id, position| tasks.where(id: id).update_all(position: position) }
+      touch # broadcasts the new order to anyone else viewing the list
+    end
+  end
+
   def active_tasks
     base = tasks.unsnoozed.where(completed_on: nil).ordered
     return base if completed_display == "never"

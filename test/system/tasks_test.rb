@@ -151,19 +151,26 @@ class TasksTest < ApplicationSystemTestCase
     within("[data-task-panel]") { assert_button "Delete" }
   end
 
-  test "drag to reorder is only available when the list isn't filtered" do
-    assert_selector "#tasks[data-he-import='behaviors/sortable']"
-    execute_script(<<~JS)
+  test "drag to reorder, including within a category filter" do
+    drag_last_to_top = <<~JS
       const list = document.getElementById("tasks")
       const sortable = list[Object.keys(list).find(key => key.startsWith("Sortable"))]
       list.prepend(list.lastElementChild)
       sortable.options.onEnd()
     JS
+    # Selenium can't perform HTML5 drag and drop, so move the row and fire Sortable's onEnd
+    execute_script(drag_last_to_top)
     sleep 1
     assert_equal [ "Write report", "Buy milk" ], @list.tasks.ordered.pluck(:description)
 
-    visit list_url(@list, category_ids: [ categories(:one).id ])
-    assert_no_selector "#tasks[data-he-import]"
+    # A1 B2 B3 A4: filtered to B, move B3 above B2; the A tasks stay where they were
+    @list.tasks.destroy_all
+    %w[A1 B2 B3 A4].each { |name| @list.tasks.create!(description: name, category: name.start_with?("A") ? categories(:one) : categories(:two)) }
+    visit list_url(@list, category_ids: [ categories(:two).id ])
+    assert_selector "#tasks li", count: 2
+    execute_script(drag_last_to_top)
+    sleep 1
+    assert_equal %w[A1 B3 B2 A4], @list.tasks.ordered.pluck(:description)
   end
 
   private

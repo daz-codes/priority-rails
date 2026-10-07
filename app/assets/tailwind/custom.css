@@ -122,3 +122,40 @@ li.keyboard-selected {
   background-color: var(--input-bg);
   color: var(--text-primary);
 }
+
+/* Touch swipe on task rows (behaviors/swipe.js): the row slides over a strip showing the action */
+#tasks li.swiping {
+  position: relative;
+  z-index: 1;
+}
+
+.swipe-layer {
+  position: absolute;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.25rem;
+  color: white;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  opacity: 0.55;
+  transition: opacity 120ms ease-out;
+}
+
+.swipe-layer[data-direction="snooze"] { background: #0085ca; }
+.swipe-layer[data-direction="delete"] { background: #e11d48; }
+.swipe-layer[data-direction="snooze"] .swipe-delete,
+.swipe-layer[data-direction="delete"] .swipe-snooze { visibility: hidden; }
+
+.swipe-layer span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 120ms ease-out;
+}
+
+/* Past the threshold: letting go will act */
+.swipe-layer.armed { opacity: 1; }
+.swipe-layer.armed span { transform: scale(1.2); }

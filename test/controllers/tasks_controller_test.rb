@@ -78,6 +78,49 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal original_position, foreign.reload.position
   end
 
+  def build_list(spec)
+    @list.tasks.destroy_all
+    home, work = categories(:one), categories(:two)
+    spec.split.map { |name| @list.tasks.create!(description: name, category: name.start_with?("A") ? home : work) }
+  end
+
+  def order = @list.tasks.ordered.pluck(:description).join(" ")
+
+  test "sorting a category-filtered view keeps the other tasks in place" do
+    tasks = build_list("A1 B2 B3 B4 A5 B6").index_by(&:description)
+
+    patch sort_tasks_url, params: { task_ids: tasks.values_at("B3", "B2", "B4", "B6").map(&:id) }, as: :json
+
+    assert_response :ok
+    assert_equal "A1 B3 B2 B4 A5 B6", order
+  end
+
+  test "moving a filtered task to the end puts it in the last slot its category holds" do
+    tasks = build_list("A1 B2 B3 B4 A5 B6").index_by(&:description)
+
+    patch sort_tasks_url, params: { task_ids: tasks.values_at("B3", "B4", "B6", "B2").map(&:id) }, as: :json
+
+    assert_equal "A1 B3 B4 B6 A5 B2", order
+  end
+
+  test "snoozed tasks hidden from the inbox keep their place when sorting" do
+    tasks = build_list("A1 A2 A3").index_by(&:description)
+    tasks["A2"].update!(snoozed_until: 1.day.from_now)
+
+    patch sort_tasks_url, params: { task_ids: tasks.values_at("A3", "A1").map(&:id) }, as: :json
+
+    assert_equal "A3 A2 A1", order
+  end
+
+  test "sort rejects tasks from more than one list" do
+    other_list = @user.lists.create!(name: "Other", owner: @user)
+    elsewhere = other_list.tasks.create!(description: "Elsewhere")
+
+    patch sort_tasks_url, params: { task_ids: [ @task.id, elsewhere.id ] }, as: :json
+
+    assert_response :unprocessable_entity
+  end
+
   test "sort without task ids does nothing" do
     patch sort_tasks_url, as: :json
 

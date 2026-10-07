@@ -25,10 +25,9 @@
     <% end %>
 </div>
 <% elsif @tasks.any? %>
-    <%# Dragging is off while filtered: sorting a subset would renumber the hidden tasks too %>
     <%= tag.ul id: "tasks",
         class: class_names("p-1 list-none", "focus-list": @priority),
-        data: (@filter || @category_ids.any? ? {} : { he_import: "behaviors/sortable", sort_url: sort_tasks_path }) do %>
+        data: (@filter ? {} : { he_import: "behaviors/sortable", sort_url: sort_tasks_path }) do %>
         <%= render partial: "tasks/task", collection: @tasks, as: :task, locals: { highlight: flash[:highlight] } %>
     <% end %>
 <% else %>
