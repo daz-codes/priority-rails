@@ -23,6 +23,14 @@ class AccountsController < ApplicationController
     end
   end
 
+  # Called by the browser (lib/time_zone.js) when the account has no time zone yet; never
+  # overrides one the user has chosen
+  def detect_time_zone
+    zone = User.time_zone_from_browser(params[:time_zone])
+    Current.user.update!(time_zone: zone) if zone && Current.user.time_zone.blank?
+    head :no_content
+  end
+
   private
 
   def active_sessions

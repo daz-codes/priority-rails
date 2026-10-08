@@ -50,6 +50,20 @@ class TasksTest < ApplicationSystemTestCase
     assert_no_js_errors
   end
 
+  test "snoozing until a chosen date" do
+    task_row("Buy milk").find("button[title=Snooze]").click
+    snooze = find("[data-snooze-modal]", visible: true)
+    assert snooze.find_button("Snooze", disabled: true), "nothing to snooze until yet"
+
+    date = Date.current + 10
+    snooze.find("input[type=date]").execute_script("this.value = arguments[0]; this.dispatchEvent(new Event('input', { bubbles: true }))", date.iso8601)
+    snooze.click_on "Snooze"
+
+    assert_no_selector "#tasks li", text: "Buy milk"
+    assert_equal date.beginning_of_day, @milk.reload.snoozed_until
+    assert_no_js_errors
+  end
+
   test "setting a recurrence, and the modal showing the current rule" do
     task_row("Buy milk").find("button[title=Recurrence]").click
     modal = find("[data-recurrence-modal]", visible: true)

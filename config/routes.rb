@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resource :push_subscription, only: [ :create, :destroy ]
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   resource :account, only: [ :edit, :update ] do
+    patch :time_zone, action: :detect_time_zone
     resources :sessions, only: :destroy, module: :account do
       delete :others, on: :collection, action: :destroy_others
     end

@@ -186,6 +186,14 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_select "turbo-stream[action=refresh]:not([request-id])"
   end
 
+  test "snoozing until a chosen date wakes at the start of that day in the user's zone" do
+    @user.update!(time_zone: "Tokyo")
+
+    patch task_url(@task), params: { task: { snoozed_until: "2030-03-14" } }, as: :json
+
+    assert_equal Time.find_zone("Tokyo").local(2030, 3, 14), @task.reload.snoozed_until
+  end
+
   test "completing a task doesn't show a toast" do
     @task.update!(completed: false)
 

@@ -68,4 +68,47 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert Session.exists?(other.id)
   end
+
+  test "an unset time zone is filled in from the browser" do
+    @user.update!(time_zone: nil)
+
+    patch time_zone_account_url, params: { time_zone: "Europe/Paris" }, as: :json
+
+    assert_response :no_content
+    assert_equal "Paris", @user.reload.time_zone
+  end
+
+  test "a chosen time zone is never overridden by the browser" do
+    @user.update!(time_zone: "Tokyo")
+
+    patch time_zone_account_url, params: { time_zone: "Europe/Paris" }, as: :json
+
+    assert_equal "Tokyo", @user.reload.time_zone
+  end
+
+  test "nonsense from the browser is ignored" do
+    @user.update!(time_zone: nil)
+
+    patch time_zone_account_url, params: { time_zone: "Mars/Olympus" }, as: :json
+
+    assert_nil @user.reload.time_zone
+  end
+
+  test "pages ask the browser for its time zone only while it's unset" do
+    @user.update!(time_zone: nil)
+    get edit_account_url
+    assert_select "meta[name=detect-time-zone][content='#{time_zone_account_path}']"
+
+    @user.update!(time_zone: "London")
+    get edit_account_url
+    assert_select "meta[name=detect-time-zone]", count: 0
+  end
+
+  test "choosing 'not set' on the profile clears the time zone" do
+    @user.update!(time_zone: "London")
+
+    patch account_url, params: { user: { time_zone: "" } }
+
+    assert_nil @user.reload.time_zone
+  end
 end

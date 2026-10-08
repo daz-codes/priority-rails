@@ -78,4 +78,22 @@ class NavigationTest < ApplicationSystemTestCase
     assert_equal !started_dark, dark.call
     assert_button(started_dark ? "Switch to dark mode" : "Switch to light mode")
   end
+
+  test "the time zone is detected from the browser when the account has none" do
+    @user.update!(time_zone: nil)
+    page.driver.browser.execute_cdp("Emulation.setTimezoneOverride", timezoneId: "America/New_York")
+
+    visit list_url(@list)
+    assert_selector "#tasks li", text: "Buy milk" # the page refreshes after saving the zone
+    sleep 1
+    assert_equal "Eastern Time (US & Canada)", @user.reload.time_zone
+
+    # Once set, it isn't sent again, and a later change of device zone doesn't override it
+    page.driver.browser.execute_cdp("Emulation.setTimezoneOverride", timezoneId: "Asia/Tokyo")
+    visit list_url(@list)
+    assert_no_selector "meta[name=detect-time-zone]", visible: :all
+    assert_equal "Eastern Time (US & Canada)", @user.reload.time_zone
+  ensure
+    page.driver.browser.execute_cdp("Emulation.setTimezoneOverride", timezoneId: "")
+  end
 end

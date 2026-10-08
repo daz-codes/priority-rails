@@ -23,8 +23,11 @@
     <%# ── Time Zone ────────────────────────────── %>
     <section>
       <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Time Zone</h2>
-      <%= form.time_zone_select :time_zone, [ ActiveSupport::TimeZone["London"], ActiveSupport::TimeZone["UTC"] ], {}, class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <p class="text-xs text-text-tertiary mt-1 mb-0">Used for "today", snoozing and recurring tasks.</p>
+      <% priority_zones = [ ActiveSupport::TimeZone["London"], ActiveSupport::TimeZone["UTC"] ] %>
+      <%# A detected zone with no Rails name (e.g. "America/Indiana/Knox") isn't in the standard list %>
+      <% priority_zones.unshift(ActiveSupport::TimeZone[@user.time_zone]) if @user.time_zone.present? && ActiveSupport::TimeZone.all.none? { |zone| zone.name == @user.time_zone } %>
+      <%= form.time_zone_select :time_zone, priority_zones, { include_blank: "Not set — detect automatically" }, class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <p class="text-xs text-text-tertiary mt-1 mb-0">Used for "today", snoozing and recurring tasks. Set automatically from your device unless you choose one.</p>
     </section>
 
     <%# ── Notifications ────────────────────────── %>

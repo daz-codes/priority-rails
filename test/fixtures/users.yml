@@ -3,7 +3,9 @@
 one:
   email_address: one@example.com
   password_digest: <%= password_digest %>
+  time_zone: UTC # set, so tests aren't affected by the time zone of the machine running them
 
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
+  time_zone: UTC

@@ -8,6 +8,6 @@ class ApplicationController < ActionController::Base
 
   # Runs after authentication, so "today", snoozes and recurrences use the user's own day
   def use_user_time_zone(&)
-    Time.use_zone(Current.user&.time_zone || "UTC", &)
+    Time.use_zone(Current.user&.time_zone.presence || "UTC", &)
   end
 end

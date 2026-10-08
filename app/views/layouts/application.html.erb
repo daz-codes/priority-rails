@@ -7,6 +7,10 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%# No time zone on the account yet: lib/time_zone.js sends the browser's %>
+    <% if authenticated? && Current.user.time_zone.blank? %>
+      <meta name="detect-time-zone" content="<%= time_zone_account_path %>">
+    <% end %>
 
     <script>
       (function() {
