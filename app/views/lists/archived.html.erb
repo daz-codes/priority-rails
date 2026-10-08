@@ -1,0 +1,32 @@
+<% content_for :title, "Archived Lists" %>
+
+<div class="max-w-lg mx-auto space-y-6 py-4">
+  <h1 class="text-3xl font-heading font-bold text-center m-0">Archived Lists</h1>
+
+  <% if @lists.any? %>
+    <ul class="list-none p-0 m-0 space-y-2">
+      <% @lists.each do |list| %>
+        <li id="<%= dom_id(list, :archived) %>" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-surface-secondary">
+          <div class="min-w-0 flex-1">
+            <%= link_to list.name, list, class: "block truncate font-semibold text-text-primary no-underline hover:underline" %>
+            <span class="text-xs text-text-tertiary">
+              Archived <%= time_ago_in_words(list.archived_at) %> ago · <%= pluralize(list.tasks.size, "task") %>
+            </span>
+          </div>
+          <%= button_to "Duplicate", duplicate_list_path(list), params: { name: list.name },
+                class: "shrink-0 text-sm text-text-tertiary hover:text-text-primary cursor-pointer bg-transparent border-0" %>
+          <% if list.owned_by?(Current.user) %>
+            <%= button_to "Unarchive", unarchive_list_path(list),
+                  class: "shrink-0 px-3 py-1 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover cursor-pointer bg-surface-primary" %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-center text-text-tertiary">No archived lists.</p>
+  <% end %>
+
+  <div class="text-center">
+    <%= link_to "Back", root_path, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline" %>
+  </div>
+</div>

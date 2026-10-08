@@ -15,10 +15,15 @@
     </div>
 
     <ul data-menu-list class="list-none p-0 m-0 max-h-64 overflow-y-auto">
-      <%= render partial: "lists/list", collection: Current.user.lists, as: :list, locals: { current_list: @list, incomplete_counts: Current.user.incomplete_task_counts } %>
+      <%= render partial: "lists/list", collection: Current.user.lists.active, as: :list, locals: { current_list: @list, incomplete_counts: Current.user.incomplete_task_counts } %>
     </ul>
 
     <div class="px-3 pt-3 pb-3 border-t border-border-secondary space-y-2">
+      <% if (archived_count = Current.user.lists.archived.count).positive? %>
+        <%= link_to archived_lists_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
+          <i class="fa-solid fa-box-archive"></i> Archived Lists (<%= archived_count %>)
+        <% end %>
+      <% end %>
       <%= link_to search_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
         <i class="fa-solid fa-magnifying-glass"></i> Search All Tasks
       <% end %>

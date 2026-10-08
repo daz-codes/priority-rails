@@ -28,7 +28,8 @@
 
     <%# Everything below is saved together %>
     <%= form_with model: @task, id: form_id, data: { turbo_frame: "_top" }, class: "space-y-3" do |form| %>
-      <% lists = Current.user.lists.order(:name) %>
+      <%# Archived lists aren't somewhere to move tasks to, but keep this task's own list in the choices %>
+      <% lists = Current.user.lists.active.or(Current.user.lists.where(id: @task.list_id)).order(:name) %>
       <% if lists.size > 1 %>
         <div class="flex items-center gap-2">
           <%= form.label :list_id, "List", for: "task_panel_list_#{@task.id}", class: "text-sm text-text-tertiary shrink-0" %>

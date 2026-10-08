@@ -1,9 +1,10 @@
 class ListsController < ApplicationController
-  before_action :set_list, only: %i[ show edit update destroy add_user completed_year stats ]
+  before_action :set_list, only: %i[ show edit update destroy add_user completed_year stats archive unarchive duplicate ]
+  before_action :require_owner, only: %i[ archive unarchive ]
 
   def index
-    last_list = Current.user.last_list_id && Current.user.lists.find_by(id: Current.user.last_list_id)
-    list = last_list || Current.user.lists.first
+    lists = Current.user.lists.active
+    list = (Current.user.last_list_id && lists.find_by(id: Current.user.last_list_id)) || lists.first
 
     if list
       redirect_to list
@@ -97,6 +98,25 @@ class ListsController < ApplicationController
     render layout: false
   end
 
+  def archived
+    @lists = Current.user.lists.archived.order(archived_at: :desc)
+  end
+
+  def archive
+    @list.archive!
+    redirect_to root_path, status: :see_other
+  end
+
+  def unarchive
+    @list.unarchive!
+    redirect_to @list, status: :see_other
+  end
+
+  def duplicate
+    copy = @list.duplicate(name: params[:name].to_s.strip.presence || "#{@list.name} (copy)", owner: Current.user)
+    redirect_to copy, status: :see_other
+  end
+
   def destroy
     return redirect_to(edit_list_path(@list), alert: "Only the list owner can delete it.") unless @list.owned_by?(Current.user)
 
@@ -107,6 +127,10 @@ class ListsController < ApplicationController
   private
     def set_list
       @list = Current.user.lists.find(params.expect(:id))
+    end
+
+    def require_owner
+      redirect_to edit_list_path(@list), alert: "Only the list owner can do that." unless @list.owned_by?(Current.user)
     end
 
     def list_params

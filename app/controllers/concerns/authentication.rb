@@ -39,7 +39,7 @@ module Authentication
       return url if url.present?
 
       user = Current.session.user
-      if user.last_list_id && user.lists.exists?(id: user.last_list_id)
+      if user.last_list_id && user.lists.active.exists?(id: user.last_list_id)
         list_url(user.last_list_id)
       else
         root_url

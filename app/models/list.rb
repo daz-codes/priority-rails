@@ -8,7 +8,13 @@ class List < ApplicationRecord
   validates :name, presence: true
   validates :completed_display, inclusion: { in: %w[never 1_day 3_days 1_week forever] }
   validate :default_category_belongs_to_list
-  after_create :assign_default_categories
+  after_create :assign_default_categories, unless: :copying
+
+  # Set while duplicating, so the copy gets the original's categories rather than the defaults
+  attr_accessor :copying
+
+  scope :active, -> { where(archived_at: nil) }
+  scope :archived, -> { where.not(archived_at: nil) }
 
   broadcasts_refreshes
 
@@ -21,6 +27,34 @@ class List < ApplicationRecord
   ].freeze
 
   def owned_by?(user) = owner_id == user.id
+  def archived? = archived_at.present?
+  def archive! = update!(archived_at: Time.current)
+  def unarchive! = update!(archived_at: nil)
+
+  # A fresh copy for `owner` alone, e.g. to reuse a packing list or weekly routine: same categories
+  # (and default), settings, and tasks with their notes and recurrence, but every task starts again
+  # (not completed, not snoozed). Completed occurrences of a recurring task aren't copied, only the
+  # latest, so each recurring task appears once.
+  def duplicate(name:, owner:)
+    transaction do
+      copy = owner.lists.create!(name: name, owner: owner, focus_limit: focus_limit, completed_display: completed_display, copying: true)
+
+      category_copies = categories.to_h { |category| [ category.id, copy.categories.create!(name: category.name, color: category.color) ] }
+      copy.update!(default_category: category_copies[default_category_id])
+
+      tasks.ordered.includes(:rich_text_note, :next_occurrence).reject(&:next_occurrence).each do |task|
+        copy.tasks.create!(
+          description: task.description,
+          category: category_copies[task.category_id],
+          note: task.note&.body&.to_html,
+          recurrence_type: task.recurrence_type,
+          recurrence_day: task.recurrence_day,
+          recurrence_month: task.recurrence_month
+        )
+      end
+      copy
+    end
+  end
 
   # The category new tasks get when none is given
   def category_for_new_tasks = default_category || categories.first

@@ -14,9 +14,13 @@ Rails.application.routes.draw do
     end
   end
   resources :lists do
+    get :archived, on: :collection
     member do
       get :stats
       post :add_user
+      post :archive
+      post :unarchive
+      post :duplicate
       get "completed/:year", to: "lists#completed_year", as: :completed_year
     end
     resources :tasks, only: [ :create ]

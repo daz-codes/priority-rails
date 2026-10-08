@@ -99,6 +99,34 @@
     <% end %>
   </section>
 
+  <%# ── Copy or archive ─────────────────────── %>
+  <section>
+    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Copy or Archive</h2>
+    <p class="text-xs text-text-tertiary mb-2">
+      Duplicate this list to reuse it, like a packing list or weekly routine. The copy is yours alone and has the
+      same categories and tasks, all starting again as not done.
+    </p>
+    <%= form_with url: duplicate_list_path(@list), method: :post, class: "flex gap-2 mb-4" do |form| %>
+      <%= form.text_field :name, value: "#{@list.name} (copy)", "aria-label": "Name for the copy",
+            class: "flex-1 min-w-0 px-3 py-2 border border-border-input rounded-lg text-sm focus:outline-none focus:border-sky-400 bg-input-bg" %>
+      <%= form.submit "Duplicate", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+    <% end %>
+
+    <% if owner %>
+      <div class="flex items-center gap-3">
+        <% if @list.archived? %>
+          <%= button_to "Unarchive list", unarchive_list_path(@list), class: "px-4 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover cursor-pointer bg-surface-primary" %>
+        <% else %>
+          <%= button_to archive_list_path(@list), class: "px-4 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover cursor-pointer bg-surface-primary",
+                data: { turbo_confirm: "Archive this list? It'll be hidden from everyone's menu but nothing is deleted. You can unarchive it from Archived Lists in the menu." } do %>
+            <i class="fa-solid fa-box-archive text-xs"></i> Archive list
+          <% end %>
+        <% end %>
+        <span class="text-xs text-text-tertiary">Hides it from the menu without deleting anything.</span>
+      </div>
+    <% end %>
+  </section>
+
   <div class="flex items-center justify-center gap-4">
     <%= link_to "Back to list", @list, class: "text-sm text-text-tertiary hover:text-text-secondary no-underline", data: { escape_back: true } %>
     <span class="text-text-muted">|</span>
