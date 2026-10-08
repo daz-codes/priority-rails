@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
   resource :registration, only: [ :new, :create ]
   resource :search, only: :show
+  resource :push_subscription, only: [ :create, :destroy ]
+  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   resource :account, only: [ :edit, :update ] do
     resources :sessions, only: :destroy, module: :account do
       delete :others, on: :collection, action: :destroy_others

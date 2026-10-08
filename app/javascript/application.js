@@ -4,6 +4,7 @@ import "@rails/actiontext"
 import helium from "helium"
 import { isDarkTheme, toggleTheme } from "lib/theme"
 import "lib/auto_refresh"
+import "lib/push"
 
 // Functions available to every Helium expression on the page
 helium({

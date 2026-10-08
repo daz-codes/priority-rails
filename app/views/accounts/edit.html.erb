@@ -27,6 +27,37 @@
       <p class="text-xs text-text-tertiary mt-1 mb-0">Used for "today", snoozing and recurring tasks.</p>
     </section>
 
+    <%# ── Notifications ────────────────────────── %>
+    <section>
+      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Notifications</h2>
+      <% button_classes = "px-4 py-2 rounded-full text-sm font-semibold cursor-pointer transition-all duration-100" %>
+      <%# Per device: browsers only allow asking for permission after a tap %>
+      <div id="push_settings" class="mb-3 space-y-2" data-he-data="{ pushState: 'checking' }" data-he-import="behaviors/push_settings" data-vapid-key="<%= PushSubscription.public_key %>">
+        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'on'" hidden><i class="fa-solid fa-bell text-emerald-500"></i> On for this device.</p>
+        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'off'" hidden>Off for this device.</p>
+        <p class="text-sm text-red-600 m-0" data-he-hidden="pushState != 'failed'" hidden>Couldn't turn notifications on just now. Please try again.</p>
+        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'blocked'" hidden>Notifications are blocked for this site. Allow them in your browser's settings, then come back here.</p>
+        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'unsupported'" hidden>This browser can't show notifications. On iPhone or iPad, add Priority to your Home Screen (Share → Add to Home Screen) and turn them on from there.</p>
+        <button type="button" class="<%= button_classes %> bg-sky-400 text-white hover:bg-sky-500" data-he-hidden="pushState != 'off' && pushState != 'failed'" hidden data-he-click="$dispatch('push:enable')">
+          <i class="fa-solid fa-bell text-xs"></i> Turn on notifications on this device
+        </button>
+        <button type="button" class="<%= button_classes %> border border-border-input text-text-secondary hover:bg-surface-hover" data-he-hidden="pushState != 'on'" hidden data-he-click="$dispatch('push:disable')">
+          Turn off on this device
+        </button>
+        <p class="text-sm text-text-tertiary m-0" data-he-hidden="pushState != 'working' && pushState != 'checking'">One moment…</p>
+      </div>
+
+      <p class="text-xs text-text-tertiary mb-2">Notify me when:</p>
+      <label class="flex items-center gap-3 cursor-pointer mb-2">
+        <%= form.check_box :notify_on_list_activity, class: "w-5 h-5 accent-sky-400 cursor-pointer" %>
+        <span class="text-sm text-text-secondary">Someone else adds or completes a task on a list I share</span>
+      </label>
+      <label class="flex items-center gap-3 cursor-pointer">
+        <%= form.check_box :notify_on_list_invites, class: "w-5 h-5 accent-sky-400 cursor-pointer" %>
+        <span class="text-sm text-text-secondary">Someone adds me to their list</span>
+      </label>
+    </section>
+
     <div class="flex justify-center gap-3">
       <%= form.submit "Save", class: "px-6 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
       <%= link_to "Cancel", Current.user.last_list_id? ? list_path(Current.user.last_list_id) : root_path, class: "px-6 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline" %>

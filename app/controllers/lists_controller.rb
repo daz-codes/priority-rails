@@ -72,7 +72,10 @@ class ListsController < ApplicationController
     user = User.find_by(email_address: email)
 
     if user
-      @list.users << user unless @list.users.include?(user)
+      unless @list.users.include?(user)
+        @list.users << user
+        Notifications.added_to_list(@list, user: user, by: Current.user)
+      end
       redirect_to @list, notice: "#{email} has been added to the list."
     elsif (invitation = @list.pending_invitations.find_or_initialize_by(email: email)).save
       InviteMailer.with(email: email, list: @list).invite.deliver_later

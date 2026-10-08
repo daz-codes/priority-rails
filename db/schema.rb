@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_01_062625) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_084733) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -86,6 +86,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_062625) do
     t.index ["list_id"], name: "index_pending_invitations_on_list_id"
   end
 
+  create_table "push_subscriptions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "endpoint", null: false
+    t.string "p256dh_key", null: false
+    t.string "auth_key", null: false
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "ip_address"
@@ -125,6 +137,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_062625) do
     t.string "name"
     t.integer "last_list_id"
     t.string "time_zone", default: "UTC", null: false
+    t.boolean "notify_on_list_activity", default: true, null: false
+    t.boolean "notify_on_list_invites", default: true, null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
@@ -134,6 +148,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_01_062625) do
   add_foreign_key "lists", "categories", column: "default_category_id", on_delete: :nullify
   add_foreign_key "lists", "users", column: "owner_id", on_delete: :nullify
   add_foreign_key "pending_invitations", "lists"
+  add_foreign_key "push_subscriptions", "users", on_delete: :cascade
   add_foreign_key "sessions", "users"
   add_foreign_key "tasks", "categories"
   add_foreign_key "tasks", "lists"

@@ -63,3 +63,8 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# Web Push notifications
+gem "web-push", "~> 3.1"
+# web-push needs openssl >= 3.0; stay on the 3.3 series that ships with Ruby 3.4
+gem "openssl", "~> 3.3"

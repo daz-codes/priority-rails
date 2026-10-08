@@ -8,6 +8,7 @@ class TasksController < ApplicationController
     @task.category ||= @list.category_for_new_tasks
 
     if @task.save
+      Notifications.task_added(@task, by: Current.user)
       redirect_to list_path(@list), flash: { highlight: @task.id }
     else
       redirect_to list_path(@list), alert: @task.errors.full_messages.to_sentence
@@ -23,6 +24,8 @@ class TasksController < ApplicationController
     @task.assign_list(Current.user.lists.find(params.dig(:task, :list_id))) if params.dig(:task, :list_id).present?
 
     if @task.save
+      Notifications.task_completed(@task, by: Current.user) if @task.saved_change_to_completed_on? && @task.completed?
+
       if @task.list != source && request.format.turbo_stream?
         render turbo_stream: moved_streams(source)
       elsif request.media_type == Mime[:json].to_s
