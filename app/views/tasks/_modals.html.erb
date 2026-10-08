@@ -13,7 +13,7 @@
    } %>
 
 <%# ── Snooze ─────────────────────────────────── %>
-<div class="fixed inset-0 bg-black/50 z-40" hidden data-he-hidden="!snoozeTask" data-he-click="snoozeTask = null"></div>
+<div class="fixed inset-0 bg-black/30 backdrop-blur-xl z-40" hidden data-he-hidden="!snoozeTask" data-he-click="snoozeTask = null"></div>
 <div class="<%= modal_classes %>" hidden data-he-hidden="!snoozeTask" data-snooze-modal>
   <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
     <h3 class="text-sm font-semibold text-text-primary m-0">Snooze</h3>
@@ -48,7 +48,7 @@
 </div>
 
 <%# ── Recurrence ─────────────────────────────── %>
-<div class="fixed inset-0 bg-black/50 z-40" hidden data-he-hidden="!recurTask" data-he-click="recurTask = null"></div>
+<div class="fixed inset-0 bg-black/30 backdrop-blur-xl z-40" hidden data-he-hidden="!recurTask" data-he-click="recurTask = null"></div>
 <div class="<%= modal_classes %>" hidden data-he-hidden="!recurTask" data-recurrence-modal>
   <div class="flex items-center justify-between px-4 py-3 border-b border-border-secondary">
     <h3 class="text-sm font-semibold text-text-primary m-0">Recurring Task</h3>

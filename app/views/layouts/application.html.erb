@@ -47,10 +47,10 @@
     <% end %>
 
     <% if authenticated? %>
-      <div id="toasts" class="fixed top-4 inset-x-4 flex justify-end z-50 pointer-events-none"></div>
+      <div id="toasts" class="fixed inset-x-4 flex justify-center z-50 pointer-events-none" style="bottom: calc(1.5rem + env(safe-area-inset-bottom))"></div>
     <% end %>
 
-    <main class="max-w-2xl mx-auto w-full px-4 pt-2 overflow-hidden">
+    <main class="max-w-2xl mx-auto w-full px-4 pt-2 overflow-x-clip">
       <%= tag.div(flash[:alert], id: "flash_alert", role: "alert", class: "text-sm text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-300 rounded-lg px-4 py-2.5 my-2 text-center") if flash[:alert].present? %>
       <%= yield %>
     </main>

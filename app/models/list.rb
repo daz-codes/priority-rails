@@ -7,6 +7,8 @@ class List < ApplicationRecord
   validates :name, presence: true
   validates :completed_display, inclusion: { in: %w[never 1_day 3_days 1_week forever] }
   after_create :assign_default_categories, unless: :copying
+  # Lists should always have an owner; one that's lost it takes its longest-standing member
+  before_validation(if: -> { persisted? && owner_id.nil? }) { self.owner = users.order(:id).first }
 
   # Set while duplicating, so the copy gets the original's categories rather than the defaults
   attr_accessor :copying
@@ -24,7 +26,8 @@ class List < ApplicationRecord
     [ "Forever", "forever" ]
   ].freeze
 
-  def owned_by?(user) = owner_id == user.id
+  # An ownerless list can be managed by any member rather than by nobody
+  def owned_by?(user) = owner_id ? owner_id == user.id : users.include?(user)
   def archived? = archived_at.present?
   def archive! = update!(archived_at: Time.current)
   def unarchive! = update!(archived_at: nil)
