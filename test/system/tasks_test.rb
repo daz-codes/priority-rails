@@ -89,6 +89,20 @@ class TasksTest < ApplicationSystemTestCase
     assert_no_js_errors
   end
 
+  test "weekdays recurrence from the modal, and skipping a recurring task from the panel" do
+    task_row("Buy milk").find("button[title=Recurrence]").click
+    find("[data-recurrence-modal] div.cursor-pointer", text: "Weekdays").click
+    assert_selector "#tasks li", text: /every weekday/i
+    assert_equal "weekdays", @milk.reload.recurrence_type
+
+    click_on "Buy milk"
+    within("[data-task-panel]") { click_on "Skip this time" }
+    assert_selector "[data-toast]", text: "Skipped until"
+    assert_no_selector "#tasks li", text: "Buy milk"
+    assert_equal Date.current.next_weekday.beginning_of_day, @milk.reload.snoozed_until
+    assert_no_js_errors
+  end
+
   test "notes show read-only, open links in a new tab, and edit in the task panel" do
     note = "#note_#{@report.id}"
     assert_no_selector note, visible: true

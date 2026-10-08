@@ -126,4 +126,42 @@ class TaskTest < ActiveSupport::TestCase
     task.recurrence_month = 13
     assert_not task.valid?
   end
+
+  def recurring(type, day: nil, interval: 1)
+    lists(:one).tasks.build(description: "x", recurrence_type: type, recurrence_day: day, recurrence_interval: interval)
+  end
+
+  test "next occurrence for every other day and every other week" do
+    travel_to Time.zone.local(2026, 10, 8, 12) do # Thursday
+      assert_equal Date.new(2026, 10, 10), recurring("daily", interval: 2).next_occurrence_date
+      assert_equal Date.new(2026, 10, 12), recurring("weekly", day: 1).next_occurrence_date # next Monday
+      assert_equal Date.new(2026, 10, 19), recurring("weekly", day: 1, interval: 2).next_occurrence_date # the one after
+    end
+  end
+
+  test "weekdays recur Monday to Friday" do
+    travel_to Time.zone.local(2026, 10, 9, 12) do # Friday
+      assert_equal Date.new(2026, 10, 12), recurring("weekdays").next_occurrence_date
+      assert recurring("weekdays").occurs_on?(Date.new(2026, 10, 9))
+      assert_not recurring("weekdays").occurs_on?(Date.new(2026, 10, 10))
+      assert_equal "Every weekday", recurring("weekdays").recurrence_label
+    end
+  end
+
+  test "the interval carries over to the next occurrence" do
+    task = lists(:one).tasks.create!(description: "Gym", recurrence_type: "daily", recurrence_interval: 2)
+    task.update!(completed: true)
+
+    assert_equal 2, task.reload_next_occurrence.recurrence_interval
+    assert_equal "Every other day", task.next_occurrence.recurrence_label
+  end
+
+  test "skipping moves a recurring task on to its next occurrence" do
+    travel_to Time.zone.local(2026, 10, 8, 12) do
+      task = lists(:one).tasks.create!(description: "Get milk", recurrence_type: "weekly", recurrence_day: 1)
+      task.skip!
+      assert_equal Time.zone.local(2026, 10, 12), task.reload.snoozed_until
+      assert_not task.completed?
+    end
+  end
 end

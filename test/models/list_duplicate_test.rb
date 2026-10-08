@@ -11,7 +11,7 @@ class ListDuplicateTest < ActiveSupport::TestCase
   test "copies categories, settings and tasks, with every task starting again" do
     @list.tasks.create!(description: "Passport", category: categories(:one), completed: true, note: "<p>check expiry</p>")
     @list.tasks.create!(description: "Charger", category: categories(:two), snoozed_until: 2.days.from_now)
-    @list.tasks.create!(description: "Water plants", recurrence_type: "weekly", recurrence_day: 1)
+    @list.tasks.create!(description: "Water plants", recurrence_type: "weekly", recurrence_day: 1, recurrence_interval: 2)
 
     copy = @list.duplicate(name: "Packing", owner: @user)
 
@@ -26,7 +26,7 @@ class ListDuplicateTest < ActiveSupport::TestCase
     assert tasks.none?(&:snoozed?)
     assert_equal "Home", tasks.first.category.name
     assert_match "check expiry", tasks.first.note.to_plain_text
-    assert_equal [ "weekly", 1 ], [ tasks.last.recurrence_type, tasks.last.recurrence_day ]
+    assert_equal [ "weekly", 1, 2 ], [ tasks.last.recurrence_type, tasks.last.recurrence_day, tasks.last.recurrence_interval ]
   end
 
   test "a recurring task's past occurrences aren't copied, only the latest" do

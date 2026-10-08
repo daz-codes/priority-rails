@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_103426) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_120211) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -125,6 +125,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_103426) do
     t.integer "recurrence_day"
     t.integer "recurrence_month"
     t.integer "previous_occurrence_id"
+    t.integer "recurrence_interval", default: 1, null: false
     t.index ["category_id"], name: "index_tasks_on_category_id"
     t.index ["list_id", "completed_on"], name: "index_tasks_on_list_id_and_completed_on"
     t.index ["list_id"], name: "index_tasks_on_list_id"

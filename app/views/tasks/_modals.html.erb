@@ -9,7 +9,7 @@
 <% chosen_cell = "bg-cyan-400/20 text-cyan-400 font-medium" %>
 <%# Saves a recurrence rule for the open task; `month` may be the JS variable chosen in the yearly panel %>
 <% save = ->(type, day: "null", month: "null") {
-     "[$patch(recurTask.url, { task: { recurrence_type: #{type ? "'#{type}'" : 'null'}, recurrence_day: #{day}, recurrence_month: #{month} } }), recurTask = null]"
+     "[$patch(recurTask.url, { task: { recurrence_type: #{type ? "'#{type}'" : 'null'}, recurrence_day: #{day}, recurrence_month: #{month}, recurrence_interval: 1 } }), recurTask = null]"
    } %>
 
 <%# ── Snooze ─────────────────────────────────── %>
@@ -72,6 +72,9 @@
     </div>
     <div class="<%= option_classes %> flex items-center gap-2" data-he-attr:class="{ '<%= chosen %>': recurTask && recurTask.type == 'daily' }" data-he-click="<%= save.("daily") %>">
       <i class="fa-solid fa-sun w-4 text-center text-xs"></i> Daily
+    </div>
+    <div class="<%= option_classes %> flex items-center gap-2" data-he-attr:class="{ '<%= chosen %>': recurTask && recurTask.type == 'weekdays' }" data-he-click="<%= save.("weekdays") %>">
+      <i class="fa-solid fa-briefcase w-4 text-center text-xs"></i> Weekdays <span class="ml-auto text-text-tertiary text-xs">Mon–Fri</span>
     </div>
     <% [ [ "weekly", "Weekly", "fa-calendar-week" ], [ "monthly", "Monthly", "fa-calendar-days" ], [ "yearly", "Yearly", "fa-calendar" ] ].each do |type, label, icon| %>
       <div class="<%= option_classes %> flex items-center gap-2" data-he-attr:class="{ '<%= chosen %>': recurTask && recurTask.type == '<%= type %>' }" data-he-click="recurPanel = '<%= type %>'">

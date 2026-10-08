@@ -24,6 +24,41 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal categories(:one), task.category
   end
 
+  test "quick add recurrence: the first occurrence waits for its day" do
+    travel_to Time.zone.local(2026, 10, 7, 15) do # a Wednesday
+      post list_tasks_url(@list), params: { task: { description: "Get milk every monday #home" } }
+    end
+
+    task = @list.tasks.last
+    assert_equal [ "Get milk", "weekly", 1 ], [ task.description, task.recurrence_type, task.recurrence_day ]
+    assert_equal categories(:one), task.category
+    assert_equal Time.zone.local(2026, 10, 12), task.snoozed_until # the next Monday
+  end
+
+  test "quick add recurrence shows straight away when today is the day" do
+    travel_to Time.zone.local(2026, 10, 12, 9) do # a Monday
+      post list_tasks_url(@list), params: { task: { description: "Get milk #home every monday" } }
+    end
+
+    task = @list.tasks.last
+    assert_equal "Get milk", task.description
+    assert_nil task.snoozed_until
+  end
+
+  test "skip this time snoozes a recurring task until its next occurrence, with a toast" do
+    task = @list.tasks.create!(description: "Get milk", recurrence_type: "daily")
+
+    patch skip_task_url(task), as: :turbo_stream
+
+    assert_equal Date.tomorrow.beginning_of_day, task.reload.snoozed_until
+    assert_select "turbo-stream template [data-toast]", text: /Skipped until/
+  end
+
+  test "only recurring tasks can be skipped" do
+    patch skip_task_url(@task), as: :turbo_stream
+    assert_response :unprocessable_entity
+  end
+
   test "a task that is only a hashtag is rejected as blank" do
     assert_no_difference("Task.count") do
       post list_tasks_url(@list), params: { task: { description: "#home" } }

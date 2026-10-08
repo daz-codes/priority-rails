@@ -22,6 +22,11 @@
       <% unless @task.completed? %>
         <%= render @task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: @task, labelled: true %>
         <%= render "tasks/recurrence_select", task: @task, labelled: true %>
+        <% if @task.recurring? %>
+          <%= button_to skip_task_path(@task), method: :patch, title: "Skip this time", form: { data: { turbo_frame: "_top" } }, class: task_panel_button_classes do %>
+            <%= task_action_content "fa-forward", "Skip this time", labelled: true %>
+          <% end %>
+        <% end %>
       <% end %>
       <%= render "tasks/delete_button", task: @task, labelled: true %>
     </div>

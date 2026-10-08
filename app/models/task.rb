@@ -6,16 +6,17 @@ class Task < ApplicationRecord
   has_one :next_occurrence, class_name: "Task", foreign_key: :previous_occurrence_id, dependent: :nullify, inverse_of: :previous_occurrence
 
   # validations
-  RECURRENCE_TYPES = %w[daily weekly monthly yearly].freeze
+  RECURRENCE_TYPES = %w[daily weekdays weekly monthly yearly].freeze
   # A #tag at the start of the text or after whitespace, so "C#" and "issue#42" are left alone
   HASHTAG = /(?<!\S)#([[:alnum:]_-]+)/
   RESTORE_WINDOW = 10.minutes
   RESTORABLE_ATTRIBUTES = %w[id list_id category_id description position completed_on snoozed_until
-                             recurrence_type recurrence_day recurrence_month created_at].freeze
+                             recurrence_type recurrence_day recurrence_month recurrence_interval created_at].freeze
 
   validates :description, presence: true
   validates :recurrence_type, inclusion: { in: RECURRENCE_TYPES }, allow_blank: true
   validates :recurrence_month, inclusion: { in: 1..12 }, allow_nil: true
+  validates :recurrence_interval, inclusion: { in: 1..12 }
   validate :category_belongs_to_list
 
   # position
@@ -88,6 +89,23 @@ class Task < ApplicationRecord
     end
   end
 
+  # Quick-add: "Get milk every monday" makes the task recur every Monday and drops the phrase. The
+  # first occurrence waits for its day: added on a Wednesday, it's snoozed until Monday.
+  def apply_recurrence_phrase
+    text, rule = RecurrencePhrase.extract(description)
+    return if rule.nil? || text.blank?
+
+    self.description = text
+    self.recurrence_type, self.recurrence_day, self.recurrence_month, self.recurrence_interval = rule.type, rule.day, rule.month, rule.interval
+    first = occurs_on?(Date.current) ? Date.current : next_occurrence_date
+    self.snoozed_until = first.beginning_of_day if first > Date.current
+  end
+
+  # "Not this time": moves a recurring task on to its next occurrence, keeping the series
+  def skip!
+    update!(snoozed_until: next_occurrence_date.beginning_of_day) if recurring?
+  end
+
   def move_to(new_list)
     assign_list(new_list)
     save!
@@ -119,12 +137,15 @@ class Task < ApplicationRecord
   def recurrence_label
     return nil unless recurring?
 
+    every = recurrence_interval.to_i > 1 ? "Every other" : "Every"
     case recurrence_type
     when "daily"
-      "Every day"
+      "#{every} day"
+    when "weekdays"
+      "Every weekday"
     when "weekly"
       day_name = Date::DAYNAMES[recurrence_day || 0]
-      "Every #{day_name}"
+      "#{every} #{day_name}"
     when "monthly"
       "Every month on the #{(recurrence_day || 1).ordinalize}"
     when "yearly"
@@ -133,18 +154,35 @@ class Task < ApplicationRecord
     end
   end
 
+  # Whether the recurrence rule falls on `date` (a 31st falls on the last day of shorter months)
+  def occurs_on?(date)
+    clamp = ->(day, month, year) { [ day || 1, Time.days_in_month(month, year) ].min }
+    case recurrence_type
+    when "daily" then true
+    when "weekdays" then date.on_weekday?
+    when "weekly" then date.wday == (recurrence_day || 0)
+    when "monthly" then date.day == clamp.(recurrence_day, date.month, date.year)
+    when "yearly" then date.month == (recurrence_month || 1) && date.day == clamp.(recurrence_day, date.month, date.year)
+    else false
+    end
+  end
+
   def next_occurrence_date
     return nil unless recurring?
 
     today = Date.current
+    interval = [ recurrence_interval.to_i, 1 ].max
     case recurrence_type
     when "daily"
-      today + 1.day
+      today + interval.days
+    when "weekdays"
+      today.next_weekday
     when "weekly"
       target_wday = recurrence_day || 0
       days_ahead = (target_wday - today.wday) % 7
       days_ahead = 7 if days_ahead == 0
-      today + days_ahead.days
+      # "Every other": the next one after that, so a week is skipped
+      today + (days_ahead + 7 * (interval - 1)).days
     when "monthly"
       target_day = recurrence_day || 1
       candidate = Date.new(today.year, today.month, [ target_day, Time.days_in_month(today.month, today.year) ].min)
@@ -188,6 +226,7 @@ class Task < ApplicationRecord
       recurrence_type: recurrence_type,
       recurrence_day: recurrence_day,
       recurrence_month: recurrence_month,
+      recurrence_interval: recurrence_interval,
       snoozed_until: next_occurrence_date&.beginning_of_day
     )
   end

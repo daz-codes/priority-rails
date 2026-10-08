@@ -1,10 +1,11 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [ :edit, :update, :destroy, :move ]
+  before_action :set_task, only: [ :edit, :update, :destroy, :move, :skip ]
 
   def create
     @list = Current.user.lists.find(params[:list_id])
     @task = @list.tasks.build(task_params)
     @task.apply_category_hashtag
+    @task.apply_recurrence_phrase
     @task.category ||= @list.category_for_new_tasks
 
     if @task.save
@@ -48,6 +49,19 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.turbo_stream { render turbo_stream: moved_streams(source) }
       format.html { redirect_to list_path(source), status: :see_other }
+    end
+  end
+
+  # "Not this time" for a recurring task: on to its next occurrence, keeping the series
+  def skip
+    return head :unprocessable_entity unless @task.recurring?
+
+    @task.skip!
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [ toast("Skipped until #{l(@task.snoozed_until.to_date, format: '%A %-d %B')}"), turbo_stream.refresh(request_id: nil) ]
+      end
+      format.html { redirect_to @task.list, status: :see_other }
     end
   end
 
@@ -97,7 +111,7 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.expect(task: [ :description, :position, :category_id, :completed, :completed_on, :snoozed_until, :note, :recurrence_type, :recurrence_day, :recurrence_month ])
+    params.expect(task: [ :description, :position, :category_id, :completed, :completed_on, :snoozed_until, :note, :recurrence_type, :recurrence_day, :recurrence_month, :recurrence_interval ])
   end
 
   def moved_streams(source)

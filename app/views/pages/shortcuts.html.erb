@@ -58,6 +58,22 @@
       Case, spaces and dashes don't matter, so <code class="font-mono text-xs">#sideproject</code> matches "Side project".
       Tags that don't match a category are left in the task name.
     </p>
+    <p class="m-0 pt-2">
+      End a new task with how often it repeats to make it recurring, e.g.
+      <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-surface-secondary text-text-primary">Get milk every monday</code>.
+    </p>
+    <ul class="m-0 pl-5 text-text-tertiary space-y-0.5">
+      <li><code class="font-mono text-xs">every day</code>, <code class="font-mono text-xs">daily</code>, <code class="font-mono text-xs">every other day</code></li>
+      <li><code class="font-mono text-xs">every weekday</code> (Monday to Friday)</li>
+      <li><code class="font-mono text-xs">every monday</code> (or <code class="font-mono text-xs">mon</code>), <code class="font-mono text-xs">every other monday</code>, <code class="font-mono text-xs">every week</code>, <code class="font-mono text-xs">every other week</code>, <code class="font-mono text-xs">fortnightly</code></li>
+      <li><code class="font-mono text-xs">every month on the 1st</code>, <code class="font-mono text-xs">every 1st</code>, <code class="font-mono text-xs">monthly</code></li>
+      <li><code class="font-mono text-xs">every March 15</code>, <code class="font-mono text-xs">every 15th March</code>, <code class="font-mono text-xs">yearly</code></li>
+    </ul>
+    <p class="m-0 text-text-tertiary">
+      If today isn't one of its days, the task is snoozed until the first one. It works alongside
+      <code class="font-mono text-xs">#category</code> in either order. To skip one occurrence without
+      ending the series, open the task and choose <strong>Skip this time</strong>.
+    </p>
   </div>
 
   <div class="flex items-center justify-center">

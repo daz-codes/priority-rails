@@ -49,7 +49,8 @@ class List < ApplicationRecord
           note: task.note&.body&.to_html,
           recurrence_type: task.recurrence_type,
           recurrence_day: task.recurrence_day,
-          recurrence_month: task.recurrence_month
+          recurrence_month: task.recurrence_month,
+          recurrence_interval: task.recurrence_interval
         )
       end
       copy
