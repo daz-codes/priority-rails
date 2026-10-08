@@ -3,11 +3,14 @@
 one:
   name: Home
   list: one
+  position: 1
 
 two:
   name: Work
   list: one
+  position: 2
 
 three:
   name: Work
   list: two
+  position: 1

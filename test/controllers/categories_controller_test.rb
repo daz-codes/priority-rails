@@ -55,4 +55,28 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal "Work", list.default_category.name
   end
+
+  test "categories can be reordered, and the order shows in the filters and task menus" do
+    hobbies = @list.categories.create!(name: "Hobbies", color: "#d9f99d")
+    assert_equal %w[Home Work Hobbies], @list.categories.pluck(:name), "new categories go last"
+
+    patch sort_list_categories_url(@list), params: { category_ids: [ hobbies.id, @work.id, @home.id ] }, as: :json
+
+    assert_response :ok
+    assert_equal %w[Hobbies Work Home], @list.reload.categories.pluck(:name)
+
+    @list.tasks.create!(description: "Thing", category: @home)
+    get list_url(@list)
+    assert_equal %w[ALL HOBBIES WORK HOME], css_select(".category-pill").map { |pill| pill.text.strip.upcase }
+    assert_equal %w[Hobbies Work Home], css_select("select[name='task[category_id]'] option").map { |option| option.text.strip }.first(3)
+  end
+
+  test "reordering needs exactly this list's categories" do
+    patch sort_list_categories_url(@list), params: { category_ids: [ @home.id ] }, as: :json
+    assert_response :unprocessable_entity
+
+    patch sort_list_categories_url(@list), params: { category_ids: [ @home.id, categories(:three).id ] }, as: :json
+    assert_response :unprocessable_entity
+    assert_equal %w[Home Work], @list.reload.categories.pluck(:name)
+  end
 end

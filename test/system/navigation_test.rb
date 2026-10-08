@@ -96,4 +96,18 @@ class NavigationTest < ApplicationSystemTestCase
   ensure
     page.driver.browser.execute_cdp("Emulation.setTimezoneOverride", timezoneId: "")
   end
+
+  test "categories reorder by dragging their handle in settings" do
+    visit edit_list_url(@list)
+    assert_selector "[data-category-list] .category-handle", count: 2
+    # Selenium can't perform HTML5 drag and drop: move the row and fire Sortable's onEnd
+    execute_script(<<~JS)
+      const list = document.querySelector("[data-category-list]")
+      const sortable = list[Object.keys(list).find(key => key.startsWith("Sortable"))]
+      list.prepend(list.lastElementChild)
+      sortable.options.onEnd()
+    JS
+    sleep 1
+    assert_equal %w[Work Home], @list.reload.categories.pluck(:name)
+  end
 end

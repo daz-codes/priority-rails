@@ -2,7 +2,7 @@ class List < ApplicationRecord
   belongs_to :owner, class_name: "User"
   has_and_belongs_to_many :users
   has_many :tasks, dependent: :destroy
-  has_many :categories, dependent: :destroy
+  has_many :categories, -> { order(:position, :id) }, dependent: :destroy
   belongs_to :default_category, class_name: "Category", optional: true
   has_many :pending_invitations, dependent: :destroy
   validates :name, presence: true
@@ -68,6 +68,14 @@ class List < ApplicationRecord
       slots = tasks.where(id: ids).order(:position).pluck(:position)
       ids.zip(slots).each { |id, position| tasks.where(id: id).update_all(position: position) }
       touch # broadcasts the new order to anyone else viewing the list
+    end
+  end
+
+  # Sets the order of this list's categories (from dragging them in settings)
+  def reorder_categories(ids)
+    transaction do
+      ids.each.with_index(1) { |id, position| categories.where(id: id).update_all(position: position) }
+      touch # broadcasts the new order
     end
   end
 

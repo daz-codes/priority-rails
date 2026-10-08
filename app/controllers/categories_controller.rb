@@ -16,6 +16,14 @@ class CategoriesController < ApplicationController
     redirect_to edit_list_path(@list), alert: @category.errors.full_messages.to_sentence.presence
   end
 
+  def sort
+    ids = Array(params[:category_ids]).map(&:to_i).uniq
+    return head :unprocessable_entity unless ids.sort == @list.categories.ids.sort # exactly this list's categories
+
+    @list.reorder_categories(ids)
+    head :ok
+  end
+
   def make_default
     @list.update!(default_category: @category)
     redirect_to edit_list_path(@list), status: :see_other

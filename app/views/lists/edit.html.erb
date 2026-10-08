@@ -66,7 +66,9 @@
   <%# ── Categories ────────────────────────────── %>
   <section>
     <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Categories</h2>
-    <div class="space-y-2 mb-4">
+    <%# Drag a row's handle to reorder; the order is used for the filter pills and category menus %>
+    <div class="space-y-2 mb-4" data-he-import="behaviors/sortable" data-sort-url="<%= sort_list_categories_path(@list) %>"
+         data-sort-param="category_ids" data-sort-handle=".category-handle" data-category-list>
       <% @list.categories.each do |category| %>
         <%= render "categories/category", list: @list, category: category %>
       <% end %>

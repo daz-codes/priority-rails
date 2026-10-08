@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_120211) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_120711) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -55,7 +55,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_120211) do
     t.datetime "updated_at", null: false
     t.string "color", default: "#a5f3fc"
     t.integer "list_id", null: false
+    t.integer "position", null: false
     t.index ["list_id", "name"], name: "index_categories_on_list_id_and_name", unique: true
+    t.index ["list_id", "position"], name: "index_categories_on_list_id_and_position"
   end
 
   create_table "lists", force: :cascade do |t|
