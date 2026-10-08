@@ -284,23 +284,20 @@ button, input[type="submit"], .rounded-full.font-semibold {
    The row is faded with opacity, which would also lighten the line, so fade the text colour instead */
 .task-struck::after { display: none; }
 
-/* A pencil swipe through the name: one stroke per line, rising from just below the middle on the left
-   to just above it on the right, fading out past the end of the text. The SVG stretches to each line
+/* A pencil swipe through the name, in the tick's green: one stroke per line, rising from just below the middle on the left
+   to just above it on the right in a very shallow arch, fading out past the end of the text. The SVG stretches to each line
    (box-decoration-break: clone gives every wrapped line its own), with non-scaling strokes so it keeps
    its weight; the padding lets it overhang the text and the negative margin keeps the text in place.
    The letters are see-through, so the line reads as drawn over the name rather than behind it */
 .task-struck { color: color-mix(in oklch, var(--text-secondary) 65%, transparent); }
 
 .task-struck .task-name {
-  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23424a5a' stop-opacity='.85'/%3E%3Cstop offset='.8' stop-color='%23424a5a' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%23424a5a' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M1 13.6 C25 13.3 60 11 99 6.6' fill='none' stroke='url%28%23f%29' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M3 14.4 C30 13.8 62 11.6 96 7.5' fill='none' stroke='url%28%23f%29' stroke-width='1' stroke-opacity='.55' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
-  padding-inline: 0.25em 0.8em;
-  margin-inline: -0.25em -0.8em;
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%2322b14c' stop-opacity='.7'/%3E%3Cstop offset='.7' stop-color='%2322b14c' stop-opacity='.65'/%3E%3Cstop offset='1' stop-color='%2322b14c' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M1 13.6 Q50 8.7 99 6.6' fill='none' stroke='url%28%23f%29' stroke-width='3' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+  padding-inline: 0.25em 1.4em;
+  margin-inline: -0.25em -1.4em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
-.dark .task-struck .task-name {
-  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23cdd3df' stop-opacity='.85'/%3E%3Cstop offset='.8' stop-color='%23cdd3df' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%23cdd3df' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M1 13.6 C25 13.3 60 11 99 6.6' fill='none' stroke='url%28%23f%29' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M3 14.4 C30 13.8 62 11.6 96 7.5' fill='none' stroke='url%28%23f%29' stroke-width='1' stroke-opacity='.55' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-}
 
 #tasks li .opacity-50:has(.task-struck) { opacity: 1; }
