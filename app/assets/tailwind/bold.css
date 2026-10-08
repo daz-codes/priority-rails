@@ -149,17 +149,17 @@ button, input[type="submit"], .rounded-full.font-semibold {
 }
 
 #new_task_form input[type="text"]:focus {
-  border-color: var(--accent);
+  border-color: var(--color-brand-blue);
 }
 
 #new_task_form input[type="text"]:focus + input[type="submit"] {
-  border-color: var(--accent);
+  border-color: var(--color-brand-blue);
 }
 
-/* The main "add" action as a solid accent button */
+/* The main "add" action in the same blue as the priority button */
 #new_task_form input[type="submit"] {
-  background: var(--accent);
-  border: 3px solid var(--accent);
+  background: var(--color-brand-blue);
+  border: 3px solid var(--color-brand-blue);
   border-inline-start: 0;
   color: white;
   font-size: 1.05rem;
@@ -280,27 +280,27 @@ button, input[type="submit"], .rounded-full.font-semibold {
   background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='-10 -18 100 135'%3E%3Ccircle cx='50' cy='50' r='44' fill='white' stroke='%23293145' stroke-width='9'/%3E%3C/svg%3E");
 }
 
-/* Completed tasks: a wavy dark grey line through the name instead of the highlighter bar.
+/* Completed tasks: a pencil line through the name instead of the highlighter bar.
    The row is faded with opacity, which would also lighten the line, so fade the text colour instead */
 .task-struck::after { display: none; }
 
-/* A wiggly line drawn as a repeating SVG behind the name, so it can start a little before the text and
-   finish a little after. box-decoration-break: clone draws it, with its overhang, on every wrapped line;
-   the negative margin keeps the text where it was */
-/* See-through letters, so the line reads as drawn over the name rather than behind it */
+/* A pencil swipe through the name: one stroke per line, rising from just below the middle on the left
+   to just above it on the right, fading out past the end of the text. The SVG stretches to each line
+   (box-decoration-break: clone gives every wrapped line its own), with non-scaling strokes so it keeps
+   its weight; the padding lets it overhang the text and the negative margin keeps the text in place.
+   The letters are see-through, so the line reads as drawn over the name rather than behind it */
 .task-struck { color: color-mix(in oklch, var(--text-secondary) 65%, transparent); }
 
 .task-struck .task-name {
-  --strike-overhang: 0.3em;
-  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 5 Q4 0.5 8 5 T16 5' fill='none' stroke='%23424a5a' stroke-opacity='0.75' stroke-width='2'/%3E%3C/svg%3E") repeat-x left 55% / 16px 10px;
-  padding-inline: var(--strike-overhang);
-  margin-inline: calc(-1 * var(--strike-overhang));
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23424a5a' stop-opacity='.85'/%3E%3Cstop offset='.8' stop-color='%23424a5a' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%23424a5a' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M1 13.6 C25 13.3 60 11 99 6.6' fill='none' stroke='url%28%23f%29' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M3 14.4 C30 13.8 62 11.6 96 7.5' fill='none' stroke='url%28%23f%29' stroke-width='1' stroke-opacity='.55' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%;
+  padding-inline: 0.25em 0.8em;
+  margin-inline: -0.25em -0.8em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
 
 .dark .task-struck .task-name {
-  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 5 Q4 0.5 8 5 T16 5' fill='none' stroke='%23cdd3df' stroke-opacity='0.75' stroke-width='2'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='f' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%23cdd3df' stop-opacity='.85'/%3E%3Cstop offset='.8' stop-color='%23cdd3df' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%23cdd3df' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M1 13.6 C25 13.3 60 11 99 6.6' fill='none' stroke='url%28%23f%29' stroke-width='2.4' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M3 14.4 C30 13.8 62 11.6 96 7.5' fill='none' stroke='url%28%23f%29' stroke-width='1' stroke-opacity='.55' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
 }
 
 #tasks li .opacity-50:has(.task-struck) { opacity: 1; }
