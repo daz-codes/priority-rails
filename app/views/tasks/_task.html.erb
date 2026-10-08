@@ -13,9 +13,12 @@
 
       <div class="flex-grow min-w-0 <%= 'opacity-50' if task.completed? %>">
         <% strike_color = task.category&.color || "#a5f3fc" %>
-        <%= link_to task.description, edit_task_path(task),
+        <%# The name sits in an inline span so a completed task's wavy line can follow each wrapped line %>
+        <%= link_to edit_task_path(task),
             class: "task-title text-base no-underline text-text-primary block break-words select-none #{'task-struck' if task.completed?}",
-            style: (task.completed? ? "--strike-color: #{strike_color}" : nil) %>
+            style: (task.completed? ? "--strike-color: #{strike_color}" : nil) do %>
+          <span class="task-name"><%= task.description %></span>
+        <% end %>
         <% unless @priority %>
           <div class="task-meta text-xs text-text-tertiary italic">
             <%= "Snoozed #{snooze_time(task)}" if task.snoozed? %>

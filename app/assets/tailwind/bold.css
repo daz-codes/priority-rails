@@ -284,13 +284,23 @@ button, input[type="submit"], .rounded-full.font-semibold {
    The row is faded with opacity, which would also lighten the line, so fade the text colour instead */
 .task-struck::after { display: none; }
 
-/* Translucent and a little thinner, so the name stays readable through it */
-.task-struck {
-  color: var(--text-secondary);
-  text-decoration: line-through wavy oklch(37% 0.02 260 / 0.7) 1.5px;
-  text-decoration-skip-ink: none;
+/* A wiggly line drawn as a repeating SVG behind the name, so it can start a little before the text and
+   finish a little after. box-decoration-break: clone draws it, with its overhang, on every wrapped line;
+   the negative margin keeps the text where it was */
+/* See-through letters, so the line reads as drawn over the name rather than behind it */
+.task-struck { color: color-mix(in oklch, var(--text-secondary) 65%, transparent); }
+
+.task-struck .task-name {
+  --strike-overhang: 0.3em;
+  background: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 5 Q4 0.5 8 5 T16 5' fill='none' stroke='%23424a5a' stroke-opacity='0.75' stroke-width='2'/%3E%3C/svg%3E") repeat-x left 55% / 16px 10px;
+  padding-inline: var(--strike-overhang);
+  margin-inline: calc(-1 * var(--strike-overhang));
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
-.dark .task-struck { text-decoration-color: oklch(80% 0.02 260 / 0.7); }
+.dark .task-struck .task-name {
+  background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10'%3E%3Cpath d='M0 5 Q4 0.5 8 5 T16 5' fill='none' stroke='%23cdd3df' stroke-opacity='0.75' stroke-width='2'/%3E%3C/svg%3E");
+}
 
 #tasks li .opacity-50:has(.task-struck) { opacity: 1; }
