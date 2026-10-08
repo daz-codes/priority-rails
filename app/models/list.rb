@@ -3,11 +3,9 @@ class List < ApplicationRecord
   has_and_belongs_to_many :users
   has_many :tasks, dependent: :destroy
   has_many :categories, -> { order(:position, :id) }, dependent: :destroy
-  belongs_to :default_category, class_name: "Category", optional: true
   has_many :pending_invitations, dependent: :destroy
   validates :name, presence: true
   validates :completed_display, inclusion: { in: %w[never 1_day 3_days 1_week forever] }
-  validate :default_category_belongs_to_list
   after_create :assign_default_categories, unless: :copying
 
   # Set while duplicating, so the copy gets the original's categories rather than the defaults
@@ -39,8 +37,8 @@ class List < ApplicationRecord
     transaction do
       copy = owner.lists.create!(name: name, owner: owner, focus_limit: focus_limit, completed_display: completed_display, copying: true)
 
+      # Created in order, so the copy's first category (its default) matches
       category_copies = categories.to_h { |category| [ category.id, copy.categories.create!(name: category.name, color: category.color) ] }
-      copy.update!(default_category: category_copies[default_category_id])
 
       tasks.ordered.includes(:rich_text_note, :next_occurrence).reject(&:next_occurrence).each do |task|
         copy.tasks.create!(
@@ -57,8 +55,8 @@ class List < ApplicationRecord
     end
   end
 
-  # The category new tasks get when none is given
-  def category_for_new_tasks = default_category || categories.first
+  # The category new tasks get when none is given: the first one (drag to reorder in settings)
+  def category_for_new_tasks = categories.first
 
   # Reorders just the given tasks within the positions they already hold, so tasks that weren't on
   # screen (filtered by category, snoozed, older completed ones) keep their place. Dragging B3 above
@@ -95,17 +93,11 @@ class List < ApplicationRecord
   private
 
   def assign_default_categories
-    [ { name: "Home", color: "#a5f3fc" },
-      { name: "Work", color: "#93c5fd" },
+    # Work first, so it's the default as it always has been
+    [ { name: "Work", color: "#93c5fd" },
+      { name: "Home", color: "#a5f3fc" },
       { name: "Hobbies", color: "#d9f99d" } ].each do |attrs|
       categories.create!(attrs)
     end
-    update!(default_category: categories.find_by(name: "Work"))
-  end
-
-  def default_category_belongs_to_list
-    return if default_category.nil? || default_category.list_id == id
-
-    errors.add(:default_category, "must be one of this list's categories")
   end
 end

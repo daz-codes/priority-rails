@@ -25,7 +25,6 @@ Rails.application.routes.draw do
     end
     resources :tasks, only: [ :create ]
     resources :categories, only: [ :create, :update, :destroy ] do
-      patch :make_default, on: :member
       patch :sort, on: :collection
     end
     resources :invitations, only: :destroy do

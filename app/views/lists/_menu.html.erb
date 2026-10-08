@@ -1,45 +1,50 @@
 <div id="priority-menu" data-he-data="{ open: false, query: '' }" data-he-click.outside="open = false" data-he-close-menu.document="open = false" class="relative w-full sm:w-auto sm:inline-block">
-  <button data-menu-toggle data-he-click="[query = '', open = !open]" class="font-brand text-3xl w-full sm:w-auto sm:px-12 py-1.5 rounded-full bg-surface-primary border-2 border-border-input hover:border-sky-400 hover:bg-sky-50 hover:text-black transition-all duration-100 cursor-pointer">
-    PR<span class="text-brand-blue">!</span>OR<span class="text-brand-green">!</span>TY<span class="text-brand-red">!</span>
+  <%# The logo as a button: favicon blue with white letters and green marks, the same in light and dark mode %>
+  <button data-menu-toggle data-he-click="[query = '', open = !open]" class="font-brand text-3xl w-full sm:w-auto sm:px-12 py-2 rounded-full bg-brand-blue text-white border-0 shadow-md hover:brightness-110 active:scale-[0.98] transition-all duration-100 cursor-pointer">
+    PR<span class="text-brand-green">!</span>OR<span class="text-brand-green">!</span>TY<span class="text-brand-green">!</span>
   </button>
 
-  <div data-menu-modal data-he-hidden="!open" hidden class="fixed left-1/2 -translate-x-1/2 mt-2 w-[calc(100vw-1rem)] sm:w-[32rem] bg-surface-primary/95 backdrop-blur-sm rounded-xl shadow-lg border-2 border-border-input z-50 overflow-hidden">
-    <div class="p-3 border-b border-border-secondary space-y-2">
-      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full bg-sky-400 text-white font-semibold text-sm hover:bg-sky-500 transition-all duration-100 no-underline" do %>
+  <div data-menu-modal data-he-hidden="!open" hidden class="fixed left-1/2 -translate-x-1/2 mt-3 w-[calc(100vw-1rem)] sm:w-[32rem] bg-surface-primary rounded-2xl shadow-2xl z-50 overflow-hidden">
+    <div class="p-4 space-y-3">
+      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-full bg-brand-blue text-white text-sm font-black uppercase tracking-wider hover:brightness-110 transition-all duration-100 no-underline" do %>
         <i class="fa-solid fa-plus text-xs"></i> Add New List
       <% end %>
       <input data-he-bind="query"
              type="text"
              placeholder="Search lists..."
-             class="w-full px-3 py-2 rounded-lg border border-border-primary text-sm focus:outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-400">
+             class="w-full px-4 py-2.5 rounded-full border-[3px] border-[var(--input-border-bold)] text-base font-semibold focus:outline-none focus:border-brand-blue bg-input-bg">
     </div>
 
-    <ul data-menu-list class="list-none p-0 m-0 max-h-64 overflow-y-auto">
+    <ul data-menu-list class="list-none px-3 pb-2 m-0 max-h-72 overflow-y-auto space-y-1">
       <%= render partial: "lists/list", collection: Current.user.lists.active, as: :list, locals: { current_list: @list, incomplete_counts: Current.user.incomplete_task_counts } %>
     </ul>
 
-    <div class="px-3 pt-3 pb-3 border-t border-border-secondary space-y-2">
-      <% if (archived_count = Current.user.lists.archived.count).positive? %>
-        <%= link_to archived_lists_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
-          <i class="fa-solid fa-box-archive"></i> Archived Lists (<%= archived_count %>)
+    <div class="px-5 pt-4 pb-5 bg-surface-secondary space-y-3">
+      <div class="grid grid-cols-2 gap-x-4 gap-y-2.5">
+        <% if (archived_count = Current.user.lists.archived.count).positive? %>
+          <%= link_to archived_lists_path, class: "flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-text-tertiary hover:text-text-primary no-underline" do %>
+            <i class="fa-solid fa-box-archive w-4 text-center"></i> Archived (<%= archived_count %>)
+          <% end %>
         <% end %>
-      <% end %>
-      <%= link_to search_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
-        <i class="fa-solid fa-magnifying-glass"></i> Search All Tasks
-      <% end %>
-      <%= link_to about_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
-        <i class="fa-solid fa-circle-info"></i> About PR!OR!TY!
-      <% end %>
-      <%= link_to shortcuts_path, class: "block text-sm text-text-tertiary hover:text-text-secondary no-underline" do %>
-        <i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts
-      <% end %>
-      <div class="text-sm text-text-tertiary">Signed in as <span class="font-semibold text-text-secondary"><%= Current.user.name.presence || Current.user.email_address %></span></div>
-      <div class="flex gap-2 pt-1">
-        <%= link_to edit_account_path, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline" do %>
-          <i class="fa-solid fa-user-pen text-xs"></i> Edit Profile
+        <%= link_to search_path, class: "flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-text-tertiary hover:text-text-primary no-underline" do %>
+          <i class="fa-solid fa-magnifying-glass w-4 text-center"></i> Search Tasks
         <% end %>
-        <%= link_to session_path, data: { turbo_method: :delete }, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline cursor-pointer" do %>
-          <i class="fa-solid fa-right-from-bracket text-xs"></i> Sign Out
+        <%= link_to about_path, class: "flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-text-tertiary hover:text-text-primary no-underline" do %>
+          <i class="fa-solid fa-circle-info w-4 text-center"></i> About
+        <% end %>
+        <%= link_to shortcuts_path, class: "flex items-center gap-2.5 text-xs font-black uppercase tracking-wider text-text-tertiary hover:text-text-primary no-underline" do %>
+          <i class="fa-solid fa-keyboard w-4 text-center"></i> Shortcuts
+        <% end %>
+      </div>
+      <div class="pt-1 text-[11px] font-black uppercase tracking-wider text-text-tertiary">
+        Signed in as <span class="text-text-primary normal-case tracking-normal text-sm font-bold"><%= Current.user.name.presence || Current.user.email_address %></span>
+      </div>
+      <div class="flex gap-2">
+        <%= link_to edit_account_path, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border-2 border-border-input text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue transition-all duration-100 no-underline" do %>
+          <i class="fa-solid fa-user-pen"></i> Profile
+        <% end %>
+        <%= link_to session_path, data: { turbo_method: :delete }, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border-2 border-border-input text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue transition-all duration-100 no-underline cursor-pointer" do %>
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
         <% end %>
       </div>
     </div>

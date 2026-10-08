@@ -8,52 +8,39 @@ class CategoriesControllerTest < ActionDispatch::IntegrationTest
     sign_in_as users(:one)
   end
 
-  test "new tasks use the chosen default category, not one named Work" do
-    patch make_default_list_category_url(@list, @home)
-    assert_redirected_to edit_list_url(@list)
-
+  test "new tasks go in the first category, which follows the order in settings" do
     post list_tasks_url(@list), params: { task: { description: "Water plants" } }
-
     assert_equal @home, @list.tasks.last.category
+
+    patch sort_list_categories_url(@list), params: { category_ids: [ @work.id, @home.id ] }, as: :json
+    post list_tasks_url(@list), params: { task: { description: "Send report" } }
+    assert_equal @work, @list.tasks.last.category
   end
 
-  test "settings show which category is the default" do
+  test "settings explain the default and offer no stars" do
     get edit_list_url(@list)
 
-    assert_select "##{ActionView::RecordIdentifier.dom_id(@work)} [title='Default for new tasks']"
-    assert_select "##{ActionView::RecordIdentifier.dom_id(@home)} button[title='Make default for new tasks']"
+    assert_select "p", text: /The first category is the default for new tasks/
+    assert_select "[title='Make default for new tasks'], [title='Default for new tasks']", count: 0
   end
 
-  test "can't make another list's category the default" do
-    patch make_default_list_category_url(@list, categories(:three))
+  test "deleting a category moves its tasks to the first remaining one" do
+    garden = @list.tasks.create!(description: "Garden", category: @home)
+    report = @list.tasks.create!(description: "Report", category: @work)
 
-    assert_response :not_found
-    assert_equal @work, @list.reload.default_category
+    delete list_category_url(@list, @home), as: :turbo_stream
+    assert_select "turbo-stream[action=remove][target=#{ActionView::RecordIdentifier.dom_id(@home)}]"
+    assert_equal @work, garden.reload.category
+
+    delete list_category_url(@list, @work)
+    assert_nil report.reload.category, "no categories left"
   end
 
-  test "deleting the default category hands the default and its tasks to another category" do
-    task = @list.tasks.create!(description: "Report", category: @work)
-
-    delete list_category_url(@list, @work), as: :turbo_stream
-
-    assert_equal @home, @list.reload.default_category
-    assert_equal @home, task.reload.category
-    assert_select "turbo-stream[action=replace][target=#{ActionView::RecordIdentifier.dom_id(@home)}]"
-  end
-
-  test "deleting another category moves its tasks to the default" do
-    task = @list.tasks.create!(description: "Garden", category: @home)
-
-    delete list_category_url(@list, @home)
-
-    assert_equal @work, task.reload.category
-    assert_equal @work, @list.reload.default_category
-  end
-
-  test "new lists default to Work" do
+  test "new lists start with Work first, so it stays the default" do
     list = users(:one).lists.create!(name: "Fresh", owner: users(:one))
 
-    assert_equal "Work", list.default_category.name
+    assert_equal %w[Work Home Hobbies], list.categories.pluck(:name)
+    assert_equal "Work", list.category_for_new_tasks.name
   end
 
   test "categories can be reordered, and the order shows in the filters and task menus" do

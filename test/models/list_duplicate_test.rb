@@ -2,7 +2,7 @@ require "test_helper"
 
 class ListDuplicateTest < ActiveSupport::TestCase
   setup do
-    @list = lists(:one) # owner: one, also shared with two; categories Home (one) and Work (two, default)
+    @list = lists(:one) # owner: one, also shared with two; categories Home (one, first) and Work (two)
     @list.tasks.destroy_all
     @list.update!(focus_limit: 5, completed_display: "1_week")
     @user = users(:two)
@@ -17,8 +17,8 @@ class ListDuplicateTest < ActiveSupport::TestCase
 
     assert_equal "Packing", copy.name
     assert_equal [ 5, "1_week" ], [ copy.focus_limit, copy.completed_display ]
-    assert_equal [ [ "Home", categories(:one).color ], [ "Work", categories(:two).color ] ], copy.categories.order(:name).pluck(:name, :color)
-    assert_equal "Work", copy.default_category.name
+    assert_equal [ [ "Home", categories(:one).color ], [ "Work", categories(:two).color ] ], copy.categories.pluck(:name, :color)
+    assert_equal "Home", copy.category_for_new_tasks.name, "same order, so the same default"
 
     tasks = copy.tasks.ordered.to_a
     assert_equal [ "Passport", "Charger", "Water plants" ], tasks.map(&:description)

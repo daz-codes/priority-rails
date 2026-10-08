@@ -159,3 +159,11 @@ li.keyboard-selected {
 /* Past the threshold: letting go will act */
 .swipe-layer.armed { opacity: 1; }
 .swipe-layer.armed span { transform: scale(1.2); }
+
+/* Images in notes (uploaded with the note editor) never wider than the note */
+.lexxy-content img,
+[id^="note_"] img,
+lexxy-editor img {
+  max-width: 100%;
+  height: auto;
+}

@@ -17,15 +17,6 @@
       </div>
     <% end %>
 
-    <% if list.default_category_id == category.id %>
-      <span class="shrink-0 text-amber-400 p-1" title="Default for new tasks"><i class="fa-solid fa-star text-xs"></i></span>
-    <% else %>
-      <%= button_to make_default_list_category_path(list, category), method: :patch, title: "Make default for new tasks",
-            form: { data: { turbo_frame: "_top" } },
-            class: "shrink-0 text-text-muted hover:text-amber-400 transition-all duration-100 cursor-pointer bg-transparent border-none p-1" do %>
-        <i class="fa-regular fa-star text-xs"></i>
-      <% end %>
-    <% end %>
     <%= button_to list_category_path(list, category), method: :delete, class: "shrink-0 text-text-muted hover:text-red-400 transition-all duration-100 cursor-pointer bg-transparent border-none p-1", data: { turbo_confirm: "Remove this category?" } do %>
       <i class="fa-solid fa-xmark text-xs"></i>
     <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_08_120711) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_08_131247) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -67,10 +67,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_120711) do
     t.integer "focus_limit", default: 3, null: false
     t.string "completed_display", default: "1_day", null: false
     t.integer "owner_id"
-    t.integer "default_category_id"
     t.datetime "archived_at"
     t.index ["archived_at"], name: "index_lists_on_archived_at"
-    t.index ["default_category_id"], name: "index_lists_on_default_category_id"
     t.index ["owner_id"], name: "index_lists_on_owner_id"
   end
 
@@ -150,7 +148,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_08_120711) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "categories", "lists"
-  add_foreign_key "lists", "categories", column: "default_category_id", on_delete: :nullify
   add_foreign_key "lists", "users", column: "owner_id", on_delete: :nullify
   add_foreign_key "pending_invitations", "lists"
   add_foreign_key "push_subscriptions", "users", on_delete: :cascade

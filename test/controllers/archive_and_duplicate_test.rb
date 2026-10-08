@@ -15,7 +15,7 @@ class ArchiveAndDuplicateTest < ActionDispatch::IntegrationTest
 
     get list_url(@other)
     assert_select "[data-menu-list] a", text: @list.name, count: 0
-    assert_select "a[href='#{archived_lists_path}']", text: /Archived Lists \(1\)/
+    assert_select "a[href='#{archived_lists_path}']", text: /Archived \(1\)/
 
     @owner.update_column(:last_list_id, @list.id)
     get root_url

@@ -188,13 +188,13 @@ class TasksControllerTest < ActionDispatch::IntegrationTest
     assert_equal destination.categories.find_by(name: home.name), @task.category
   end
 
-  test "moving falls back to the destination's default category when names don't match" do
+  test "moving falls back to the destination's first category when names don't match" do
     destination = @user.lists.create!(name: "Other", owner: @user)
     @task.update!(category: @list.categories.create!(name: "Errands"))
 
     patch move_task_url(@task), params: { list_id: destination.id }
 
-    assert_equal destination.default_category, @task.reload.category
+    assert_equal destination.category_for_new_tasks, @task.reload.category
   end
 
   test "moved tasks go to the end of the destination list" do

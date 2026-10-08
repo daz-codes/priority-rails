@@ -116,6 +116,28 @@ class TasksTest < ApplicationSystemTestCase
     assert_no_js_errors
   end
 
+  test "an image uploaded in the note editor shows in the task's note" do
+    click_on "Buy milk"
+    within("[data-task-panel]") do
+      find("lexxy-editor [contenteditable]").click
+      find("button[name=upload]").click # the editor's "Upload file" button adds a hidden file input
+      find("lexxy-editor input[type=file]", visible: :all).send_keys(file_fixture("photo.png").to_s)
+      assert_selector "lexxy-editor img", wait: 15
+      # The preview shows straight away; wait for the upload to finish and be added to the note
+      page.document.synchronize(15) do
+        evaluate_script("document.querySelector('[data-task-panel] lexxy-editor').value.includes('sgid')") || raise(Capybara::ExpectationNotMet, "upload not finished")
+      end
+      click_on "Save"
+    end
+    assert_no_selector "[data-task-panel]" # saved and closed
+
+    assert_equal [ "photo.png" ], @milk.reload.note.body.attachables.map { |blob| blob.filename.to_s }
+    task_row("Buy milk").find("button[title='toggle notes']").click
+    image = find("#note_#{@milk.id} img")
+    assert evaluate_script("arguments[0].complete && arguments[0].naturalWidth > 0", image), "the image should load"
+    assert_no_js_errors
+  end
+
   test "notes stay open through a live refresh" do
     task_row("Write report").find("button[title='toggle notes']").click
     execute_script("Turbo.session.refresh(location.href)")

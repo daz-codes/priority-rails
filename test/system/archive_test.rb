@@ -19,7 +19,7 @@ class ArchiveTest < ApplicationSystemTestCase
     find("[data-menu-toggle]").click
     within("[data-menu-modal]") do
       assert_no_text "Packing"
-      click_on "Archived Lists (1)"
+      click_on "Archived (1)"
     end
     within("#archived_list_#{@list.id}") { click_on "Unarchive" }
 

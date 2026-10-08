@@ -133,15 +133,6 @@ button, input[type="submit"], .rounded-full.font-semibold {
   font-size: 0.75rem;
 }
 
-/* The PR!OR!TY! menu button gets the same 3px grey border as the add-task box */
-[data-menu-toggle] {
-  border: 3px solid var(--input-border-bold);
-}
-
-[data-menu-toggle]:hover {
-  border-color: var(--accent);
-}
-
 /* The add-task box: a thick dark ink pill, with the input and button reading as one piece */
 #new_task_form input[type="text"] {
   border: 3px solid var(--input-border-bold);
@@ -296,10 +287,10 @@ button, input[type="submit"], .rounded-full.font-semibold {
 /* Translucent and a little thinner, so the name stays readable through it */
 .task-struck {
   color: var(--text-secondary);
-  text-decoration: line-through wavy oklch(37% 0.02 260 / 0.4) 1.5px;
+  text-decoration: line-through wavy oklch(37% 0.02 260 / 0.7) 1.5px;
   text-decoration-skip-ink: none;
 }
 
-.dark .task-struck { text-decoration-color: oklch(80% 0.02 260 / 0.45); }
+.dark .task-struck { text-decoration-color: oklch(80% 0.02 260 / 0.7); }
 
 #tasks li .opacity-50:has(.task-struck) { opacity: 1; }
