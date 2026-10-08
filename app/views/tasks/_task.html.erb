@@ -14,7 +14,7 @@
       <div class="flex-grow min-w-0 <%= 'opacity-50' if task.completed? %>">
         <% strike_color = task.category&.color || "#a5f3fc" %>
         <%= link_to task.description, edit_task_path(task),
-            class: "task-title text-base no-underline text-text-primary block whitespace-nowrap overflow-hidden text-ellipsis select-none #{'task-struck' if task.completed?}",
+            class: "task-title text-base no-underline text-text-primary block break-words select-none #{'task-struck' if task.completed?}",
             style: (task.completed? ? "--strike-color: #{strike_color}" : nil) %>
         <% unless @priority %>
           <div class="task-meta text-xs text-text-tertiary italic">
