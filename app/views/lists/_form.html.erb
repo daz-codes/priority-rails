@@ -1,4 +1,4 @@
-<%= form_with(model: list, class: "space-y-4") do |form| %>
-    <%= form.text_field :name, placeholder: "Name your list", class: "w-full px-4 py-3 border border-border-input rounded-lg text-base focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400 bg-input-bg" %>
-    <%= form.submit "Create List →", class: "w-full px-4 py-3 rounded-full bg-green-500 text-white font-semibold cursor-pointer hover:bg-green-600 transition-all duration-100 text-base" %>
+<%= form_with(model: list, class: "space-y-3") do |form| %>
+  <%= form.text_field :name, placeholder: "Name your list", class: "#{field_classes} !text-lg !py-3" %>
+  <%= form.submit "Create List →", class: "#{primary_button_classes} w-full !py-3 !text-base" %>
 <% end %>

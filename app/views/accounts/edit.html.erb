@@ -1,102 +1,102 @@
 <% content_for :title, "Profile" %>
 
-<div class="max-w-lg mx-auto space-y-8 py-4">
+<div class="max-w-lg mx-auto space-y-4 py-4">
+  <h1 class="text-3xl font-heading text-center m-0 pb-2">Profile</h1>
 
-  <%= form_with(model: @user, url: account_path, method: :patch, class: "space-y-8") do |form| %>
+  <%= form_with(model: @user, url: account_path, method: :patch, class: "space-y-4") do |form| %>
     <% if @user.errors.any? %>
-      <div class="text-sm text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-300 rounded-lg px-4 py-2.5"><%= @user.errors.full_messages.to_sentence %></div>
+      <div class="<%= error_box_classes %>"><%= @user.errors.full_messages.to_sentence %></div>
     <% end %>
 
     <%# ── Display Name ─────────────────────────── %>
-    <section>
-      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Display Name</h2>
-      <%= form.text_field :name, placeholder: "Your name", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+    <section class="<%= panel_classes %>">
+      <h2 class="<%= panel_heading_classes %>">Display Name</h2>
+      <%= form.text_field :name, placeholder: "Your name", class: field_classes %>
     </section>
 
     <%# ── Email Address ────────────────────────── %>
-    <section>
-      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Email Address</h2>
-      <%= form.email_field :email_address, class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <%= form.password_field :current_password, autocomplete: "current-password", placeholder: "Current password (needed to change email)", class: "w-full mt-2 px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
+    <section class="<%= panel_classes %>">
+      <h2 class="<%= panel_heading_classes %>">Email Address</h2>
+      <%= form.email_field :email_address, class: field_classes %>
+      <%= form.password_field :current_password, autocomplete: "current-password", placeholder: "Current password (needed to change email)", class: "#{field_classes} mt-2" %>
     </section>
 
     <%# ── Time Zone ────────────────────────────── %>
-    <section>
-      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Time Zone</h2>
+    <section class="<%= panel_classes %>">
+      <h2 class="<%= panel_heading_classes %>">Time Zone</h2>
       <% priority_zones = [ ActiveSupport::TimeZone["London"], ActiveSupport::TimeZone["UTC"] ] %>
       <%# A detected zone with no Rails name (e.g. "America/Indiana/Knox") isn't in the standard list %>
       <% priority_zones.unshift(ActiveSupport::TimeZone[@user.time_zone]) if @user.time_zone.present? && ActiveSupport::TimeZone.all.none? { |zone| zone.name == @user.time_zone } %>
-      <%= form.time_zone_select :time_zone, priority_zones, { include_blank: "Not set — detect automatically" }, class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <p class="text-xs text-text-tertiary mt-1 mb-0">Used for "today", snoozing and recurring tasks. Set automatically from your device unless you choose one.</p>
+      <%= form.time_zone_select :time_zone, priority_zones, { include_blank: "Not set — detect automatically" }, class: field_classes %>
+      <p class="text-xs font-semibold text-text-tertiary mt-1 mb-0">Used for "today", snoozing and recurring tasks. Set automatically from your device unless you choose one.</p>
     </section>
 
     <%# ── Notifications ────────────────────────── %>
-    <section>
-      <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Notifications</h2>
-      <% button_classes = "px-4 py-2 rounded-full text-sm font-semibold cursor-pointer transition-all duration-100" %>
-      <%# Per device: browsers only allow asking for permission after a tap %>
+    <section class="<%= panel_classes %>">
+      <h2 class="<%= panel_heading_classes %>">Notifications</h2>
+            <%# Per device: browsers only allow asking for permission after a tap %>
       <div id="push_settings" class="mb-3 space-y-2" data-he-data="{ pushState: 'checking' }" data-he-import="behaviors/push_settings" data-vapid-key="<%= PushSubscription.public_key %>">
-        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'on'" hidden><i class="fa-solid fa-bell text-emerald-500"></i> On for this device.</p>
-        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'off'" hidden>Off for this device.</p>
-        <p class="text-sm text-red-600 m-0" data-he-hidden="pushState != 'failed'" hidden>Couldn't turn notifications on just now. Please try again.</p>
-        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'blocked'" hidden>Notifications are blocked for this site. Allow them in your browser's settings, then come back here.</p>
-        <p class="text-sm text-text-secondary m-0" data-he-hidden="pushState != 'unsupported'" hidden>This browser can't show notifications. On iPhone or iPad, add Priority to your Home Screen (Share → Add to Home Screen) and turn them on from there.</p>
-        <button type="button" class="<%= button_classes %> bg-sky-400 text-white hover:bg-sky-500" data-he-hidden="pushState != 'off' && pushState != 'failed'" hidden data-he-click="$dispatch('push:enable')">
-          <i class="fa-solid fa-bell text-xs"></i> Turn on notifications on this device
+        <p class="text-base font-bold text-text-secondary m-0" data-he-hidden="pushState != 'on'" hidden><i class="fa-solid fa-bell text-emerald-500"></i> On for this device.</p>
+        <p class="text-base font-bold text-text-secondary m-0" data-he-hidden="pushState != 'off'" hidden>Off for this device.</p>
+        <p class="text-base font-bold text-red-600 m-0" data-he-hidden="pushState != 'failed'" hidden>Couldn't turn notifications on just now. Please try again.</p>
+        <p class="text-base font-bold text-text-secondary m-0" data-he-hidden="pushState != 'blocked'" hidden>Notifications are blocked for this site. Allow them in your browser's settings, then come back here.</p>
+        <p class="text-base font-bold text-text-secondary m-0" data-he-hidden="pushState != 'unsupported'" hidden>This browser can't show notifications. On iPhone or iPad, add Priority to your Home Screen (Share → Add to Home Screen) and turn them on from there.</p>
+        <button type="button" class="<%= primary_button_classes %>" data-he-hidden="pushState != 'off' && pushState != 'failed'" hidden data-he-click="$dispatch('push:enable')">
+          <i class="fa-solid fa-bell"></i> Turn on notifications on this device
         </button>
-        <button type="button" class="<%= button_classes %> border border-border-input text-text-secondary hover:bg-surface-hover" data-he-hidden="pushState != 'on'" hidden data-he-click="$dispatch('push:disable')">
+        <button type="button" class="<%= secondary_button_classes %>" data-he-hidden="pushState != 'on'" hidden data-he-click="$dispatch('push:disable')">
           Turn off on this device
         </button>
         <p class="text-sm text-text-tertiary m-0" data-he-hidden="pushState != 'working' && pushState != 'checking'">One moment…</p>
       </div>
 
-      <p class="text-xs text-text-tertiary mb-2">Notify me when:</p>
+      <p class="text-[11px] font-black uppercase tracking-wider text-text-tertiary mb-2">Notify me when</p>
       <label class="flex items-center gap-3 cursor-pointer mb-2">
-        <%= form.check_box :notify_on_list_activity, class: "w-5 h-5 accent-sky-400 cursor-pointer" %>
-        <span class="text-sm text-text-secondary">Someone else adds or completes a task on a list I share</span>
+        <%= form.check_box :notify_on_list_activity, class: "w-5 h-5 accent-brand-blue cursor-pointer" %>
+        <span class="text-base font-bold text-text-secondary">Someone else adds or completes a task on a list I share</span>
       </label>
       <label class="flex items-center gap-3 cursor-pointer">
-        <%= form.check_box :notify_on_list_invites, class: "w-5 h-5 accent-sky-400 cursor-pointer" %>
-        <span class="text-sm text-text-secondary">Someone adds me to their list</span>
+        <%= form.check_box :notify_on_list_invites, class: "w-5 h-5 accent-brand-blue cursor-pointer" %>
+        <span class="text-base font-bold text-text-secondary">Someone adds me to their list</span>
       </label>
     </section>
 
     <div class="flex justify-center gap-3">
-      <%= form.submit "Save", class: "px-6 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
-      <%= link_to "Cancel", Current.user.last_list_id? ? list_path(Current.user.last_list_id) : root_path, class: "px-6 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 no-underline" %>
+      <%= form.submit "Save", class: primary_button_classes %>
+      <%= link_to "Cancel", Current.user.last_list_id? ? list_path(Current.user.last_list_id) : root_path, class: "#{secondary_button_classes} !py-2.5" %>
     </div>
 
   <% end %>
 
   <%# ── Password ─────────────────────────────── %>
-  <section>
-    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Change Password</h2>
+  <section class="<%= panel_classes %>">
+    <h2 class="<%= panel_heading_classes %>">Change Password</h2>
     <%= form_with(model: @user, url: account_path, method: :patch, class: "space-y-2") do |form| %>
-      <%= form.password_field :current_password, id: "change_password_current_password", autocomplete: "current-password", required: true, placeholder: "Current password", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <%= form.password_field :password, id: "change_password_password", autocomplete: "new-password", required: true, minlength: 8, maxlength: 72, placeholder: "New password (8+ characters)", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <%= form.password_field :password_confirmation, id: "change_password_confirmation", autocomplete: "new-password", required: true, maxlength: 72, placeholder: "Repeat new password", class: "w-full px-3 py-2 border border-border-input rounded-lg text-base focus:outline-none focus:border-sky-400 bg-input-bg" %>
-      <p class="text-xs text-text-tertiary m-0">Changing your password signs you out on all other devices.</p>
-      <%= form.submit "Change Password", class: "px-4 py-2 rounded-full bg-sky-400 text-white font-semibold cursor-pointer hover:bg-sky-500 transition-all duration-100 text-sm" %>
+      <%= form.password_field :current_password, id: "change_password_current_password", autocomplete: "current-password", required: true, placeholder: "Current password", class: field_classes %>
+      <%= form.password_field :password, id: "change_password_password", autocomplete: "new-password", required: true, minlength: 8, maxlength: 72, placeholder: "New password (8+ characters)", class: field_classes %>
+      <%= form.password_field :password_confirmation, id: "change_password_confirmation", autocomplete: "new-password", required: true, maxlength: 72, placeholder: "Repeat new password", class: field_classes %>
+      <p class="text-xs font-semibold text-text-tertiary m-0">Changing your password signs you out on all other devices.</p>
+      <%= form.submit "Change Password", class: primary_button_classes %>
     <% end %>
   </section>
 
   <%# ── Sessions ─────────────────────────────── %>
-  <section>
-    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Signed-in Devices</h2>
-    <ul class="list-none p-0 m-0 space-y-2 mb-4">
+  <section class="<%= panel_classes %>">
+    <h2 class="<%= panel_heading_classes %>">Signed-in Devices</h2>
+    <ul class="list-none p-0 m-0 space-y-2">
       <% active_sessions.each do |session| %>
-        <li id="<%= dom_id(session) %>" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-surface-secondary">
+        <li id="<%= dom_id(session) %>" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-surface-primary">
           <i class="fa-solid fa-display text-text-tertiary w-5 text-center"></i>
           <div class="min-w-0 flex-1">
-            <div class="text-sm text-text-secondary truncate"><%= session.device_description %></div>
-            <div class="text-xs text-text-tertiary truncate">
+            <div class="text-base font-bold text-text-primary truncate"><%= session.device_description %></div>
+            <div class="text-xs font-semibold text-text-tertiary truncate">
               <%= session.ip_address %> · Active <%= session == Current.session ? "now" : "#{time_ago_in_words(session.last_active_at)} ago" %>
             </div>
           </div>
           <% if session == Current.session %>
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-sky-100 text-sky-600 font-semibold shrink-0">This device</span>
+            <span class="<%= badge_classes %> bg-brand-blue text-white shrink-0">This device</span>
           <% else %>
-            <%= button_to "Sign out", account_session_path(session), method: :delete, class: "shrink-0 text-xs text-red-400 hover:text-red-600 cursor-pointer bg-transparent border-none p-1" %>
+            <%= button_to "Sign out", account_session_path(session), method: :delete, class: "#{row_action_classes} shrink-0 !text-red-500" %>
           <% end %>
         </li>
       <% end %>
@@ -104,17 +104,17 @@
     <% if active_sessions.size > 1 %>
       <%= button_to "Sign out all other devices", others_account_sessions_path, method: :delete,
             data: { turbo_confirm: "Sign out on every other device?" },
-            class: "px-4 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer bg-surface-primary" %>
+            class: "#{secondary_button_classes} mt-4" %>
     <% end %>
   </section>
 
   <%# ── Theme ──────────────────────────────── %>
-  <section>
-    <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2">Theme</h2>
+  <section class="<%= panel_classes %>">
+    <h2 class="<%= panel_heading_classes %>">Theme</h2>
     <%# Two icons rather than a swapped class, as the Font Awesome kit may replace <i> tags with SVGs %>
-    <button type="button" data-he-data="{ dark: isDarkTheme() }" data-he-click="dark = toggleTheme()" class="flex items-center gap-2 px-4 py-2 rounded-full border border-border-input text-sm font-semibold text-text-secondary hover:bg-surface-hover hover:text-text-primary transition-all duration-100 cursor-pointer bg-surface-primary">
-      <span data-he-hidden="dark"><i class="fa-solid fa-moon text-xs"></i></span>
-      <span data-he-hidden="!dark" hidden><i class="fa-solid fa-sun text-xs"></i></span>
+    <button type="button" data-he-data="{ dark: isDarkTheme() }" data-he-click="dark = toggleTheme()" class="<%= secondary_button_classes %>">
+      <span data-he-hidden="dark"><i class="fa-solid fa-moon"></i></span>
+      <span data-he-hidden="!dark" hidden><i class="fa-solid fa-sun"></i></span>
       <span data-he-text="dark ? 'Switch to light mode' : 'Switch to dark mode'">Switch to dark mode</span>
     </button>
   </section>

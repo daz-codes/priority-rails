@@ -1,11 +1,11 @@
 <%= turbo_frame_tag dom_id(category), data: { id: category.id } do %>
-  <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-secondary">
+  <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-primary">
     <span class="category-handle shrink-0 -ml-1 px-1 text-text-muted hover:text-text-secondary cursor-grab touch-none" title="Drag to reorder" aria-label="Drag to reorder">
       <i class="fa-solid fa-grip-vertical text-xs"></i>
     </span>
     <span class="size-4 rounded-full shrink-0 border border-border-primary" style="background-color: <%= category.color %>"></span>
     <%= form_with model: [list, category], class: "flex items-center gap-2 flex-1 min-w-0" do |f| %>
-      <%= f.text_field :name, value: category.name, class: "flex-1 min-w-0 px-2 py-1 border border-transparent rounded text-sm bg-transparent hover:border-border-input focus:border-sky-400 focus:outline-none transition-all", data: { he_blur: "$el.form.requestSubmit()" } %>
+      <%= f.text_field :name, value: category.name, class: "flex-1 min-w-0 px-2 py-1 border-2 border-transparent rounded-lg text-base font-bold text-text-primary bg-transparent hover:border-border-input focus:border-brand-blue focus:outline-none transition-all", data: { he_blur: "$el.form.requestSubmit()" } %>
 
       <div class="flex items-center gap-0.5 shrink-0">
         <% CategoriesController::COLORS.each do |color| %>
@@ -18,7 +18,7 @@
     <% end %>
 
     <%= button_to list_category_path(list, category), method: :delete, class: "shrink-0 text-text-muted hover:text-red-400 transition-all duration-100 cursor-pointer bg-transparent border-none p-1", data: { turbo_confirm: "Remove this category?" } do %>
-      <i class="fa-solid fa-xmark text-xs"></i>
+      <i class="fa-solid fa-xmark text-sm"></i>
     <% end %>
   </div>
 <% end %>
