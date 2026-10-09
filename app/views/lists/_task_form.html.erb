@@ -4,8 +4,8 @@
       data: { he_import: "behaviors/category_autocomplete", categories: suggestions.to_json }) do |form| %>
     <%= form.text_field :description, required: true, placeholder: "What do you want to do?", autocomplete: "off",
           aria: { autocomplete: "list" },
-          class: "flex-1 min-w-0 py-2 pl-4 pr-2 border border-border-input border-r-0 rounded-l-full outline-none text-base bg-input-bg" %>
-    <%= form.submit "ADD", class: "w-20 p-2 border border-sky-300 border-l-0 rounded-r-full bg-sky-100 text-sky-700 cursor-pointer hover:bg-sky-200 transition-all duration-100 font-semibold dark:bg-sky-900 dark:text-sky-200 dark:border-sky-700 dark:hover:bg-sky-800" %>
+          class: "flex-1 min-w-0 py-2 pl-4 pr-2 border border-border-input border-r-0 rounded-l-(--card-radius) outline-none text-base bg-input-bg" %>
+    <%= form.submit "ADD", class: "w-20 p-2 border border-sky-300 border-l-0 rounded-r-(--card-radius) bg-sky-100 text-sky-700 cursor-pointer hover:bg-sky-200 transition-all duration-100 font-semibold dark:bg-sky-900 dark:text-sky-200 dark:border-sky-700 dark:hover:bg-sky-800" %>
     <ul data-category-suggestions role="listbox" aria-label="Categories" hidden
-        class="absolute left-4 top-full mt-1 z-30 min-w-48 max-w-[calc(100%-2rem)] list-none m-0 p-1.5 rounded-xl bg-surface-primary shadow-lg border border-border-primary"></ul>
+        class="absolute left-4 top-full mt-1 z-30 min-w-48 max-w-[calc(100%-2rem)] list-none m-0 p-1.5 rounded-(--card-radius) bg-surface-primary shadow-lg border border-border-primary"></ul>
 <% end %>

@@ -85,7 +85,7 @@
     <h2 class="<%= panel_heading_classes %>">Signed-in Devices</h2>
     <ul class="list-none p-0 m-0 space-y-2">
       <% active_sessions.each do |session| %>
-        <li id="<%= dom_id(session) %>" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-surface-primary">
+        <li id="<%= dom_id(session) %>" class="flex items-center gap-3 px-3 py-2 rounded-(--card-radius) bg-surface-primary">
           <i class="fa-solid fa-display text-text-tertiary w-5 text-center"></i>
           <div class="min-w-0 flex-1">
             <div class="text-base font-bold text-text-primary truncate"><%= session.device_description %></div>

@@ -123,6 +123,41 @@ class ListsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to list_url(@list)
   end
 
+  test "settings save the categories with the list, adding one when a name is given" do
+    home, work = @list.categories.to_a
+    patch list_url(@list), params: { list: { name: "Updated", focus_limit: 5, categories_attributes: {
+      "0" => { id: home.id, name: "House", color: Category::COLORS.last },
+      "1" => { id: work.id, name: work.name, color: work.color },
+      "2" => { name: "Garden" }
+    } } }
+
+    assert_redirected_to list_url(@list)
+    assert_equal [ "House", Category::COLORS.last ], [ home.reload.name, home.color ]
+    assert_equal %w[House Work Garden], @list.reload.categories.pluck(:name)
+    assert_equal Category::COLORS.first, @list.categories.last.color
+  end
+
+  test "a blank new category is ignored, and a clash shows the settings again" do
+    home, work = @list.categories.to_a
+    assert_no_difference "Category.count" do
+      patch list_url(@list), params: { list: { categories_attributes: { "0" => { id: home.id, name: "Home" }, "2" => { name: "" } } } }
+    end
+    assert_redirected_to list_url(@list)
+
+    patch list_url(@list), params: { list: { name: "Kept?", categories_attributes: { "0" => { id: home.id, name: work.name } } } }
+    assert_response :unprocessable_entity
+    assert_select "[role=alert]", text: /taken/
+    assert_equal "Home", home.reload.name
+    assert_not_equal "Kept?", @list.reload.name
+  end
+
+  test "settings only touch this list's categories" do
+    other = categories(:three)
+    patch list_url(@list), params: { list: { categories_attributes: { "0" => { id: other.id, name: "Hijacked" } } } }
+    assert_response :not_found
+    assert_not_equal "Hijacked", other.reload.name
+  end
+
   test "should destroy list" do
     assert_difference("List.count", -1) do
       delete list_url(@list)

@@ -4,7 +4,7 @@
     <p class="text-lg font-bold text-text-secondary mt-2 mb-6">Create your account</p>
   </div>
 
-  <div class="bg-surface-secondary rounded-2xl p-6 mb-6">
+  <div class="bg-surface-secondary rounded-(--card-radius) p-6 mb-6">
     <%= form_with model: @user, url: registration_path, class: "space-y-3" do |f| %>
       <% if @user.errors.any? %>
         <div class="<%= error_box_classes %>"><%= @user.errors.full_messages.to_sentence %></div>

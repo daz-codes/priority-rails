@@ -1,21 +1,21 @@
 <div id="priority-menu" data-he-data="{ open: false, query: '' }" data-he-click.outside="open = false" data-he-close-menu.document="open = false" class="relative w-full sm:w-auto sm:inline-block">
   <%# The logo as a button: favicon blue with white letters and green marks, the same in light and dark mode %>
-  <button data-menu-toggle data-he-click="[query = '', open = !open]" class="font-brand text-3xl w-full sm:w-auto sm:px-12 py-2 rounded-full bg-brand-blue text-white border-0 shadow-md hover:brightness-110 active:scale-[0.98] transition-all duration-100 cursor-pointer">
+  <button data-menu-toggle data-he-click="[query = '', open = !open]" class="font-brand text-3xl w-full sm:w-auto sm:px-12 py-2 rounded-(--card-radius) bg-brand-blue text-white border-0 shadow-md hover:brightness-110 active:scale-[0.98] transition-all duration-100 cursor-pointer">
     PR<span class="text-brand-green">!</span>OR<span class="text-brand-green">!</span>TY<span class="text-brand-green">!</span>
   </button>
 
   <%# Blurs the page behind the open menu %>
   <div class="<%= modal_backdrop_classes %>" hidden data-he-hidden="!open" data-he-click="open = false" data-menu-backdrop></div>
 
-  <div data-menu-modal data-he-hidden="!open" hidden class="fixed left-1/2 -translate-x-1/2 mt-3 w-[calc(100vw-1rem)] sm:w-[32rem] bg-surface-primary rounded-2xl shadow-2xl z-50 overflow-hidden">
+  <div data-menu-modal data-he-hidden="!open" hidden class="fixed left-1/2 -translate-x-1/2 mt-3 w-[calc(100vw-1rem)] sm:w-[32rem] bg-surface-primary rounded-(--card-radius) shadow-2xl z-50 overflow-hidden">
     <div class="p-4 space-y-3">
-      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-full bg-brand-blue text-white text-sm font-black uppercase tracking-wider hover:brightness-110 transition-all duration-100 no-underline" do %>
+      <%= link_to new_list_path, class: "flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-(--card-radius) bg-brand-blue text-white text-sm font-black uppercase tracking-wider hover:brightness-110 transition-all duration-100 no-underline" do %>
         <i class="fa-solid fa-plus text-xs"></i> Add New List
       <% end %>
       <input data-he-bind="query"
              type="text"
              placeholder="Search lists..."
-             class="w-full px-4 py-2.5 rounded-full border-[3px] border-[var(--input-border-bold)] text-base font-semibold focus:outline-none focus:border-brand-blue bg-input-bg">
+             class="w-full px-4 py-2.5 rounded-(--card-radius) border-[3px] border-[var(--input-border-bold)] text-base font-semibold focus:outline-none focus:border-brand-blue bg-input-bg">
     </div>
 
     <ul data-menu-list class="list-none px-3 pb-2 m-0 max-h-72 overflow-y-auto space-y-1">
@@ -43,10 +43,10 @@
         Signed in as <span class="text-text-primary normal-case tracking-normal text-sm font-bold"><%= Current.user.name.presence || Current.user.email_address %></span>
       </div>
       <div class="flex gap-2">
-        <%= link_to edit_account_path, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border-2 border-border-input text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue transition-all duration-100 no-underline" do %>
+        <%= link_to edit_account_path, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-(--card-radius) border-2 border-border-input text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue transition-all duration-100 no-underline" do %>
           <i class="fa-solid fa-user-pen"></i> Profile
         <% end %>
-        <%= link_to session_path, data: { turbo_method: :delete }, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full border-2 border-border-input text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue transition-all duration-100 no-underline cursor-pointer" do %>
+        <%= link_to session_path, data: { turbo_method: :delete }, class: "flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-(--card-radius) border-2 border-border-input text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue transition-all duration-100 no-underline cursor-pointer" do %>
           <i class="fa-solid fa-right-from-bracket"></i> Sign Out
         <% end %>
       </div>

@@ -14,7 +14,7 @@
         <h2 class="<%= panel_heading_classes %>">Lists</h2>
         <ul class="list-none p-0 m-0 space-y-1">
           <% @lists.each do |list| %>
-            <li><%= link_to list.name, list, class: "block px-3 py-2 rounded-xl bg-surface-primary hover:bg-surface-hover no-underline text-base font-bold text-text-primary" %></li>
+            <li><%= link_to list.name, list, class: "block px-3 py-2 rounded-(--card-radius) bg-surface-primary hover:bg-surface-hover no-underline text-base font-bold text-text-primary" %></li>
           <% end %>
         </ul>
       </section>
@@ -27,7 +27,7 @@
           <% @tasks.each do |task| %>
             <% tab = ("completed" if task.completed?) || ("snoozed" if task.snoozed?) %>
             <li id="<%= dom_id(task, :result) %>">
-              <%= link_to list_path(task.list, list: tab, anchor: dom_id(task)), class: "flex items-center gap-3 px-3 py-2 rounded-xl bg-surface-primary hover:bg-surface-hover no-underline" do %>
+              <%= link_to list_path(task.list, list: tab, anchor: dom_id(task)), class: "flex items-center gap-3 px-3 py-2 rounded-(--card-radius) bg-surface-primary hover:bg-surface-hover no-underline" do %>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-base font-bold text-text-primary <%= 'line-through opacity-60' if task.completed? %>"><%= task.description %></span>
                   <span class="block text-[11px] font-black uppercase tracking-wider text-text-tertiary truncate">

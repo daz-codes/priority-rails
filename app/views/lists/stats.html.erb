@@ -5,15 +5,15 @@
   <h2 class="text-lg font-heading font-bold mb-3 border-b border-border-primary pb-2"><i class="fa-solid fa-chart-simple"></i> <%= @list.name %> stats</h2>
 
   <div class="space-y-3">
-    <div class="flex items-center justify-between px-4 py-3 rounded-lg bg-surface-secondary">
+    <div class="flex items-center justify-between px-4 py-3 rounded-(--card-radius) bg-surface-secondary">
       <span class="text-sm text-text-secondary">Completed today</span>
       <span class="text-2xl font-heading font-bold"><%= @completed_today %></span>
     </div>
-    <div class="flex items-center justify-between px-4 py-3 rounded-lg bg-surface-secondary">
+    <div class="flex items-center justify-between px-4 py-3 rounded-(--card-radius) bg-surface-secondary">
       <span class="text-sm text-text-secondary">Completed in the last 7 days</span>
       <span class="text-2xl font-heading font-bold"><%= @completed_last_seven_days %></span>
     </div>
-    <div class="flex items-center justify-between px-4 py-3 rounded-lg bg-surface-secondary">
+    <div class="flex items-center justify-between px-4 py-3 rounded-(--card-radius) bg-surface-secondary">
       <span class="text-sm text-text-secondary">Completed all time</span>
       <span class="text-2xl font-heading font-bold"><%= @completed_all_time %></span>
     </div>

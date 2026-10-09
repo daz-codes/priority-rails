@@ -58,11 +58,7 @@ class ListsController < ApplicationController
 
   def update
     if @list.update(list_params)
-      if request.format.turbo_stream?
-        head :ok
-      else
-        redirect_to @list, notice: "List was successfully updated."
-      end
+      redirect_to @list, notice: "List was successfully updated."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -134,6 +130,6 @@ class ListsController < ApplicationController
     end
 
     def list_params
-      params.expect(list: [ :name, :focus_limit, :completed_display ])
+      params.expect(list: [ :name, :focus_limit, :completed_display, categories_attributes: [ [ :id, :name, :color ] ] ])
     end
 end

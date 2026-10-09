@@ -3,7 +3,7 @@
   A row's Snooze/Recur button opens them by setting snoozeTask / recurTask (page-level Helium state,
   declared in application.js) to that task's details.
 %>
-<% option_classes = "px-3 py-2.5 cursor-pointer rounded-xl hover:bg-surface-hover text-text-primary text-base font-bold" %>
+<% option_classes = "px-3 py-2.5 cursor-pointer rounded-(--card-radius) hover:bg-surface-hover text-text-primary text-base font-bold" %>
 <% label_classes = "text-[11px] font-black uppercase tracking-wider text-text-tertiary" %>
 <% back_classes = "px-3 py-2 text-[11px] font-black uppercase tracking-wider text-text-tertiary flex items-center gap-2" %>
 <% chosen = "bg-brand-blue/10 text-brand-blue" %>
@@ -38,8 +38,8 @@
     <label for="snooze_until_date" class="block pt-4 pb-2 <%= label_classes %>">Until a date</label>
     <div class="flex items-center gap-2">
       <input type="date" id="snooze_until_date" min="<%= Date.tomorrow.iso8601 %>" data-he-bind="snoozeDate"
-             class="flex-1 min-w-0 px-4 py-2 rounded-full border-[3px] border-[var(--input-border-bold)] text-base font-semibold focus:outline-none focus:border-brand-blue bg-input-bg">
-      <button type="button" class="shrink-0 px-5 py-2.5 rounded-full bg-brand-blue text-white text-sm font-black uppercase tracking-wider cursor-pointer hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-100 border-0"
+             class="flex-1 min-w-0 px-4 py-2 rounded-(--card-radius) border-[3px] border-[var(--input-border-bold)] text-base font-semibold focus:outline-none focus:border-brand-blue bg-input-bg">
+      <button type="button" class="shrink-0 px-5 py-2.5 rounded-(--card-radius) bg-brand-blue text-white text-sm font-black uppercase tracking-wider cursor-pointer hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-100 border-0"
               data-he-attr:disabled="!snoozeDate"
               data-he-click="[$patch(snoozeTask.url, { task: { snoozed_until: snoozeDate } }), snoozeTask = null, snoozeDate = '']">
         Snooze
@@ -58,7 +58,7 @@
     </button>
   </div>
 
-  <div class="mx-4 mt-3 px-4 py-3 rounded-xl bg-surface-secondary">
+  <div class="mx-4 mt-3 px-4 py-3 rounded-(--card-radius) bg-surface-secondary">
     <div class="<%= label_classes %> mb-1">Current</div>
     <div class="text-base text-text-primary font-bold">
       <i class="fa-solid fa-arrows-rotate text-brand-blue text-sm mr-1" data-he-hidden="!(recurTask && recurTask.type)"></i>
@@ -113,7 +113,7 @@
     </div>
     <div class="grid grid-cols-3 gap-1 p-2">
       <% Date::MONTHNAMES.compact.each.with_index(1) do |month, number| %>
-        <div class="px-2 py-2.5 cursor-pointer rounded-xl hover:bg-surface-hover text-text-primary text-sm font-bold text-center" data-he-attr:class="{ '<%= chosen_cell %>': recurTask && recurTask.type == 'yearly' && recurTask.month == <%= number %> }" data-he-click="[recurMonth = <%= number %>, recurPanel = 'yearlyDay']"><%= month %></div>
+        <div class="px-2 py-2.5 cursor-pointer rounded-(--card-radius) hover:bg-surface-hover text-text-primary text-sm font-bold text-center" data-he-attr:class="{ '<%= chosen_cell %>': recurTask && recurTask.type == 'yearly' && recurTask.month == <%= number %> }" data-he-click="[recurMonth = <%= number %>, recurPanel = 'yearlyDay']"><%= month %></div>
       <% end %>
     </div>
   </div>

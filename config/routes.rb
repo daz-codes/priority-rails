@@ -24,7 +24,7 @@ Rails.application.routes.draw do
       get "completed/:year", to: "lists#completed_year", as: :completed_year
     end
     resources :tasks, only: [ :create ]
-    resources :categories, only: [ :create, :update, :destroy ] do
+    resources :categories, only: :destroy do
       patch :sort, on: :collection
     end
     resources :invitations, only: :destroy do

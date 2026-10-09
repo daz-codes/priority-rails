@@ -1,20 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :set_list
-  before_action :set_category, only: [ :update, :destroy ]
-
-  COLORS = %w[#fca5a5 #fdba74 #fef08a #d9f99d #a5f3fc #93c5fd #c4b5fd #f9a8d4].freeze
-
-  def create
-    category = @list.categories.find_or_create_by(name: params[:name].to_s.strip) do |c|
-      c.color = COLORS.first
-    end
-    redirect_to edit_list_path(@list), alert: category.errors.full_messages.to_sentence.presence
-  end
-
-  def update
-    @category.update(category_params)
-    redirect_to edit_list_path(@list), alert: @category.errors.full_messages.to_sentence.presence
-  end
+  # Categories are added, renamed and recoloured with the rest of the list's settings (ListsController#update)
+  before_action :set_category, only: :destroy
 
   def sort
     ids = Array(params[:category_ids]).map(&:to_i).uniq
@@ -44,9 +31,5 @@ class CategoriesController < ApplicationController
 
   def set_category
     @category = @list.categories.find(params[:id])
-  end
-
-  def category_params
-    params.expect(category: [ :name, :color ])
   end
 end

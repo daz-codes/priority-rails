@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto py-8">
   <h1 class="text-3xl font-heading text-center mt-0 mb-6">Update your password</h1>
 
-  <%= form_with url: password_path(params[:token]), method: :put, class: "bg-surface-secondary rounded-2xl p-6 space-y-3" do |form| %>
+  <%= form_with url: password_path(params[:token]), method: :put, class: "bg-surface-secondary rounded-(--card-radius) p-6 space-y-3" do |form| %>
     <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "Enter new password", minlength: 8, maxlength: 72, class: field_classes %>
     <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat new password", maxlength: 72, class: field_classes %>
     <%= form.submit "Save", class: "#{primary_button_classes} w-full !py-3" %>

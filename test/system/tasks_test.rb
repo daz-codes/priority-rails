@@ -80,7 +80,7 @@ class TasksTest < ApplicationSystemTestCase
     assert_selector "[data-recurrence-modal]", text: "Every year on March 15"
     yearly = find("[data-recurrence-modal] div.cursor-pointer", text: "Yearly")
     assert_includes yearly[:class], "text-brand-blue"
-    assert_includes yearly[:class], "rounded-xl"
+    assert_includes yearly[:class], "rounded-(--card-radius)"
 
     # ...and a different task's modal shows its own rule
     find("[data-recurrence-modal] button[title=Close]").click

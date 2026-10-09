@@ -1,6 +1,6 @@
 <% current = local_assigns[:current_list] == list %>
 <% incomplete_count = incomplete_counts.fetch(list.id, 0) %>
-<li id="<%= dom_id list %>" data-he-hidden="!matchesQuery($el, query)" class="flex items-center gap-3 px-3 rounded-xl <%= current ? 'bg-brand-blue/10' : 'hover:bg-surface-hover' %>">
+<li id="<%= dom_id list %>" data-he-hidden="!matchesQuery($el, query)" class="flex items-center gap-3 px-3 rounded-(--card-radius) <%= current ? 'bg-brand-blue/10' : 'hover:bg-surface-hover' %>">
   <span class="bg-brand-blue rounded-full text-white min-w-7 h-7 px-1.5 flex items-center justify-center font-black text-xs shrink-0" title="<%= incomplete_count %> tasks remaining"><%= incomplete_count %></span>
   <%= link_to list.name, list, class: "no-underline w-full block py-2.5 text-base font-extrabold tracking-tight text-text-primary truncate" %>
   <% if current %>

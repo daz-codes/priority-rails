@@ -2,8 +2,8 @@
   Read-only note, shown and hidden by the row's notes button (noteOpen is declared on the task's <li>).
   Editing happens in the task panel, so rows don't each carry a hidden note editor.
 %>
-<% edit_classes = "inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-border-input text-sm font-semibold text-text-secondary no-underline hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
-<div id="note_<%= task.id %>" class="p-4 border border-border-primary rounded-lg bg-surface-secondary max-w-full overflow-hidden" hidden data-he-hidden="!noteOpen">
+<% edit_classes = "inline-flex items-center justify-center px-4 py-1.5 rounded-(--card-radius) border border-border-input text-sm font-semibold text-text-secondary no-underline hover:bg-green-50 hover:border-green-400 hover:text-green-600 transition-all duration-100" %>
+<div id="note_<%= task.id %>" class="p-4 border border-border-primary rounded-(--card-radius) bg-surface-secondary max-w-full overflow-hidden" hidden data-he-hidden="!noteOpen">
   <% if task.note.present? %>
     <div data-he-init="openLinksInNewTab($el)"><%= task.note %></div>
     <div class="pt-2">

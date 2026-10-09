@@ -58,15 +58,26 @@ class NavigationTest < ApplicationSystemTestCase
     assert_text "Old taxes"
   end
 
-  test "list settings save as you change them" do
+  test "list settings save together with the one Save button" do
     visit edit_list_url(@list)
-    select "1 week", from: "list[completed_display]"
-    sleep 1
-    assert_equal "1_week", @list.reload.completed_display
+    assert_link "Back to list"
+    assert_selector "input[type=submit], button[type=submit]", text: /save/i, count: 1
 
-    within("##{ActionView::RecordIdentifier.dom_id(categories(:one))}") { all("label span")[0].click }
-    sleep 1
-    assert_equal CategoriesController::COLORS.first, categories(:one).reload.color
+    fill_in "list_name", with: "Weekend jobs"
+    select "1 week", from: "list[completed_display]"
+    within("##{ActionView::RecordIdentifier.dom_id(categories(:one))}") do
+      find("input[aria-label='Category name']").fill_in(with: "House")
+      all("label span")[0].click
+    end
+    fill_in "new_category_name", with: "Garden"
+    assert_equal "1_day", @list.reload.completed_display, "nothing saves until Save"
+
+    click_on "Save settings"
+    assert_current_path list_path(@list)
+    @list.reload
+    assert_equal [ "Weekend jobs", "1_week" ], [ @list.name, @list.completed_display ]
+    assert_equal [ "House", Category::COLORS.first ], [ categories(:one).reload.name, categories(:one).color ]
+    assert_equal "Garden", @list.categories.last.name
     assert_no_js_errors
   end
 

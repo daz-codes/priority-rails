@@ -2,15 +2,18 @@
 
 one:
   name: Home
+  color: "#a5f3fc"
   list: one
   position: 1
 
 two:
   name: Work
+  color: "#93c5fd"
   list: one
   position: 2
 
 three:
   name: Work
+  color: "#93c5fd"
   list: two
   position: 1

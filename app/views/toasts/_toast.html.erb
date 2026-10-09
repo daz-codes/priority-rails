@@ -1,9 +1,9 @@
 <%# Permanent so the broadcast morph refresh that follows most task changes doesn't remove it %>
 <div id="toast_<%= SecureRandom.hex(4) %>" data-toast data-turbo-permanent role="status"
-     class="pointer-events-auto animate-toast flex items-center gap-4 max-w-[calc(100vw-2rem)] pl-5 pr-2 py-1.5 rounded-full bg-brand-blue shadow-lg text-sm font-semibold text-white">
+     class="pointer-events-auto animate-toast flex items-center gap-4 max-w-[calc(100vw-2rem)] pl-5 pr-1.5 py-1.5 rounded-(--card-radius) bg-brand-blue shadow-lg text-sm font-semibold text-white">
   <span class="truncate"><%= message %></span>
   <% if local_assigns[:undo] %>
     <%= button_to "Undo", undo[:url], method: undo[:method], params: undo[:params],
-          class: "shrink-0 px-3 py-1 rounded-full bg-white text-brand-blue font-bold cursor-pointer hover:bg-white/85 transition-all duration-100 border-0" %>
+          class: "shrink-0 px-3 py-1 rounded-[0.55rem] bg-white text-brand-blue font-bold cursor-pointer hover:bg-white/85 transition-all duration-100 border-0" %>
   <% end %>
 </div>

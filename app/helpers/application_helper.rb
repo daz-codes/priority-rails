@@ -31,7 +31,7 @@ module ApplicationHelper
   # Centered task modals (snooze, recurrence, actions), styled to match the priority menu
   def modal_classes
     "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-sm bg-surface-primary " \
-      "rounded-2xl shadow-2xl z-50 overflow-hidden"
+      "rounded-(--card-radius) shadow-2xl z-50 overflow-hidden"
   end
 
   # Dims and softly blurs the page behind the priority menu and modals, so it's still recognisable
@@ -45,7 +45,7 @@ module ApplicationHelper
 
   # Labelled, tap-sized version of the task action buttons, used in the expanded task panel
   def task_panel_button_classes
-    "inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-border-input bg-surface-primary text-xs font-black uppercase " \
+    "inline-flex items-center gap-2 px-4 py-2 rounded-(--card-radius) border-2 border-border-input bg-surface-primary text-xs font-black uppercase " \
       "tracking-wider text-text-secondary cursor-pointer hover:border-brand-blue hover:text-brand-blue transition-all duration-100"
   end
 
@@ -53,7 +53,7 @@ module ApplicationHelper
 
   # A card holding one settings section
   def panel_classes
-    "bg-surface-secondary rounded-2xl p-5"
+    "bg-surface-secondary rounded-(--card-radius) p-5"
   end
 
   def panel_heading_classes
@@ -62,17 +62,17 @@ module ApplicationHelper
 
   # Thick pill text box (also used for selects)
   def field_classes
-    "w-full min-w-0 px-4 py-2.5 rounded-full border-[3px] border-[var(--input-border-bold)] text-base font-semibold " \
+    "w-full min-w-0 px-4 py-2.5 rounded-(--card-radius) border-[3px] border-[var(--input-border-bold)] text-base font-semibold " \
       "focus:outline-none focus:border-brand-blue bg-input-bg"
   end
 
   def primary_button_classes
-    "inline-flex items-center justify-center gap-2 shrink-0 px-5 py-2.5 rounded-full bg-brand-blue text-white text-sm font-black " \
+    "inline-flex items-center justify-center gap-2 shrink-0 px-5 py-2.5 rounded-(--card-radius) bg-brand-blue text-white text-sm font-black " \
       "uppercase tracking-wider cursor-pointer hover:brightness-110 transition-all duration-100 border-0 no-underline"
   end
 
   def secondary_button_classes
-    "inline-flex items-center justify-center gap-2 shrink-0 px-5 py-2 rounded-full border-2 border-border-input bg-surface-primary " \
+    "inline-flex items-center justify-center gap-2 shrink-0 px-5 py-2 rounded-(--card-radius) border-2 border-border-input bg-surface-primary " \
       "text-xs font-black uppercase tracking-wider text-text-secondary hover:border-brand-blue hover:text-brand-blue " \
       "transition-all duration-100 cursor-pointer no-underline"
   end
@@ -87,7 +87,7 @@ module ApplicationHelper
   end
 
   def error_box_classes
-    "text-sm font-semibold text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-300 rounded-2xl px-4 py-2.5"
+    "text-sm font-semibold text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-300 rounded-(--card-radius) px-4 py-2.5"
   end
 
   # Icon-only in the task row, icon plus label when `labelled` (the expanded panel)

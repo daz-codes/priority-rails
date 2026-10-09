@@ -1,23 +1,25 @@
+<%# A row in list settings. Its name and colour belong to the settings form (form_id) and save with the
+    rest of the settings; the delete button is a form of its own, which is why they can't be nested %>
+<% field = "list[categories_attributes][#{index}]" %>
 <%= turbo_frame_tag dom_id(category), data: { id: category.id } do %>
-  <div class="flex items-center gap-2 px-3 py-2 rounded-xl bg-surface-primary">
+  <div class="flex items-center gap-2 px-3 py-2 rounded-(--card-radius) bg-surface-primary">
     <span class="category-handle shrink-0 -ml-1 px-1 text-text-muted hover:text-text-secondary cursor-grab touch-none" title="Drag to reorder" aria-label="Drag to reorder">
       <i class="fa-solid fa-grip-vertical text-xs"></i>
     </span>
-    <span class="size-4 rounded-full shrink-0 border border-border-primary" style="background-color: <%= category.color %>"></span>
-    <%= form_with model: [list, category], class: "flex items-center gap-2 flex-1 min-w-0" do |f| %>
-      <%= f.text_field :name, value: category.name, class: "flex-1 min-w-0 px-2 py-1 border-2 border-transparent rounded-lg text-base font-bold text-text-primary bg-transparent hover:border-border-input focus:border-brand-blue focus:outline-none transition-all", data: { he_blur: "$el.form.requestSubmit()" } %>
+    <%= hidden_field_tag "#{field}[id]", category.id, form: form_id, id: nil %>
+    <%= text_field_tag "#{field}[name]", category.name, form: form_id, id: nil, required: true, aria: { label: "Category name" },
+          class: "flex-1 min-w-0 px-2 py-1 border-2 border-transparent rounded-lg text-base font-bold text-text-primary bg-transparent hover:border-border-input focus:border-brand-blue focus:outline-none transition-all" %>
 
-      <div class="flex items-center gap-0.5 shrink-0">
-        <% CategoriesController::COLORS.each do |color| %>
-          <label class="cursor-pointer">
-            <%= f.radio_button :color, color, class: "hidden", data: { he_change: "$el.form.requestSubmit()" } %>
-            <span class="block size-5 rounded-full border-2 transition-all duration-100 hover:scale-110 <%= color == category.color ? 'border-text-secondary scale-110' : 'border-transparent' %>" style="background-color: <%= color %>"></span>
-          </label>
-        <% end %>
-      </div>
-    <% end %>
+    <div class="flex items-center gap-0.5 shrink-0" role="radiogroup" aria-label="Colour">
+      <% Category::COLORS.each do |color| %>
+        <label class="cursor-pointer">
+          <%= radio_button_tag "#{field}[color]", color, color == category.color, form: form_id, id: nil, class: "peer sr-only", aria: { label: color } %>
+          <span class="block size-5 rounded-full border-2 border-transparent transition-all duration-100 hover:scale-110 peer-checked:border-text-secondary peer-checked:scale-110 peer-focus-visible:outline-2 peer-focus-visible:outline-brand-blue" style="background-color: <%= color %>"></span>
+        </label>
+      <% end %>
+    </div>
 
-    <%= button_to list_category_path(list, category), method: :delete, class: "shrink-0 text-text-muted hover:text-red-400 transition-all duration-100 cursor-pointer bg-transparent border-none p-1", data: { turbo_confirm: "Remove this category?" } do %>
+    <%= button_to list_category_path(list, category), method: :delete, title: "Remove category", class: "shrink-0 text-text-muted hover:text-red-400 transition-all duration-100 cursor-pointer bg-transparent border-none p-1", data: { turbo_confirm: "Remove this category?" } do %>
       <i class="fa-solid fa-xmark text-sm"></i>
     <% end %>
   </div>

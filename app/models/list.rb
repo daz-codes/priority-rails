@@ -4,6 +4,8 @@ class List < ApplicationRecord
   has_many :tasks, dependent: :destroy
   has_many :categories, -> { order(:position, :id) }, dependent: :destroy
   has_many :pending_invitations, dependent: :destroy
+  # Settings save categories' names and colours with the list, plus a new one when a name is given
+  accepts_nested_attributes_for :categories, reject_if: ->(attributes) { attributes["id"].blank? && attributes["name"].blank? }
   validates :name, presence: true
   validates :completed_display, inclusion: { in: %w[never 1_day 3_days 1_week forever] }
   after_create :assign_default_categories, unless: :copying

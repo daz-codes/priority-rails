@@ -62,6 +62,7 @@
   --surface-hover: oklch(95% 0.03 258);
   --border-input: oklch(84% 0.02 258);
   --input-border-bold: oklch(72% 0.02 260);
+  --card-radius: 0.9rem; /* task rows, the add-task box and the priority button share one corner radius */
   --strike-color-default: oklch(85% 0.14 200);
   --highlight-color: oklch(92% 0.2 125);
 }
@@ -133,10 +134,11 @@ button, input[type="submit"], .rounded-full.font-semibold {
   font-size: 0.75rem;
 }
 
-/* The add-task box: a thick dark ink pill, with the input and button reading as one piece */
+/* The add-task box: a thick dark ink box with the task rows' corners, the input and button reading as one piece */
 #new_task_form input[type="text"] {
   border: 3px solid var(--input-border-bold);
   border-inline-end: 0;
+  border-radius: var(--card-radius) 0 0 var(--card-radius);
   color: var(--ink);
   font-size: 1.1rem;
   font-weight: 700;
@@ -161,6 +163,7 @@ button, input[type="submit"], .rounded-full.font-semibold {
   background: var(--color-brand-blue);
   border: 3px solid var(--color-brand-blue);
   border-inline-start: 0;
+  border-radius: 0 var(--card-radius) var(--card-radius) 0;
   color: white;
   font-size: 1.05rem;
   font-weight: 900;
@@ -174,7 +177,7 @@ button, input[type="submit"], .rounded-full.font-semibold {
   --card-color: var(--category-color, var(--accent));
   background: color-mix(in oklch, var(--card-color) 14%, var(--surface-primary));
   border: 0;
-  border-radius: 0.9rem;
+  border-radius: var(--card-radius);
   margin-block: 0.45rem;
   padding: 0.3rem 0.75rem 0.3rem 0.35rem;
   transition: background-color 150ms ease-out, scale 150ms ease-out;

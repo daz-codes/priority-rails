@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto py-8">
   <h1 class="text-3xl font-heading text-center mt-0 mb-6">Forgot your password?</h1>
 
-  <%= form_with url: passwords_path, class: "bg-surface-secondary rounded-2xl p-6 space-y-3" do |form| %>
+  <%= form_with url: passwords_path, class: "bg-surface-secondary rounded-(--card-radius) p-6 space-y-3" do |form| %>
     <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address], class: field_classes %>
     <%= form.submit "Email reset instructions", class: "#{primary_button_classes} w-full !py-3" %>
   <% end %>
