@@ -7,10 +7,10 @@
   <% if task.note.present? %>
     <div data-he-init="openLinksInNewTab($el)"><%= task.note %></div>
     <div class="pt-2">
-      <%= link_to "Edit", edit_task_path(task), class: edit_classes, data: { turbo_frame: "task_frame_#{task.id}" } %>
+      <%= link_to "Edit", edit_task_path(task, more: 1), class: edit_classes, data: { turbo_frame: "task_frame_#{task.id}" } %>
     </div>
   <% else %>
     <p class="m-0 mb-2 text-sm text-text-tertiary">No note yet.</p>
-    <%= link_to "Add a note", edit_task_path(task), class: edit_classes, data: { turbo_frame: "task_frame_#{task.id}" } %>
+    <%= link_to "Add a note", edit_task_path(task, more: 1), class: edit_classes, data: { turbo_frame: "task_frame_#{task.id}" } %>
   <% end %>
 </div>

@@ -1,6 +1,10 @@
 <%= turbo_frame_tag "task_frame_#{@task.id}" do %>
   <% form_id = "task_panel_form_#{@task.id}" %>
-  <div class="py-2 space-y-3" data-task-panel>
+  <%# Opens with just the name; More shows the actions, list and note. Opened from a note's Edit link,
+      or after a failed save, it starts expanded. The toggle is a checkbox styled with :has() rather than
+      script state, as the morph after saving reuses these elements for the task row %>
+  <% expanded = params[:more].present? || @task.errors.any? %>
+  <div class="group/panel py-2 space-y-3" data-task-panel>
     <%# Complete + name (the name belongs to the form below via the form attribute, as the
         action buttons in between are forms of their own and forms can't be nested) %>
     <div class="flex items-center gap-2">
@@ -17,42 +21,50 @@
       <div class="<%= error_box_classes %>"><%= @task.errors.full_messages.to_sentence %></div>
     <% end %>
 
-    <%# Actions: these happen straight away %>
-    <div class="flex flex-wrap items-center gap-2">
-      <% unless @task.completed? %>
-        <%= render @task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: @task, labelled: true %>
-        <%= render "tasks/recurrence_select", task: @task, labelled: true %>
-        <% if @task.recurring? %>
-          <%= button_to skip_task_path(@task), method: :patch, title: "Skip this time", form: { data: { turbo_frame: "_top" } }, class: task_panel_button_classes do %>
-            <%= task_action_content "fa-forward", "Skip this time", labelled: true %>
-          <% end %>
-        <% end %>
+    <div class="flex items-center gap-2">
+      <%= button_tag type: "submit", form: form_id, class: primary_button_classes do %>
+        <i class="fa-solid fa-check"></i> Save
       <% end %>
-      <%= render "tasks/delete_button", task: @task, labelled: true %>
+      <%= link_to request.referer || @task.list, class: "#{secondary_button_classes} !py-2.5", data: { turbo_frame: "_top" } do %>
+        <i class="fa-solid fa-xmark"></i> Cancel
+      <% end %>
+      <label class="ml-auto inline-flex items-center gap-2 px-2 py-2 text-xs font-black uppercase tracking-wider text-text-tertiary hover:text-brand-blue cursor-pointer has-focus-visible:outline-2 has-focus-visible:outline-brand-blue rounded-(--card-radius)">
+        <%= check_box_tag "task_panel_more_toggle_#{@task.id}", "1", expanded, class: "more-toggle sr-only", aria: { controls: "task_panel_more_#{@task.id}" } %>
+        <span class="group-has-[.more-toggle:checked]/panel:hidden">More</span>
+        <span class="hidden group-has-[.more-toggle:checked]/panel:inline">Less</span>
+        <i class="fa-solid fa-chevron-down transition-transform duration-150 group-has-[.more-toggle:checked]/panel:rotate-180"></i>
+      </label>
     </div>
 
-    <%# Everything below is saved together %>
-    <%= form_with model: @task, id: form_id, data: { turbo_frame: "_top" }, class: "space-y-3" do |form| %>
-      <%# Archived lists aren't somewhere to move tasks to, but keep this task's own list in the choices %>
-      <% lists = Current.user.lists.active.or(Current.user.lists.where(id: @task.list_id)).order(:name) %>
-      <% if lists.size > 1 %>
-        <div class="flex items-center gap-2">
-          <%= form.label :list_id, "List", for: "task_panel_list_#{@task.id}", class: "text-[11px] font-black uppercase tracking-wider text-text-tertiary shrink-0" %>
-          <%= form.select :list_id, lists.map { |l| [ l.name, l.id ] }, {}, id: "task_panel_list_#{@task.id}",
-                class: "#{field_classes} flex-1 !py-2" %>
-        </div>
-      <% end %>
-
-      <%= form.rich_textarea :note, id: "task_panel_note_#{@task.id}", class: "w-full", placeholder: "Add a note..." %>
-
-      <div class="flex items-center gap-2">
-        <%= form.button type: "submit", class: primary_button_classes do %>
-          <i class="fa-solid fa-check"></i> Save
+    <div id="task_panel_more_<%= @task.id %>" class="hidden group-has-[.more-toggle:checked]/panel:block space-y-3">
+      <%# Actions: these happen straight away %>
+      <div class="flex flex-wrap items-center gap-2">
+        <% unless @task.completed? %>
+          <%= render @task.snoozed? ? "tasks/unsnooze_button" : "tasks/snooze_select", task: @task, labelled: true %>
+          <%= render "tasks/recurrence_select", task: @task, labelled: true %>
+          <% if @task.recurring? %>
+            <%= button_to skip_task_path(@task), method: :patch, title: "Skip this time", form: { data: { turbo_frame: "_top" } }, class: task_panel_button_classes do %>
+              <%= task_action_content "fa-forward", "Skip this time", labelled: true %>
+            <% end %>
+          <% end %>
         <% end %>
-        <%= link_to request.referer || @task.list, class: "#{secondary_button_classes} !py-2.5", data: { turbo_frame: "_top" } do %>
-          <i class="fa-solid fa-xmark"></i> Cancel
-        <% end %>
+        <%= render "tasks/delete_button", task: @task, labelled: true %>
       </div>
-    <% end %>
+
+      <%# Everything below is saved together %>
+      <%= form_with model: @task, id: form_id, data: { turbo_frame: "_top" }, class: "space-y-3" do |form| %>
+        <%# Archived lists aren't somewhere to move tasks to, but keep this task's own list in the choices %>
+        <% lists = Current.user.lists.active.or(Current.user.lists.where(id: @task.list_id)).order(:name) %>
+        <% if lists.size > 1 %>
+          <div class="flex items-center gap-2">
+            <%= form.label :list_id, "List", for: "task_panel_list_#{@task.id}", class: "text-[11px] font-black uppercase tracking-wider text-text-tertiary shrink-0" %>
+            <%= form.select :list_id, lists.map { |l| [ l.name, l.id ] }, {}, id: "task_panel_list_#{@task.id}",
+                  class: "#{field_classes} flex-1 !py-2" %>
+          </div>
+        <% end %>
+
+        <%= form.rich_textarea :note, id: "task_panel_note_#{@task.id}", class: "w-full", placeholder: "Add a note..." %>
+      <% end %>
+    </div>
   </div>
 <% end %>

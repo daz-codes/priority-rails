@@ -96,7 +96,7 @@ class TasksTest < ApplicationSystemTestCase
     assert_equal "weekdays", @milk.reload.recurrence_type
 
     click_on "Buy milk"
-    within("[data-task-panel]") { click_on "Skip this time" }
+    within("[data-task-panel]") { find("label", text: /more/i).click; click_on "Skip this time" }
     assert_selector "[data-toast]", text: "Skipped until"
     assert_no_selector "#tasks li", text: "Buy milk"
     assert_equal Date.current.next_weekday.beginning_of_day, @milk.reload.snoozed_until
@@ -119,6 +119,7 @@ class TasksTest < ApplicationSystemTestCase
   test "an image uploaded in the note editor shows in the task's note" do
     click_on "Buy milk"
     within("[data-task-panel]") do
+      find("label", text: /more/i).click
       find("lexxy-editor [contenteditable]").click
       find("button[name=upload]").click # the editor's "Upload file" button adds a hidden file input
       find("lexxy-editor input[type=file]", visible: :all).send_keys(file_fixture("photo.png").to_s)
@@ -158,6 +159,7 @@ class TasksTest < ApplicationSystemTestCase
     click_on "Buy milk"
     within("[data-task-panel]") do
       fill_in "task[description]", with: "Buy oat milk"
+      find("label", text: /more/i).click
       select "Weekend", from: "List"
       click_on "Save"
     end
@@ -175,9 +177,28 @@ class TasksTest < ApplicationSystemTestCase
     assert_no_js_errors
   end
 
+  test "the task panel opens with just the name, and More shows the rest" do
+    click_on "Buy milk"
+    within("[data-task-panel]") do
+      assert_field "task[description]", with: "Buy milk"
+      assert_button "Save"
+      assert_no_button "Snooze"
+      assert_no_selector "lexxy-editor", visible: true
+
+      find("label", text: /more/i).click
+      assert_button "Snooze"
+      assert_selector "lexxy-editor", visible: true
+      assert_selector "label", text: /less/i
+
+      find("label", text: /less/i).click
+      assert_no_button "Snooze"
+    end
+    assert_no_js_errors
+  end
+
   test "the panel's snooze and recur buttons open the shared modals" do
     click_on "Buy milk"
-    within("[data-task-panel]") { click_on "Snooze" }
+    within("[data-task-panel]") { find("label", text: /more/i).click; click_on "Snooze" }
     assert_selector "[data-snooze-modal]", visible: true
     find("[data-snooze-modal] button[title=Close]").click
     within("[data-task-panel]") { click_on "Recur" }
@@ -198,7 +219,7 @@ class TasksTest < ApplicationSystemTestCase
     visit list_url(@list)
     assert_no_selector "#tasks li button[title='Delete task']", visible: true
     click_on "Buy milk"
-    within("[data-task-panel]") { assert_button "Delete" }
+    within("[data-task-panel]") { find("label", text: /more/i).click; assert_button "Delete" }
   end
 
   test "drag to reorder, including within a category filter" do

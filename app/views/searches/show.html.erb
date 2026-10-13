@@ -4,7 +4,7 @@
   <h1 class="text-3xl font-heading text-center m-0 pb-2">Search</h1>
   <%= form_with url: search_path, method: :get, class: "flex gap-2" do |form| %>
     <%= form.search_field :q, value: @query, autofocus: true, minlength: 2, placeholder: "Search tasks, notes and lists...",
-          class: field_classes %>
+          class: "#{field_classes} !rounded-full" %>
     <%= form.submit "Search", name: nil, class: primary_button_classes %>
   <% end %>
 
